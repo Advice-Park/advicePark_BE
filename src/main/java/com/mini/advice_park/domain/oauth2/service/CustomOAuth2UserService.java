@@ -1,8 +1,8 @@
-package com.mini.advice_park.oauth2.service;
+package com.mini.advice_park.domain.oauth2.service;
 
-import com.mini.advice_park.oauth2.exception.OAuth2AuthenticationProcessingException;
-import com.mini.advice_park.oauth2.user.OAuth2UserInfo;
-import com.mini.advice_park.oauth2.user.OAuth2UserInfoFactory;
+import com.mini.advice_park.domain.oauth2.exception.OAuth2AuthenticationProcessingException;
+import com.mini.advice_park.domain.oauth2.user.OAuth2UserInfo;
+import com.mini.advice_park.domain.oauth2.user.OAuth2UserInfoFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;

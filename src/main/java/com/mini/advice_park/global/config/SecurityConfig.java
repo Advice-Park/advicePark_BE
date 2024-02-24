@@ -1,9 +1,9 @@
-package com.mini.advice_park.config;
+package com.mini.advice_park.global.config;
 
-import com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.mini.advice_park.oauth2.handler.OAuth2AuthenticationFailureHandler;
-import com.mini.advice_park.oauth2.handler.OAuth2AuthenticationSuccessHandler;
-import com.mini.advice_park.oauth2.service.CustomOAuth2UserService;
+import com.mini.advice_park.domain.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.mini.advice_park.domain.oauth2.handler.OAuth2AuthenticationFailureHandler;
+import com.mini.advice_park.domain.oauth2.handler.OAuth2AuthenticationSuccessHandler;
+import com.mini.advice_park.domain.oauth2.service.CustomOAuth2UserService;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

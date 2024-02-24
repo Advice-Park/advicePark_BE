@@ -1,10 +1,10 @@
-package com.mini.advice_park.oauth2.handler;
+package com.mini.advice_park.domain.oauth2.handler;
 
-import com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.mini.advice_park.oauth2.service.OAuth2UserPrincipal;
-import com.mini.advice_park.oauth2.user.OAuth2Provider;
-import com.mini.advice_park.oauth2.user.OAuth2UserUnlinkManager;
-import com.mini.advice_park.oauth2.util.CookieUtils;
+import com.mini.advice_park.domain.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.mini.advice_park.domain.oauth2.service.OAuth2UserPrincipal;
+import com.mini.advice_park.domain.oauth2.user.OAuth2Provider;
+import com.mini.advice_park.domain.oauth2.user.OAuth2UserUnlinkManager;
+import com.mini.advice_park.domain.oauth2.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,9 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Optional;
-
-import static com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.MODE_PARAM_COOKIE_NAME;
-import static com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
 @Component
@@ -49,12 +46,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
 
-        Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+        Optional<String> redirectUri = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
-        String mode = CookieUtils.getCookie(request, MODE_PARAM_COOKIE_NAME)
+        String mode = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.MODE_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse("");
 

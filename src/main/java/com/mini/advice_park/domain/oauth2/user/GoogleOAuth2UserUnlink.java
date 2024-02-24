@@ -1,4 +1,4 @@
-package com.mini.advice_park.oauth2.user;
+package com.mini.advice_park.domain.oauth2.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,10 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Component
 public class GoogleOAuth2UserUnlink implements OAuth2UserUnlink {
+
+    /**
+     * 구글 Oauth2 연동 해제를 위한 구현체
+     */
 
     private static final String URL = "https://oauth2.googleapis.com/revoke";
     private final RestTemplate restTemplate;

@@ -1,4 +1,4 @@
-package com.mini.advice_park.oauth2.util;
+package com.mini.advice_park.domain.oauth2.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +9,11 @@ import java.util.Base64;
 import java.util.Optional;
 
 public class CookieUtils {
+
+    /**
+     * 쿠키에 객체를 직렬화 - 역직렬화하는 기능
+     * 인증과정중에 사용하는 state 파라미터 등을 저장
+     */
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();

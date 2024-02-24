@@ -1,4 +1,4 @@
-package com.mini.advice_park.oauth2.exception;
+package com.mini.advice_park.domain.oauth2.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

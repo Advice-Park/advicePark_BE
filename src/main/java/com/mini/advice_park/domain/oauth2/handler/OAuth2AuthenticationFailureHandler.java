@@ -1,7 +1,7 @@
-package com.mini.advice_park.oauth2.handler;
+package com.mini.advice_park.domain.oauth2.handler;
 
-import com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.mini.advice_park.oauth2.util.CookieUtils;
+import com.mini.advice_park.domain.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.mini.advice_park.domain.oauth2.util.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
@@ -13,8 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
-import static com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-
 @Component
 @RequiredArgsConstructor
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -25,7 +23,7 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
 
-        String targetUrl = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+        String targetUrl = CookieUtils.getCookie(request, HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse(("/"));
 

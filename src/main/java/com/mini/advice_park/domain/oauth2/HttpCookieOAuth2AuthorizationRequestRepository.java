@@ -1,6 +1,6 @@
-package com.mini.advice_park.oauth2;
+package com.mini.advice_park.domain.oauth2;
 
-import com.mini.advice_park.oauth2.util.CookieUtils;
+import com.mini.advice_park.domain.oauth2.util.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,11 @@ import org.springframework.util.StringUtils;
 @Component
 public class HttpCookieOAuth2AuthorizationRequestRepository
         implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
+
+    /**
+     * 인증 과정중, 파라미터를 쿠키에 저장하는 방식을 구현한 클래스
+     */
+
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     public static final String MODE_PARAM_COOKIE_NAME = "mode";

@@ -1,4 +1,4 @@
-package com.mini.advice_park.config;
+package com.mini.advice_park.global.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

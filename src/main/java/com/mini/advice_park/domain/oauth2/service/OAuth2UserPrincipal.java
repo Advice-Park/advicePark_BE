@@ -1,6 +1,6 @@
-package com.mini.advice_park.oauth2.service;
+package com.mini.advice_park.domain.oauth2.service;
 
-import com.mini.advice_park.oauth2.user.OAuth2UserInfo;
+import com.mini.advice_park.domain.oauth2.user.OAuth2UserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
