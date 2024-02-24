@@ -58,6 +58,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(antMatcher("/api/admin/**")).hasRole("ADMIN")
                         .requestMatchers(antMatcher("/api/user/**")).hasRole("USER")
+                        .requestMatchers(antMatcher("/oauth2/**")).permitAll()
+                        .requestMatchers(antMatcher("/login/**")).permitAll()
                         .requestMatchers("/health-check").permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
