@@ -4,6 +4,7 @@ import com.mini.advice_park.domain.oauth2.HttpCookieOAuth2AuthorizationRequestRe
 import com.mini.advice_park.domain.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.mini.advice_park.domain.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.mini.advice_park.domain.oauth2.service.CustomOAuth2UserService;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,12 +27,19 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html",
+            "/api/user/**"
+    };
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,6 +49,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         http.csrf(AbstractHttpConfigurer::disable)
                 .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)) // For H2 DB
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -48,7 +58,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(antMatcher("/api/admin/**")).hasRole("ADMIN")
                         .requestMatchers(antMatcher("/api/user/**")).hasRole("USER")
-                        .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers("/health-check").permitAll()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -76,4 +87,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }
