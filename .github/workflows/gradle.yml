@@ -10,8 +10,8 @@ on:
 env:
   PROJECT_NAME: advice_https
   BUCKET_NAME: advice_bucket
-  CODE_DEPLOY_APP_NAME: advice_app
-  DEPLOYMENT_GROUP_NAME: advice_code_app
+  CODE_DEPLOY_APP_NAME: advice_cicd
+  DEPLOYMENT_GROUP_NAME: advice_instance
 # --------------------------추가
 
 jobs:
