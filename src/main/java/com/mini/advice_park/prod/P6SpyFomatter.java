@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.prod;
+package com.mini.advice_park.prod;
 
 import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.P6SpyOptions;

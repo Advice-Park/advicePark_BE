@@ -1,7 +1,7 @@
 package com.mini.advice_park.service;
 
-import com.mini.advice_park.global.exception.CustomException;
-import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.exception.CustomException;
+import com.mini.advice_park.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;

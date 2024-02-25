@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.constant;
+package com.mini.advice_park.constant;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.mini.advice_park.global.security.service;
+package com.mini.advice_park.security.service;
 
-import com.mini.advice_park.global.security.CustomUserDetails;
+import com.mini.advice_park.security.CustomUserDetails;
 import com.mini.advice_park.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

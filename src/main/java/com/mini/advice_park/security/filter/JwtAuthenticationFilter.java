@@ -1,9 +1,9 @@
-package com.mini.advice_park.global.security.filter;
+package com.mini.advice_park.security.filter;
 
-import com.mini.advice_park.global.constant.Constants;
-import com.mini.advice_park.global.security.CustomUserDetails;
-import com.mini.advice_park.global.security.jwt.JwtProvider;
-import com.mini.advice_park.global.security.service.CustomUserDetailsService;
+import com.mini.advice_park.constant.Constants;
+import com.mini.advice_park.security.CustomUserDetails;
+import com.mini.advice_park.security.jwt.JwtProvider;
+import com.mini.advice_park.security.service.CustomUserDetailsService;
 import com.mini.advice_park.utility.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

@@ -5,7 +5,7 @@ import com.mini.advice_park.dto.auth.AuthLoginDto;
 import com.mini.advice_park.dto.auth.AuthSignUpDto;
 import com.mini.advice_park.dto.auth.EmailVerifyDto;
 import com.mini.advice_park.dto.exception.ResponseDto;
-import com.mini.advice_park.global.constant.Constants;
+import com.mini.advice_park.constant.Constants;
 import com.mini.advice_park.service.AuthService;
 import com.mini.advice_park.service.EmailService;
 import jakarta.mail.MessagingException;

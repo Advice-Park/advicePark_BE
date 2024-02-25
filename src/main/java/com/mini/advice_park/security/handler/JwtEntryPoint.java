@@ -1,6 +1,6 @@
-package com.mini.advice_park.global.security.handler;
+package com.mini.advice_park.security.handler;
 
-import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.mini.advice_park.global.security.handler.JwtAccessDeniedHandler.setErrorResponse;
+import static com.mini.advice_park.security.handler.JwtAccessDeniedHandler.setErrorResponse;
 
 @Component
 public class JwtEntryPoint implements AuthenticationEntryPoint {

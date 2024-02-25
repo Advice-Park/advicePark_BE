@@ -31,7 +31,7 @@ public class OAuth2Controller {
         return ResponseDto.ok(map);
     }
 
-    @GetMapping("/google/callback")
+    @GetMapping("/callback/google")
     public ResponseDto<JwtTokenDto> getGoogleAccessToken(String code) {
         String accessToken = oAuth2Service.getAccessToken(code, ELoginProvider.GOOGLE);
         return ResponseDto.created(oAuth2Service.login(accessToken, ELoginProvider.GOOGLE));

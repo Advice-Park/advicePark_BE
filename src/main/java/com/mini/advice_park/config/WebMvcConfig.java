@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.config;
+package com.mini.advice_park.config;
 
 import com.mini.advice_park.inteceptor.SocialIdArgumentResolver;
 import com.mini.advice_park.inteceptor.SocialIdInterceptor;

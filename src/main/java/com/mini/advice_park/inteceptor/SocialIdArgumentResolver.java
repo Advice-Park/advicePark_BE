@@ -1,9 +1,9 @@
 package com.mini.advice_park.inteceptor;
 
 import com.mini.advice_park.annotation.SocialId;
-import com.mini.advice_park.global.constant.Constants;
-import com.mini.advice_park.global.exception.CustomException;
-import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.constant.Constants;
+import com.mini.advice_park.exception.CustomException;
+import com.mini.advice_park.exception.ErrorCode;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

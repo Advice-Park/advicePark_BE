@@ -1,8 +1,8 @@
-package com.mini.advice_park.global.security.handler;
+package com.mini.advice_park.security.handler;
 
 import com.google.gson.Gson;
 import com.mini.advice_park.dto.exception.ExceptionDto;
-import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

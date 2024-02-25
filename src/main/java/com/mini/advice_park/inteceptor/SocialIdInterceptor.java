@@ -1,6 +1,6 @@
 package com.mini.advice_park.inteceptor;
 
-import com.mini.advice_park.global.constant.Constants;
+import com.mini.advice_park.constant.Constants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;

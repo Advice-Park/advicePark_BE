@@ -1,8 +1,8 @@
-package com.mini.advice_park.global.security.jwt;
+package com.mini.advice_park.security.jwt;
 
 import com.mini.advice_park.domain.User;
 import com.mini.advice_park.dto.jwt.JwtTokenDto;
-import com.mini.advice_park.global.constant.Constants;
+import com.mini.advice_park.constant.Constants;
 import com.mini.advice_park.repo.UserRepository;
 import com.mini.advice_park.type.EUserType;
 import com.mini.advice_park.utility.JwtUtil;

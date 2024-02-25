@@ -1,12 +1,12 @@
-package com.mini.advice_park.global.config;
+package com.mini.advice_park.config;
 
-import com.mini.advice_park.global.constant.Constants;
-import com.mini.advice_park.global.security.filter.JwtAuthenticationFilter;
-import com.mini.advice_park.global.security.filter.JwtExceptionFilter;
-import com.mini.advice_park.global.security.handler.JwtAccessDeniedHandler;
-import com.mini.advice_park.global.security.handler.JwtEntryPoint;
-import com.mini.advice_park.global.security.jwt.JwtProvider;
-import com.mini.advice_park.global.security.service.CustomUserDetailsService;
+import com.mini.advice_park.constant.Constants;
+import com.mini.advice_park.security.filter.JwtAuthenticationFilter;
+import com.mini.advice_park.security.filter.JwtExceptionFilter;
+import com.mini.advice_park.security.handler.JwtAccessDeniedHandler;
+import com.mini.advice_park.security.handler.JwtEntryPoint;
+import com.mini.advice_park.security.jwt.JwtProvider;
+import com.mini.advice_park.security.service.CustomUserDetailsService;
 import com.mini.advice_park.utility.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.security;
+package com.mini.advice_park.security;
 
 import com.mini.advice_park.repo.UserRepository;
 import com.mini.advice_park.type.EUserType;

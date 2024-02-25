@@ -1,7 +1,7 @@
-package com.mini.advice_park.global.security.filter;
+package com.mini.advice_park.security.filter;
 
-import com.mini.advice_park.global.constant.Constants;
-import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.constant.Constants;
+import com.mini.advice_park.exception.ErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.exception;
+package com.mini.advice_park.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

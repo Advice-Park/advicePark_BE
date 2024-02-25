@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.config;
+package com.mini.advice_park.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

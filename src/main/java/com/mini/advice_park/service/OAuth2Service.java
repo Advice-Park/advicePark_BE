@@ -2,10 +2,10 @@ package com.mini.advice_park.service;
 
 import com.mini.advice_park.domain.User;
 import com.mini.advice_park.dto.jwt.JwtTokenDto;
-import com.mini.advice_park.global.constant.Constants;
-import com.mini.advice_park.global.exception.CustomException;
-import com.mini.advice_park.global.exception.ErrorCode;
-import com.mini.advice_park.global.security.jwt.JwtProvider;
+import com.mini.advice_park.constant.Constants;
+import com.mini.advice_park.exception.CustomException;
+import com.mini.advice_park.exception.ErrorCode;
+import com.mini.advice_park.security.jwt.JwtProvider;
 import com.mini.advice_park.repo.UserRepository;
 import com.mini.advice_park.type.ELoginProvider;
 import com.mini.advice_park.type.EUserType;

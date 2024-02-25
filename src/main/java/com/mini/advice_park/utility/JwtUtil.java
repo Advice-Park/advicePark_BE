@@ -1,7 +1,7 @@
 package com.mini.advice_park.utility;
 
 import com.mini.advice_park.dto.jwt.JwtTokenDto;
-import com.mini.advice_park.global.constant.Constants;
+import com.mini.advice_park.constant.Constants;
 import com.mini.advice_park.type.EUserType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;

@@ -1,6 +1,6 @@
 package com.mini.advice_park.dto.exception;
 
-import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.exception.ErrorCode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
 import org.springframework.validation.FieldError;
