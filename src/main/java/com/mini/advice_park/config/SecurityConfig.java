@@ -34,8 +34,10 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
                         .requestMatchers(Constants.NO_AUTH_WHITE_LABEL.toArray(String[]::new)).permitAll()
                         .anyRequest().authenticated()
@@ -43,6 +45,7 @@ public class SecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(jwtEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler))
+
                 .addFilterBefore(new JwtAuthenticationFilter(
                         jwtUtil, customUserDetailsService
                 ), UsernamePasswordAuthenticationFilter.class)

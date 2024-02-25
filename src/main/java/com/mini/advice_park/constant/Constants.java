@@ -20,7 +20,10 @@ public class Constants {
             "/v3/api-docs/public-api",
             "/swagger-ui/favicon-32x32.png",
             "/api/v1/swagger-ui/index.html",
-            "/api/oauth2/**",
+
+            "/api/oauth2/google",
+            "/api/oauth2/callback/google",
+
             "/api/auth/sign-up",
             "/api/auth/login",
             "/api/auth/refresh",
