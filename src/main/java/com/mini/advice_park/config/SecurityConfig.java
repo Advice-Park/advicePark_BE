@@ -40,6 +40,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
                         .requestMatchers(Constants.NO_AUTH_WHITE_LABEL.toArray(String[]::new)).permitAll()
+                        .requestMatchers("/health-check").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling

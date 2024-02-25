@@ -27,7 +27,6 @@ public class Constants {
             "/api/auth/sign-up",
             "/api/auth/login",
             "/api/auth/refresh",
-            "/api/auth/mail",
-            "/health-check"
+            "/api/auth/mail"
     );
 }
