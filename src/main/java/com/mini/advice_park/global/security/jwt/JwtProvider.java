@@ -25,9 +25,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtProvider implements InitializingBean {
 
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
     private Key key;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
     @Override
     public void afterPropertiesSet() {

@@ -18,9 +18,10 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/oauth2")
 @RequiredArgsConstructor
+@RequestMapping("/api/oauth2")
 public class OAuth2Controller {
+
     private final OAuth2Service oAuth2Service;
 
     @GetMapping("/google")

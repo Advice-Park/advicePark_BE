@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
     private final EmailService emailService;
 

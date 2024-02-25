@@ -26,14 +26,15 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class OAuth2Service {
 
-    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final JwtProvider jwtProvider;
     private final GoogleOAuth2Util oAuth2Util;
+    private final UserRepository userRepository;
+
     public String getRedirectUrl(ELoginProvider provider) {
         if (provider == ELoginProvider.GOOGLE) {
             return oAuth2Util.getGoogleRedirectUrl();

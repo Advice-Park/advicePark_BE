@@ -12,10 +12,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-@Component
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class GoogleOAuth2Util {
+
     /**
      * Google OAuth2
      */

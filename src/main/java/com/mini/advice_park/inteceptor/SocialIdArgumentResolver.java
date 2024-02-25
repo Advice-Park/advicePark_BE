@@ -23,12 +23,17 @@ public class SocialIdArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(@NotNull MethodParameter parameter,
+                                  ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest,
+                                  WebDataBinderFactory binderFactory) throws Exception {
+
         final Object socialId = webRequest.getAttribute(Constants.SOCIAL_ID_CLAIM_NAME, WebRequest.SCOPE_REQUEST);
 
         if (socialId == null) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
         }
+
         return socialId.toString();
     }
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Getter
 public class ArgumentNotValidExceptionDto extends ExceptionDto {
+
     public final Map<String, String> errorFields;
 
     public ArgumentNotValidExceptionDto(final MethodArgumentNotValidException exception) {

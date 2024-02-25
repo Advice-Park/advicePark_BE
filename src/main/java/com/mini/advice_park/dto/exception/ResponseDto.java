@@ -12,6 +12,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 
 @Getter
 public class ResponseDto<T> {
+
     @JsonIgnore
     private HttpStatus httpStatus;
     private final Boolean success;
