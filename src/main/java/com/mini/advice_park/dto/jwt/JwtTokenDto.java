@@ -14,6 +14,7 @@ public record JwtTokenDto (
 
         @JsonProperty("refresh_token")
         String refreshToken
+
 ) implements Serializable {
     public static JwtTokenDto of(String accessToken, String refreshToken) {
         return JwtTokenDto.builder()

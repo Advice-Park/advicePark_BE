@@ -15,8 +15,8 @@ public record AuthSignUpDto (
 
         @JsonProperty("password")
         @Pattern(
-                regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%]).{8,16}$",
-                message = "비밀번호는 대문자 1개 이상, 소문자 1개 이상, 숫자 1개 이상, 특수문자(!, @, #, %, $) 1개 이상으로 구성된 8~16자리 비밀번호로 입력해주세요."
+                regexp = "^(?=.*[a-z])(?=.*[0-9])[a-z0-9!@#$%]{8,16}$",
+                message = "비밀번호는 소문자 1개 이상, 숫자 1개 이상으로 구성된 8~16자리 비밀번호로 입력해주세요."
         )
         @NotNull(message = "password는 필수 입력값입니다.")
         String password,

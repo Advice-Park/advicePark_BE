@@ -68,12 +68,16 @@ public class User {
         this.userType = EUserType.AGENCY;
     }
 
+    /**
+     * 회원가입
+     * default - user
+     */
     public static User signUp(AuthSignUpDto authSignUpDto, String encodedPassword) {
         User user = User.builder()
                 .socialId(authSignUpDto.socialId())
                 .password(encodedPassword)
                 .provider(ELoginProvider.DEFAULT)
-                .userType(EUserType.AGENCY)
+                .userType(EUserType.USER)
                 .build();
 
         user.register();
@@ -81,11 +85,17 @@ public class User {
         return user;
     }
 
+    /**
+     * 리프레시 토큰 갱신
+     */
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
         this.isLogin = true;
     }
 
+    /**
+     * 로그아웃
+     */
     public void logout() {
         this.refreshToken = null;
         this.isLogin = false;

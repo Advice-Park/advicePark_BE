@@ -51,7 +51,7 @@ public class EmailService {
         String content = getContent();
 
         message.setText(content, "UTF-8", "html");
-        message.setFrom(new InternetAddress(id, "Volunmate"));
+        message.setFrom(new InternetAddress(id, "advice_park"));
         return message;
     }
 

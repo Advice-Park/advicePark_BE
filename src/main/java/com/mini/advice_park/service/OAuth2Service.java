@@ -77,6 +77,9 @@ public class OAuth2Service {
         return jwtToken;
     }
 
+    /**
+     * 액세스 토큰과 리프레시 토큰을 쿠키에 담아서 클라이언트에게 전달
+     */
     public void sendAccessTokenAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) throws IOException {
         response.setStatus(HttpServletResponse.SC_OK);
 
