@@ -9,7 +9,7 @@ on:
 # --------------------------추가
 env:
   PROJECT_NAME: advice_https
-  BUCKET_NAME: advice_bucket
+  BUCKET_NAME: advice-bucket
   CODE_DEPLOY_APP_NAME: advice_cicd
   DEPLOYMENT_GROUP_NAME: advice_instance
 # --------------------------추가
