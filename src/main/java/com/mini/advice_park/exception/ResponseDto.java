@@ -1,8 +1,6 @@
-package com.mini.advice_park.dto.exception;
+package com.mini.advice_park.exception;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mini.advice_park.exception.CustomException;
-import com.mini.advice_park.exception.ErrorCode;
 import jakarta.annotation.Nullable;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;

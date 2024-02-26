@@ -1,6 +1,5 @@
-package com.mini.advice_park.dto.exception;
+package com.mini.advice_park.exception;
 
-import com.mini.advice_park.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter

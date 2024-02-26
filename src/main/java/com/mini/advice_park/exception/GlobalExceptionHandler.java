@@ -1,6 +1,5 @@
 package com.mini.advice_park.exception;
 
-import com.mini.advice_park.dto.exception.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
