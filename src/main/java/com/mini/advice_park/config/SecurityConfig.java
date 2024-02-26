@@ -1,5 +1,6 @@
 package com.mini.advice_park.config;
 
+import com.mini.advice_park.jwt.JwtAuthorizationFilter;
 import com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.mini.advice_park.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.mini.advice_park.oauth2.handler.OAuth2AuthenticationSuccessHandler;
@@ -18,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class SecurityConfig {
             "/health-check"
     };
 
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
@@ -52,8 +55,6 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(antMatcher("/api/admin/**")).hasRole("ADMIN")
-                        .requestMatchers(antMatcher("/api/user/**")).hasRole("USER")
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -64,6 +65,8 @@ public class SecurityConfig {
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 );
+
+        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
