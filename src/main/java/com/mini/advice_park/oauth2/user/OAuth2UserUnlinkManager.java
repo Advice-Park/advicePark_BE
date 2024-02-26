@@ -10,7 +10,6 @@ public class OAuth2UserUnlinkManager {
 
     private final GoogleOAuth2UserUnlink googleOAuth2UserUnlink;
 
-
     public void unlink(OAuth2Provider provider, String accessToken) {
         if (OAuth2Provider.GOOGLE.equals(provider)) {
             googleOAuth2UserUnlink.unlink(accessToken);
