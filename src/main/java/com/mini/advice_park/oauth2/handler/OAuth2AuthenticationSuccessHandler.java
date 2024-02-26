@@ -1,5 +1,6 @@
 package com.mini.advice_park.oauth2.handler;
 
+import com.mini.advice_park.jwt.TokenProvider;
 import com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.mini.advice_park.oauth2.service.OAuth2UserPrincipal;
 import com.mini.advice_park.oauth2.user.OAuth2Provider;
@@ -22,12 +23,13 @@ import static com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRe
 import static com.mini.advice_park.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+@Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
+    private final TokenProvider tokenProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -76,7 +78,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     principal.getUserInfo().getAccessToken()
             );
 
-            String accessToken = "test_access_token";
+            String accessToken = tokenProvider.createToken(authentication);
             String refreshToken = "test_refresh_token";
 
             return UriComponentsBuilder.fromUriString(targetUrl)
