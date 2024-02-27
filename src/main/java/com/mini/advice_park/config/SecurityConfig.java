@@ -56,8 +56,8 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        // .requestMatchers(antMatcher("/login/**")).permitAll() // http://localhost:8080/login/oauth2/code/google
-                        // .requestMatchers(antMatcher("/oauth2/**")).permitAll() // http://localhost:8080/oauth2/authorization/google
+                        .requestMatchers(antMatcher("/login/**")).permitAll() // http://localhost:8080/login/oauth2/code/google
+                        .requestMatchers(antMatcher("/oauth2/**")).permitAll() // http://localhost:8080/oauth2/authorization/google
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
