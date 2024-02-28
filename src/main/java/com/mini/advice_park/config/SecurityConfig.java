@@ -32,8 +32,7 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
-            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html",
-            "/health-check"
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
     };
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -56,6 +55,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(AUTH_WHITELIST).permitAll()
+                        .requestMatchers(antMatcher("/health-check")).permitAll()
                         .requestMatchers(antMatcher("/login/**")).permitAll() // http://localhost:8080/login/oauth2/code/google
                         .requestMatchers(antMatcher("/oauth2/**")).permitAll() // http://localhost:8080/oauth2/authorization/google
                         .anyRequest().authenticated()
