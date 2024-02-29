@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class UserController {
 
+    /**
+     * 인증된 사용자의 정보 반환
+     * DTO 추가 필요
+     */
     @GetMapping("/users")
     public String getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails.getUsername();
