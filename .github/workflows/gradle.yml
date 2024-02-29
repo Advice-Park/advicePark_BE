@@ -6,13 +6,15 @@ on:
   pull_request:
     branches: [ "main" ]
 
-# --------------------------추가
+# --------------------------
+
 env:
   PROJECT_NAME: advice_https
   BUCKET_NAME: advice-bucket
   CODE_DEPLOY_APP_NAME: advice_cicd
   DEPLOYMENT_GROUP_NAME: advice_instance
-# --------------------------추가
+
+# --------------------------
 
 jobs:
   deploy:
@@ -32,7 +34,8 @@ jobs:
       - name: Build and Test
         run: ./gradlew build test
 
-      # --------------------------추가
+# --------------------------
+
       - name: Make Zip File
         run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
@@ -53,4 +56,5 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name $DEPLOYMENT_GROUP_NAME
           --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-# --------------------------추가
+
+# --------------------------
