@@ -65,25 +65,23 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # docker build & push to production
-      - name: Docker build & push to prod
-        if: contains(github.ref, 'main')
+      - name: Docker build & push
         run: |
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_REPO }}/advice_park .
-          docker push ${{ secrets.DOCKER_REPO }}/advice_park
-          
-      # deploy to production
-      - name: Deploy to prod
+          docker build -t app .
+          docker tag app ${{ secrets.DOCKER_USERNAME }}/advice_park:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/advice_park:latest
+
+      # EC2 인스턴스에 배포
+      - name: Deploy
         uses: appleboy/ssh-action@master
-        id: deploy-prod
-        if: contains(github.ref, 'main')
         with:
-          host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
+          host: ${{ secrets.HOST_PROD }} # EC2 인스턴스 퍼블릭 DNS
           username: ubuntu
-          key: ${{ secrets.PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          key: ${{ secrets.PRIVATE_KEY }} # pem 키
+          # 도커 작업
           script: |
-            sudo docker ps
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/advice_park
-            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/advice_park
-            sudo docker image prune -f
+            docker pull ${{ secrets.DOCKER_USERNAME }}/advice_park:latest
+            docker stop $(docker ps -a -q)
+            docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/advice_park:latest
+            docker rm $(docker ps --filter 'status=exited' -a -q)
+            docker image prune -a -f
