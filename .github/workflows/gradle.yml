@@ -1,10 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
 name: CI/CD github Actions & Docker
 
 on:
@@ -87,6 +80,19 @@ jobs:
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
 
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
+        with:
+          pattern: '[:\.]+'
+          string: "${{ steps.current-time.outputs.time }}"
+          replace-with: '-'
+          flags: 'g'
+
         # Beanstalk 플러그인을 사용
         # 미리 생성해둔 IAM 인증키를 사용
       - name: AWS Beanstalk Deploy
@@ -96,6 +102,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: advice_park_EB
           environment_name: AdviceparkEB-env-1
-          # version_label: "Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions ${{ github.sha }}"
+          version_label: "Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions ${{ github.sha }}"
           region: ap-northeast-2
           deployment_package: Dockerrun.aws.json
