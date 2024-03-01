@@ -79,29 +79,3 @@ jobs:
             docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/advice_park:latest
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
-
-      - name: Get timestamp
-        uses: gerred/actions/current-time@master
-        id: current-time
-
-      - name: Run string replace
-        uses: frabert/replace-string-action@master
-        id: format-time
-        with:
-          pattern: '[:\.]+'
-          string: "${{ steps.current-time.outputs.time }}"
-          replace-with: '-'
-          flags: 'g'
-
-        # Beanstalk 플러그인을 사용
-        # 미리 생성해둔 IAM 인증키를 사용
-      - name: AWS Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v20
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: advice_park_EB
-          environment_name: AdviceparkEB-env-1
-          version_label: "Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions ${{ github.sha }}"
-          region: ap-northeast-2
-          deployment_package: Dockerrun.aws.json
