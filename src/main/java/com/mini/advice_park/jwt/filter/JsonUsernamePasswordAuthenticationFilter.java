@@ -33,12 +33,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
     }
 
     /**
-     * 사용자 인증이 필요할 경우 요청 객체로부터 파라미터를 추출하여 인증 객체 생성하여 리턴합니다.
-     * @param request from which to extract parameters and perform the authentication
-     * @param response the response, which may be needed if the implementation has to do a
-     * redirect as part of a multi-stage authentication process (such as OpenID).
-     * @return
-     * @throws AuthenticationException
+     * 사용자가 제공한 정보를 사용하여 인증을 시도합니다.
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {

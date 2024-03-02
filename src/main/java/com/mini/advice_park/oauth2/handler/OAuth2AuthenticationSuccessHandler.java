@@ -2,11 +2,9 @@ package com.mini.advice_park.oauth2.handler;
 
 import com.mini.advice_park.jwt.domain.Jwt;
 import com.mini.advice_park.jwt.domain.JwtProvider;
-import com.mini.advice_park.jwt.exception.InvalidTokenException;
 import com.mini.advice_park.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.mini.advice_park.oauth2.util.CookieUtils;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +12,8 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.Optional;
-
-import static com.mini.advice_park.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 /**
  * OAuth2 인증 성공시 JWT AccessToken 과 RefreshToken 을 생성하여

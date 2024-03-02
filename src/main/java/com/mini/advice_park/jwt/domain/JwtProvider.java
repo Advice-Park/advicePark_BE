@@ -1,6 +1,7 @@
 package com.mini.advice_park.jwt.domain;
 
-import com.mini.advice_park.jwt.exception.InvalidTokenException;
+import com.mini.advice_park.jwt.exception.CustomException;
+import com.mini.advice_park.jwt.exception.ErrorCode;
 import com.mini.advice_park.jwt.service.RefreshTokenService;
 import com.mini.advice_park.member.domain.OAuth2Provider;
 import com.mini.advice_park.security.domain.UserProvider;
@@ -99,7 +100,7 @@ public class JwtProvider {
         Object principal = authentication.getPrincipal();
 
         if (!(principal instanceof UserProvider)) {
-            throw new InvalidTokenException();
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
 
         UserProvider provider = (UserProvider) principal;
@@ -125,7 +126,8 @@ public class JwtProvider {
 
         return Arrays.stream(OAuth2Provider.values())
                 .filter(authProvider -> authProvider.getRegistrationId().equals(providerRegistrationId))
-                .findAny().orElseThrow(InvalidTokenException::new);
+                .findAny()
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_TOKEN));
     }
 
     public boolean validateToken(String token) {
