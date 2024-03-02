@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.Locale;
 
 @Configuration
-@Profile("!Prod")
+// @Profile("!Prod")
 public class P6SpyFomatter implements MessageFormattingStrategy {
 
     @PostConstruct

@@ -8,6 +8,9 @@ import org.springframework.util.SerializationUtils;
 import java.util.Base64;
 import java.util.Optional;
 
+/**
+ * 쿠키 생성, 삭제, 객체의 직렬화 역직렬화 기능을 제공
+ */
 public class CookieUtils {
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
@@ -33,7 +36,7 @@ public class CookieUtils {
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (Cookie cookie : cookies) {
+            for (Cookie cookie: cookies) {
                 if (cookie.getName().equals(name)) {
                     cookie.setValue("");
                     cookie.setPath("/");
@@ -53,4 +56,5 @@ public class CookieUtils {
         return cls.cast(SerializationUtils.deserialize(
                 Base64.getUrlDecoder().decode(cookie.getValue())));
     }
+
 }
