@@ -1,7 +1,7 @@
 package com.mini.advice_park.oauth2.handler;
 
 import com.mini.advice_park.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.mini.advice_park.oauth2.util.CookieUtils;
+import com.mini.advice_park.global.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

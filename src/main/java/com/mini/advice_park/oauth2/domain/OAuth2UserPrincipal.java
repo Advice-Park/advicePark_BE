@@ -1,7 +1,8 @@
-package com.mini.advice_park.security.domain;
+package com.mini.advice_park.oauth2.domain;
 
 import com.mini.advice_park.user.entity.User;
 import com.mini.advice_park.user.entity.OAuth2Provider;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * OAuth2 로그인 사용자 정보를 담는 클래스
  */
+@AllArgsConstructor
 public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvider {
 
     private final OAuth2Provider provider;
@@ -22,18 +24,6 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvide
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
     private final Map<String, Object> attributes;
-
-    public OAuth2UserPrincipal(OAuth2Provider provider,
-                               String email,
-                               String password,
-                               Collection<? extends GrantedAuthority> authorities,
-                               Map<String, Object> attributes) {
-        this.provider = provider;
-        this.email = email;
-        this.password = password;
-        this.authorities = authorities;
-        this.attributes = attributes;
-    }
 
     public static OAuth2UserPrincipal create(User user, Map<String, Object> attributes) {
         List<GrantedAuthority> authorities = Collections.

@@ -1,4 +1,6 @@
-package com.mini.advice_park.oauth2.domain;
+package com.mini.advice_park.oauth2.domain.provider;
+
+import com.mini.advice_park.oauth2.domain.OAuth2UserInfo;
 
 import java.util.Map;
 

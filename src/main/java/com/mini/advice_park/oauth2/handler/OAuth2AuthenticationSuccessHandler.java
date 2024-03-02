@@ -4,7 +4,7 @@ import com.mini.advice_park.jwt.domain.Jwt;
 import com.mini.advice_park.jwt.domain.JwtProvider;
 import com.mini.advice_park.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.mini.advice_park.oauth2.exception.OAuth2AuthenticationProcessingException;
-import com.mini.advice_park.oauth2.util.CookieUtils;
+import com.mini.advice_park.global.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static com.mini.advice_park.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-
 
 @Component
 @RequiredArgsConstructor

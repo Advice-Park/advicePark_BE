@@ -1,4 +1,4 @@
-package com.mini.advice_park.oauth2.util;
+package com.mini.advice_park.global.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

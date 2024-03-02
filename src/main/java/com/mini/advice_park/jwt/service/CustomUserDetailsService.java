@@ -2,7 +2,7 @@ package com.mini.advice_park.jwt.service;
 
 import com.mini.advice_park.user.entity.User;
 import com.mini.advice_park.user.repo.UserRepository;
-import com.mini.advice_park.security.domain.UserPrincipal;
+import com.mini.advice_park.oauth2.domain.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
