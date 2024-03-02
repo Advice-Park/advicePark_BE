@@ -20,7 +20,9 @@ import org.springframework.util.StringUtils;
 import java.util.Arrays;
 import java.util.Optional;
 
-
+/**
+ * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
