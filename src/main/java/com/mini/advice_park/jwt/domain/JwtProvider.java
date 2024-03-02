@@ -1,9 +1,9 @@
 package com.mini.advice_park.jwt.domain;
 
-import com.mini.advice_park.jwt.exception.CustomException;
-import com.mini.advice_park.jwt.exception.ErrorCode;
+import com.mini.advice_park.global.exception.CustomException;
+import com.mini.advice_park.global.exception.ErrorCode;
 import com.mini.advice_park.jwt.service.RefreshTokenService;
-import com.mini.advice_park.member.domain.OAuth2Provider;
+import com.mini.advice_park.user.entity.OAuth2Provider;
 import com.mini.advice_park.security.domain.UserProvider;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

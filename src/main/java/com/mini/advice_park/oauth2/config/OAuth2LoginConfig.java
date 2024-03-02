@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 
 /**
- * OAuth2 로그인 설정
+ * OAuth2 google 로그인 설정
  */
 @Configuration
 public class OAuth2LoginConfig {
@@ -42,4 +42,5 @@ public class OAuth2LoginConfig {
                 .clientName("Google")
                 .build();
     }
+
 }

@@ -1,7 +1,7 @@
 package com.mini.advice_park.security.domain;
 
-import com.mini.advice_park.member.domain.Member;
-import com.mini.advice_park.member.domain.OAuth2Provider;
+import com.mini.advice_park.user.entity.User;
+import com.mini.advice_park.user.entity.OAuth2Provider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,14 +35,14 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvide
         this.attributes = attributes;
     }
 
-    public static OAuth2UserPrincipal create(Member member, Map<String, Object> attributes) {
+    public static OAuth2UserPrincipal create(User user, Map<String, Object> attributes) {
         List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority(member.getRole().name()));
+                singletonList(new SimpleGrantedAuthority(user.getRole().name()));
 
         return new OAuth2UserPrincipal(
-                member.getOAuth2Provider(),
-                member.getEmail(),
-                member.getPassword(),
+                user.getOAuth2Provider(),
+                user.getEmail(),
+                user.getPassword(),
                 authorities,
                 attributes);
     }

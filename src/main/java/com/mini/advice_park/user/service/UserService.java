@@ -1,8 +1,8 @@
-package com.mini.advice_park.member.service;
+package com.mini.advice_park.user.service;
 
-import com.mini.advice_park.member.domain.Member;
-import com.mini.advice_park.member.repository.MemberRepository;
-import com.mini.advice_park.member.dto.SignUpRequest;
+import com.mini.advice_park.user.entity.User;
+import com.mini.advice_park.user.repo.UserRepository;
+import com.mini.advice_park.user.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class UserService {
 
     private final PasswordEncoder passwordEncoder;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void signUp(SignUpRequest request) {
@@ -27,9 +27,9 @@ public class MemberService {
         String nickname = request.getNickname();
         String image = request.getImage();
 
-        Member member = Member.of(email, password, firstName, lastName, nickname, image, passwordEncoder);
+        User user = User.of(email, password, firstName, lastName, nickname, image, passwordEncoder);
 
-        memberRepository.save(member);
+        userRepository.save(user);
     }
 
 }

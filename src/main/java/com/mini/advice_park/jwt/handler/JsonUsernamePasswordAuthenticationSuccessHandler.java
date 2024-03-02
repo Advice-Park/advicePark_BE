@@ -3,7 +3,7 @@ package com.mini.advice_park.jwt.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mini.advice_park.jwt.domain.Jwt;
 import com.mini.advice_park.jwt.domain.JwtProvider;
-import com.mini.advice_park.member.dto.LoginResponse;
+import com.mini.advice_park.user.dto.LoginResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

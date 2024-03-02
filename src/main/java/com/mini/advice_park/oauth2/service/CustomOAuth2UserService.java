@@ -1,11 +1,11 @@
 package com.mini.advice_park.oauth2.service;
 
-import com.mini.advice_park.member.domain.Member;
-import com.mini.advice_park.member.domain.OAuth2Provider;
-import com.mini.advice_park.member.repository.MemberRepository;
+import com.mini.advice_park.oauth2.exception.OAuth2AuthenticationProcessingException;
+import com.mini.advice_park.user.entity.User;
+import com.mini.advice_park.user.entity.OAuth2Provider;
+import com.mini.advice_park.user.repo.UserRepository;
 import com.mini.advice_park.oauth2.domain.OAuth2UserInfo;
 import com.mini.advice_park.oauth2.domain.OAuth2UserInfoFactory;
-import com.mini.advice_park.oauth2.exception.OAuth2AuthenticationProcessingException;
 import com.mini.advice_park.security.domain.OAuth2UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     /**
      * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
@@ -71,23 +71,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .findAny()
                 .orElseThrow(() -> new OAuth2AuthenticationProcessingException("Registration ID not supported"));
 
-        Optional<Member> memberOptional = memberRepository.findByEmailAndOAuth2Provider(oAuth2UserInfo.getEmail(), oAuth2Provider);
+        Optional<User> memberOptional = userRepository.findByEmailAndOAuth2Provider(oAuth2UserInfo.getEmail(), oAuth2Provider);
 
-        Member member;
+        User user;
 
         if (memberOptional.isPresent()) {
-            member = memberOptional.get();
+            user = memberOptional.get();
 
-            if (!member.getProviderId().equals(oAuth2UserInfo.getId())) {
+            if (!user.getProviderId().equals(oAuth2UserInfo.getId())) {
                 throw new OAuth2AuthenticationProcessingException("Provider ID is invalid");
             }
 
-            member = updateExistingUser(member, oAuth2UserInfo);
+            user = updateExistingUser(user, oAuth2UserInfo);
         } else {
-            member = registerNewUser(oAuth2Provider, oAuth2UserInfo);
+            user = registerNewUser(oAuth2Provider, oAuth2UserInfo);
         }
 
-        return OAuth2UserPrincipal.create(member, oAuth2UserInfo.getAttributes());
+        return OAuth2UserPrincipal.create(user, oAuth2UserInfo.getAttributes());
     }
 
     /**
@@ -96,8 +96,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @param oAuth2UserInfo OAuth2 사용자 정보
      * @return Member
      */
-    private Member registerNewUser(OAuth2Provider provider, OAuth2UserInfo oAuth2UserInfo) {
-        Member member = Member.of(provider,
+    private User registerNewUser(OAuth2Provider provider, OAuth2UserInfo oAuth2UserInfo) {
+        User user = User.of(provider,
                 oAuth2UserInfo.getId(),
                 oAuth2UserInfo.getEmail(),
                 oAuth2UserInfo.getName(),
@@ -106,22 +106,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuth2UserInfo.getNickname(),
                 oAuth2UserInfo.getImage());
 
-        return memberRepository.save(member);
+        return userRepository.save(user);
     }
 
     /**
      * DB 에 존재하는 OAuth2 인증된 사용자 정보를 업데이트합니다.
-     * @param member DB 에 존재하는 사용자 정보
+     * @param user DB 에 존재하는 사용자 정보
      * @param oAuth2UserInfo OAuth2 사용자 정보
      * @return Member
      */
-    private Member updateExistingUser(Member member, OAuth2UserInfo oAuth2UserInfo) {
-        member.update(oAuth2UserInfo.getName(),
+    private User updateExistingUser(User user, OAuth2UserInfo oAuth2UserInfo) {
+        user.update(oAuth2UserInfo.getName(),
                 oAuth2UserInfo.getFirstName(),
                 oAuth2UserInfo.getLastName(),
                 oAuth2UserInfo.getNickname(),
                 oAuth2UserInfo.getImage());
-        return memberRepository.save(member);
+        return userRepository.save(user);
     }
 
 }

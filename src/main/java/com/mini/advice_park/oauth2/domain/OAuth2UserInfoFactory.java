@@ -1,6 +1,6 @@
 package com.mini.advice_park.oauth2.domain;
 
-import com.mini.advice_park.member.domain.OAuth2Provider;
+import com.mini.advice_park.user.entity.OAuth2Provider;
 import com.mini.advice_park.oauth2.exception.OAuth2AuthenticationProcessingException;
 
 import java.util.Map;

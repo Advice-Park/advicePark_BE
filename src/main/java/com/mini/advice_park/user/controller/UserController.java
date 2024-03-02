@@ -1,4 +1,4 @@
-package com.mini.advice_park.member.controller;
+package com.mini.advice_park.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
-public class MemberController {
+public class UserController {
 
     @GetMapping("/user")
     public String getUserInfo() {

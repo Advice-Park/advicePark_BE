@@ -1,5 +1,6 @@
-package com.mini.advice_park.jwt.exception;
+package com.mini.advice_park.global.exception;
 
+import com.mini.advice_park.oauth2.exception.OAuth2AuthenticationProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -33,4 +34,5 @@ public class GlobalExceptionHandler {
         log.error("Exception", e);
         return ResponseDto.fail(new CustomException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
+
 }

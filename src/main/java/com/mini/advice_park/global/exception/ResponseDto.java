@@ -1,4 +1,4 @@
-package com.mini.advice_park.jwt.exception;
+package com.mini.advice_park.global.exception;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;

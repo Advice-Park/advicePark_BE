@@ -1,4 +1,4 @@
-package com.mini.advice_park.security.config;
+package com.mini.advice_park.global.config;
 
 import com.mini.advice_park.jwt.filter.JwtAuthorizationFilter;
 import com.mini.advice_park.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository;

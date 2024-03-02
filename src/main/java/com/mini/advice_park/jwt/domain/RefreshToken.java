@@ -1,6 +1,6 @@
 package com.mini.advice_park.jwt.domain;
 
-import com.mini.advice_park.member.domain.OAuth2Provider;
+import com.mini.advice_park.user.entity.OAuth2Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

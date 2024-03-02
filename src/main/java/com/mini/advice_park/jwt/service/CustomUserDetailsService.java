@@ -1,7 +1,7 @@
 package com.mini.advice_park.jwt.service;
 
-import com.mini.advice_park.member.domain.Member;
-import com.mini.advice_park.member.repository.MemberRepository;
+import com.mini.advice_park.user.entity.User;
+import com.mini.advice_park.user.repo.UserRepository;
 import com.mini.advice_park.security.domain.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,19 +21,19 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findByEmail(username)
+        User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email : " + username));
 
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getRole().name());
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole().name());
 
-        return new UserPrincipal(member.getEmail(),
-                member.getPassword(),
+        return new UserPrincipal(user.getEmail(),
+                user.getPassword(),
                 Collections.singletonList(grantedAuthority));
     }
 }

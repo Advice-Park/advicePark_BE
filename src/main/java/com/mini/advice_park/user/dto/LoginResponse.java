@@ -1,4 +1,4 @@
-package com.mini.advice_park.member.dto;
+package com.mini.advice_park.user.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;

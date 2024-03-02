@@ -1,4 +1,4 @@
-package com.mini.advice_park.member.domain;
+package com.mini.advice_park.user.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
-package com.mini.advice_park.member.controller;
+package com.mini.advice_park.user.controller;
 
-import com.mini.advice_park.member.service.MemberService;
-import com.mini.advice_park.member.dto.SignUpRequest;
+import com.mini.advice_park.user.service.UserService;
+import com.mini.advice_park.user.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final MemberService memberService;
+    private final UserService userService;
 
     @PostMapping("/signup")
     public void signUp(@RequestBody SignUpRequest request) {
-        memberService.signUp(request);
+        userService.signUp(request);
     }
 
 }

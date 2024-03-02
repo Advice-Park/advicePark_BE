@@ -1,4 +1,4 @@
-package com.mini.advice_park.member.domain;
+package com.mini.advice_park.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,9 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Getter
 @Entity
-@Table(name = "members")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,16 +34,16 @@ public class Member {
     private String image;
     private Boolean withdrawal; // 탈퇴여부
 
-    private Member(OAuth2Provider oAuth2Provider,
-                   String providerId,
-                   String email,
-                   String password,
-                   String name,
-                   String firstName,
-                   String lastName,
-                   String nickname,
-                   String image,
-                   Role role) {
+    private User(OAuth2Provider oAuth2Provider,
+                 String providerId,
+                 String email,
+                 String password,
+                 String name,
+                 String firstName,
+                 String lastName,
+                 String nickname,
+                 String image,
+                 Role role) {
         this.oAuth2Provider = oAuth2Provider;
         this.providerId = providerId;
         this.email = email;
@@ -57,15 +57,15 @@ public class Member {
         this.role = role;
     }
 
-    public static Member of(OAuth2Provider oAuth2Provider,
-                            String providerId,
-                            String email,
-                            String name,
-                            String firstName,
-                            String lastName,
-                            String nickname,
-                            String image) {
-        return new Member(oAuth2Provider,
+    public static User of(OAuth2Provider oAuth2Provider,
+                          String providerId,
+                          String email,
+                          String name,
+                          String firstName,
+                          String lastName,
+                          String nickname,
+                          String image) {
+        return new User(oAuth2Provider,
                 providerId,
                 email,
                 null,
@@ -77,14 +77,14 @@ public class Member {
                 Role.ROLE_USER);
     }
 
-    public static Member of(String email,
-                            String password,
-                            String firstName,
-                            String lastName,
-                            String nickname,
-                            String image,
-                            PasswordEncoder encoder) {
-        return new Member(OAuth2Provider.LOCAL,
+    public static User of(String email,
+                          String password,
+                          String firstName,
+                          String lastName,
+                          String nickname,
+                          String image,
+                          PasswordEncoder encoder) {
+        return new User(OAuth2Provider.LOCAL,
                 null,
                 email,
                 encoder.encode(password),
@@ -99,8 +99,8 @@ public class Member {
     /**
      * 기본 관리자 계정 생성
      */
-    public static Member createDefaultAdmin(PasswordEncoder encoder) {
-        return new Member(OAuth2Provider.LOCAL,
+    public static User createDefaultAdmin(PasswordEncoder encoder) {
+        return new User(OAuth2Provider.LOCAL,
                 null,
                 "admin@admin.com",
                 encoder.encode("admin"),

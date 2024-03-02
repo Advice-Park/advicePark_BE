@@ -1,6 +1,6 @@
 package com.mini.advice_park.security.domain;
 
-import com.mini.advice_park.member.domain.OAuth2Provider;
+import com.mini.advice_park.user.entity.OAuth2Provider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

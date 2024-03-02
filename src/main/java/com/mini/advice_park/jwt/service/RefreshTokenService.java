@@ -2,7 +2,7 @@ package com.mini.advice_park.jwt.service;
 
 import com.mini.advice_park.jwt.RefreshTokenRepository;
 import com.mini.advice_park.jwt.domain.RefreshToken;
-import com.mini.advice_park.member.domain.OAuth2Provider;
+import com.mini.advice_park.user.entity.OAuth2Provider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.mini.advice_park.jwt.exception;
+package com.mini.advice_park.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +14,7 @@ public enum ErrorCode {
     INVALID_ARGUMENT(400, HttpStatus.BAD_REQUEST, "요청에 유효하지 않은 인자입니다."),
     MISSING_REQUEST_PARAMETER(400, HttpStatus.BAD_REQUEST, "필수 요청 파라미터가 누락되었습니다."),
     INVALID_TOKEN(400, HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다."),
+
 
     /**
      * 401: Unauthorized
