@@ -128,13 +128,15 @@ public class JwtProvider {
                 .findAny().orElseThrow(InvalidTokenException::new);
     }
 
-    public void validateToken(String token) {
+    public boolean validateToken(String token) {
 
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
+
+            return true;
 
         } catch (UnsupportedJwtException | MalformedJwtException exception) {
             log.error("JWT is not valid");
@@ -148,6 +150,7 @@ public class JwtProvider {
             log.error("JWT validation fails", exception);
         }
 
+        return false;
     }
 
     public Authentication getAuthentication(String token) {

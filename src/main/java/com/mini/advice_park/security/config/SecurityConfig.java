@@ -69,7 +69,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/api/auth/**")).permitAll()
                         .requestMatchers(antMatcher("/health-check")).permitAll()
                         .requestMatchers(antMatcher("/login/**")).permitAll() // http://localhost:8080/login/oauth2/code/google
-                        .requestMatchers(antMatcher("/oauth2/**")).permitAll() // http://localhost:8080/oauth2/authorization/google
+                        .requestMatchers(antMatcher("/oauth2/**")).permitAll() // https://mooooonmin.site/oauth2/authorization/google
                         .requestMatchers(antMatcher("/api/members/user")).hasRole("USER")
                         .requestMatchers(antMatcher("/api/members/admin")).hasRole("ADMIN")
                         .anyRequest().authenticated()
