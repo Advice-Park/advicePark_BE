@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
+/**
+ * 일반 사용자 정보를 담는 클래스
+ */
 public class UserPrincipal extends User implements UserProvider {
 
     public UserPrincipal(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -16,4 +19,5 @@ public class UserPrincipal extends User implements UserProvider {
     public OAuth2Provider getProvider() {
         return OAuth2Provider.LOCAL;
     }
+
 }

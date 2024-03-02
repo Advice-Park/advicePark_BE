@@ -1,7 +1,10 @@
-package com.mini.advice_park.jwt.request;
+package com.mini.advice_park.member.dto;
 
 import lombok.Data;
 
+/**
+ * 로그인 시 입력받는 DTO
+ */
 @Data
 public class LoginRequest {
 

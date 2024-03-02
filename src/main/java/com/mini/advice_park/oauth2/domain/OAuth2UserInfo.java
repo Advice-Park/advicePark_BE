@@ -2,6 +2,9 @@ package com.mini.advice_park.oauth2.domain;
 
 import java.util.Map;
 
+/**
+ * OAuth2 로그인 시 사용자 정보를 담는 인터페이스
+ */
 public interface OAuth2UserInfo {
 
     String getId();

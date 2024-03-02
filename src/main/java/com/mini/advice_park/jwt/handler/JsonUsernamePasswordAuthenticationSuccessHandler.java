@@ -3,7 +3,7 @@ package com.mini.advice_park.jwt.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mini.advice_park.jwt.domain.Jwt;
 import com.mini.advice_park.jwt.domain.JwtProvider;
-import com.mini.advice_park.jwt.response.LoginResponse;
+import com.mini.advice_park.member.dto.LoginResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+/**
+ * 로그인 성공 시 JWT 토큰을 생성하여 응답
+ */
 @Component
 @RequiredArgsConstructor
 public class JsonUsernamePasswordAuthenticationSuccessHandler implements AuthenticationSuccessHandler {

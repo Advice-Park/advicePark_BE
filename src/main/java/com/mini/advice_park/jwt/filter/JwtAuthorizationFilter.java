@@ -15,6 +15,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * JWT 토큰을 인증 정보로 변환하여 SecurityContext에 저장
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

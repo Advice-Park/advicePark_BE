@@ -1,7 +1,10 @@
-package com.mini.advice_park.member.service.request;
+package com.mini.advice_park.member.dto;
 
 import lombok.Data;
 
+/**
+ * 회원가입 시 입력받는 DTO
+ */
 @Data
 public class SignUpRequest {
 

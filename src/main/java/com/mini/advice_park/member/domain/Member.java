@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * 회원 엔티티
+ */
 @Getter
 @Entity
 @Table(name = "members")
@@ -29,7 +32,7 @@ public class Member {
     private String lastName;
     private String nickname;
     private String image;
-    private Boolean withdrawal;
+    private Boolean withdrawal; // 탈퇴여부
 
     private Member(OAuth2Provider oAuth2Provider,
                    String providerId,
@@ -93,6 +96,9 @@ public class Member {
                 Role.ROLE_USER);
     }
 
+    /**
+     * 기본 관리자 계정 생성
+     */
     public static Member createDefaultAdmin(PasswordEncoder encoder) {
         return new Member(OAuth2Provider.LOCAL,
                 null,

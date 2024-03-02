@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * OAuth2 로그인 사용자 정보를 담는 클래스
+ */
 public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvider {
 
     private final OAuth2Provider provider;

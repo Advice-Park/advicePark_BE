@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * RefreshToken 저장 및 조회 서비스
+ */
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {

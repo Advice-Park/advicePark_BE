@@ -2,12 +2,15 @@ package com.mini.advice_park.member.service;
 
 import com.mini.advice_park.member.domain.Member;
 import com.mini.advice_park.member.repository.MemberRepository;
-import com.mini.advice_park.member.service.request.SignUpRequest;
+import com.mini.advice_park.member.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 회원가입 서비스
+ */
 @Service
 @RequiredArgsConstructor
 public class MemberService {

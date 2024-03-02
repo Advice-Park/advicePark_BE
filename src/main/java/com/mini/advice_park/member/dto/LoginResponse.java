@@ -1,9 +1,12 @@
-package com.mini.advice_park.jwt.response;
+package com.mini.advice_park.member.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 로그인 성공 시 응답
+ */
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginResponse {

@@ -1,7 +1,7 @@
 package com.mini.advice_park.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mini.advice_park.jwt.request.LoginRequest;
+import com.mini.advice_park.member.dto.LoginRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;

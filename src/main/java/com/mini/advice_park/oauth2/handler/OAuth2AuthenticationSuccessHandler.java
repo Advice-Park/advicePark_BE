@@ -30,50 +30,30 @@ import static com.mini.advice_park.oauth2.config.HttpCookieOAuth2AuthorizationRe
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final JwtProvider jwtProvider;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
+                                        Authentication authentication) throws IOException, ServletException {
 
-        String targetUrl;
-
-        try {
-            targetUrl = determineTargetUrl(request, response, authentication);
-        } catch (InvalidTokenException e) {
-            throw new InternalAuthenticationServiceException("Authentication Principal is not of type UserProvider");
-        }
-
-        if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
-            return;
-        }
-
-        clearAuthenticationAttributes(request, response);
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
-    }
-
-    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-
-        Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
-                .map(Cookie::getValue);
-
-        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         Jwt token = jwtProvider.createToken(authentication);
 
-        jwtProvider.saveRefreshToken(authentication, token.getRefreshToken());
+        if (token == null) {
+            throw new InternalAuthenticationServiceException("Failed to create token");
+        }
 
-        return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("access_token", token.getAccessToken())
-                .queryParam("refresh_token", token.getRefreshToken())
-                .build().toUriString();
+        // 쿠키에 access_token, refresh_token 저장
+        CookieUtils.addCookie(response, "access_token", token.getAccessToken(), (int) JwtProvider.ACCESS_TOKEN_EXPIRE_TIME);
+        CookieUtils.addCookie(response, "refresh_token", token.getRefreshToken(), (int) JwtProvider.REFRESH_TOKEN_EXPIRE_TIME);
+
+        clearAuthenticationAttributes(request, response);
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
         httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
-
 }

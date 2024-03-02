@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
-    // Optional<Member> findByEmailAndOAuth2Provider(String email, OAuth2Provider oAuth2Provider);
+
     @Query("SELECT m FROM Member m WHERE m.email = :email AND m.oAuth2Provider = :provider")
     Optional<Member> findByEmailAndOAuth2Provider(@Param("email") String email, @Param("provider") OAuth2Provider oAuth2Provider);
 

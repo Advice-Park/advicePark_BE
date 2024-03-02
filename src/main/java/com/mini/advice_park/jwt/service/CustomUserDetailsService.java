@@ -14,8 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
-@RequiredArgsConstructor
+/**
+ * Spring Security 에서 사용자 정보를 가져오는 서비스
+ */
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
