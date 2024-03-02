@@ -53,6 +53,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
             String password = loginRequest.getPassword();
             UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
             return this.getAuthenticationManager().authenticate(authRequest);
+
         } catch (IOException e) {
             throw new AuthenticationServiceException("Authentication parameter not supported");
         }
