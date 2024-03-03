@@ -36,9 +36,20 @@ public class PostController {
     /**
      * 질문글 전체 조회
      */
+    @GetMapping("")
+    public ResponseEntity<BaseResponse<List<PostResponse>>> getAllPosts() {
+        BaseResponse<List<PostResponse>> response = postService.getAllPosts();
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
 
     /**
      * 질문글 삭제
      */
+    @DeleteMapping("/{postId}")
+    @PreAuthorize("hasRole('ADMIN') or @postService.isPostOwner(#postId, principal.id)")
+    public ResponseEntity<BaseResponse<Void>> deletePost(@PathVariable Long postId) {
+        BaseResponse<Void> response = postService.deletePost(postId);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
 
 }

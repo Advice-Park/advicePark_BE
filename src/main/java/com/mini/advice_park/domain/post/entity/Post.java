@@ -38,7 +38,7 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Image> images = new ArrayList<>(); // 이미지 리스트를 비어있는 리스트로 초기화
 
-    private boolean option; // 찬/반 사용여부
+    private boolean isVotingEnabled;
 
     @Builder
     public Post(String title,
@@ -46,7 +46,7 @@ public class Post extends BaseTimeEntity {
                 Category category,
                 User user,
                 List<Image> images,
-                boolean option) {
+                boolean isVotingEnabled) {
         this.title = title;
         this.contents = contents;
         this.category = category;
@@ -54,7 +54,7 @@ public class Post extends BaseTimeEntity {
         if (images != null) {
             this.images.addAll(images);
         }
-        this.option = option;
+        this.isVotingEnabled = isVotingEnabled;
     }
 
     public static Post of(PostRequest postRequest, User user) {
@@ -62,17 +62,17 @@ public class Post extends BaseTimeEntity {
                 .title(postRequest.getTitle())
                 .contents(postRequest.getContents())
                 .category(postRequest.getCategory())
-                .option(postRequest.isOption())
+                .isVotingEnabled(postRequest.isVotingEnabled())
                 .user(user)
                 .images(new ArrayList<>())
                 .build();
     }
 
-    public void updatePostDetails(String title, String contents, Category category, boolean option) {
+    public void updatePostDetails(String title, String contents, Category category, boolean isVotingEnabled) {
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.option = option;
+        this.isVotingEnabled = isVotingEnabled;
     }
 
     public void addImage(Image image) {

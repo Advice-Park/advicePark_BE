@@ -8,12 +8,15 @@ import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.util.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +54,41 @@ public class PostService {
     /**
      * 질문글 전체 조회
      */
+    @Transactional(readOnly = true)
+    public BaseResponse<List<PostResponse>> getAllPosts() {
+        try {
+            List<Post> posts = postRepository.findAll();
+            List<PostResponse> postResponses = posts.stream()
+                    .map(PostResponse::from)
+                    .collect(Collectors.toList());
+
+            return new BaseResponse<>(HttpStatus.OK.value(), "조회 성공", postResponses);
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패", null);
+        }
+    }
 
     /**
      * 질문글 삭제
      */
+    @Transactional
+    public BaseResponse<Void> deletePost(Long postId) {
+        try {
+            postRepository.deleteById(postId);
+            return new BaseResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
+        } catch (EmptyResultDataAccessException e) {
+            return new BaseResponse<>(HttpStatus.NOT_FOUND.value(), "삭제할 게시물이 존재하지 않습니다.", null);
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "삭제 실패", null);
+        }
+    }
+
+    /**
+     * 게시물 소유자 확인
+     */
+    public boolean isPostOwner(Long postId, Long userId) {
+        Optional<Post> postOptional = postRepository.findById(postId);
+        return postOptional.map(post -> post.getUser().getUserId().equals(userId)).orElse(false);
+    }
+
 }

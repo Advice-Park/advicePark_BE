@@ -24,19 +24,19 @@ public class PostRequest {
 
     private Category category;
 
-    private boolean option;
+    private boolean isVotingEnabled;
 
     private List<MultipartFile> imageFiles;
 
     public PostRequest(String title,
                        String contents,
                        Category category,
-                       boolean option,
+                       boolean isVotingEnabled,
                        List<MultipartFile> imageFiles) {
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.option = option;
+        this.isVotingEnabled = isVotingEnabled;
         this.imageFiles = imageFiles;
     }
 }

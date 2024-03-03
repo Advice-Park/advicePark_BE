@@ -18,7 +18,7 @@ public class PostResponse {
     private final String contents;
 
     private final Category category;
-    private final boolean option;
+    private final boolean isVotingEnabled;
 
     private final List<String> imageUrls;
 
@@ -28,14 +28,14 @@ public class PostResponse {
                         String title,
                         String contents,
                         Category category,
-                        boolean option,
+                        boolean isVotingEnabled,
                         List<String> imageUrls) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.option = option;
+        this.isVotingEnabled = isVotingEnabled;
         this.imageUrls = imageUrls;
     }
 
@@ -52,7 +52,7 @@ public class PostResponse {
                 .title(post.getTitle())
                 .contents(post.getContents())
                 .category(post.getCategory())
-                .option(post.isOption())
+                .isVotingEnabled(post.isVotingEnabled())
                 .imageUrls(imageUrls)
                 .build();
     }

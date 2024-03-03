@@ -8,6 +8,7 @@ import com.mini.advice_park.domain.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -64,6 +65,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers("/health-check").permitAll()
+
+                        // 질문글 조회
+                        .requestMatchers(HttpMethod.GET,"/api/post/**").permitAll()
 
                         .requestMatchers("/api/auth/signup").permitAll()
                         //.requestMatchers("/login/**").permitAll() // http://localhost:8080/login/oauth2/code/google
