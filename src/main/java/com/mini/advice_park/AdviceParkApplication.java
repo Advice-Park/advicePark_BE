@@ -1,7 +1,7 @@
 package com.mini.advice_park;
 
-import com.mini.advice_park.user.entity.User;
-import com.mini.advice_park.user.repo.UserRepository;
+import com.mini.advice_park.domain.user.entity.User;
+import com.mini.advice_park.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

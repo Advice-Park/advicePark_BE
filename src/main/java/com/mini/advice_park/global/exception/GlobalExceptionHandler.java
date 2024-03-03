@@ -1,6 +1,5 @@
 package com.mini.advice_park.global.exception;
 
-import com.mini.advice_park.oauth2.exception.OAuth2AuthenticationProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
