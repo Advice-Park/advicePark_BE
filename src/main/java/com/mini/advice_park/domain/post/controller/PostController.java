@@ -43,6 +43,15 @@ public class PostController {
     }
 
     /**
+     * 특정 질문글 조회
+     */
+    @GetMapping("/{postId}")
+    public ResponseEntity<BaseResponse<PostResponse>> getPostById(@PathVariable Long postId) {
+        BaseResponse<PostResponse> response = postService.getPostById(postId);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+
+    /**
      * 질문글 삭제
      */
     @DeleteMapping("/{postId}")

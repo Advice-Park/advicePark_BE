@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.user.entity;
+package com.mini.advice_park.domain.oauth2.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

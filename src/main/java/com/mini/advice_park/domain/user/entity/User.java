@@ -1,5 +1,7 @@
 package com.mini.advice_park.domain.user.entity;
 
+import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
+import com.mini.advice_park.global.util.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;

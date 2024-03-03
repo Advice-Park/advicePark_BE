@@ -1,7 +1,7 @@
 package com.mini.advice_park.domain.user;
 
 import com.mini.advice_park.domain.user.entity.User;
-import com.mini.advice_park.domain.user.entity.OAuth2Provider;
+import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -3,7 +3,6 @@ package com.mini.advice_park.domain.oauth2.domain;
 import com.mini.advice_park.domain.oauth2.domain.provider.KakaoOAuth2UserInfo;
 import com.mini.advice_park.domain.oauth2.domain.provider.NaverOAuth2UserInfo;
 import com.mini.advice_park.domain.oauth2.domain.provider.GoogleOAuth2UserInfo;
-import com.mini.advice_park.domain.user.entity.OAuth2Provider;
 import com.mini.advice_park.domain.oauth2.exception.OAuth2AuthenticationProcessingException;
 
 import java.util.Map;

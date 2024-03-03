@@ -3,7 +3,7 @@ package com.mini.advice_park.global.jwt.domain;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import com.mini.advice_park.global.jwt.service.RefreshTokenService;
-import com.mini.advice_park.domain.user.entity.OAuth2Provider;
+import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
 import com.mini.advice_park.domain.oauth2.domain.UserProvider;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

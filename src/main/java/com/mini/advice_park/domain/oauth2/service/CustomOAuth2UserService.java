@@ -4,7 +4,7 @@ import com.mini.advice_park.domain.oauth2.domain.OAuth2UserInfo;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserInfoFactory;
 import com.mini.advice_park.domain.oauth2.exception.OAuth2AuthenticationProcessingException;
 import com.mini.advice_park.domain.user.entity.User;
-import com.mini.advice_park.domain.user.entity.OAuth2Provider;
+import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import lombok.RequiredArgsConstructor;

@@ -69,6 +69,26 @@ public class PostService {
     }
 
     /**
+     * 특정 질문글 조회
+     */
+    public BaseResponse<PostResponse> getPostById(Long postId) {
+        try {
+            Optional<Post> optionalPost = postRepository.findById(postId);
+            if (optionalPost.isPresent()) {
+                Post post = optionalPost.get();
+                PostResponse postResponse = PostResponse.from(post);
+                return new BaseResponse<>(HttpStatus.OK.value(), "조회 성공", postResponse);
+
+            } else {
+                return new BaseResponse<>(HttpStatus.NOT_FOUND.value(), "질문글을 찾을 수 없습니다.", null);
+            }
+
+        } catch (Exception e) {
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패", null);
+        }
+    }
+
+    /**
      * 질문글 삭제
      */
     @Transactional

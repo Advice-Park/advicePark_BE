@@ -1,7 +1,6 @@
 package com.mini.advice_park.domain.oauth2.domain;
 
 import com.mini.advice_park.domain.user.entity.User;
-import com.mini.advice_park.domain.user.entity.OAuth2Provider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

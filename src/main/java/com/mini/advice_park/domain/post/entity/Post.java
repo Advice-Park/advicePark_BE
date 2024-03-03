@@ -40,13 +40,17 @@ public class Post extends BaseTimeEntity {
 
     private boolean isVotingEnabled;
 
+    @Column(nullable = false)
+    private long viewCount; // 조회수를 나타내는 필드
+
     @Builder
     public Post(String title,
                 String contents,
                 Category category,
                 User user,
                 List<Image> images,
-                boolean isVotingEnabled) {
+                boolean isVotingEnabled,
+                long viewCount) {
         this.title = title;
         this.contents = contents;
         this.category = category;
@@ -55,6 +59,7 @@ public class Post extends BaseTimeEntity {
             this.images.addAll(images);
         }
         this.isVotingEnabled = isVotingEnabled;
+        this.viewCount = viewCount;
     }
 
     public static Post of(PostRequest postRequest, User user) {
@@ -82,6 +87,11 @@ public class Post extends BaseTimeEntity {
 
     public void clearImages() {
         this.images.clear();
+    }
+
+    // 조회수 증가 메서드
+    public void increaseViewCount() {
+        this.viewCount++;
     }
 
 
