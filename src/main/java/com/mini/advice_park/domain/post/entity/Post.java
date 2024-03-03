@@ -3,6 +3,7 @@ package com.mini.advice_park.domain.post.entity;
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.user.entity.User;
+import com.mini.advice_park.global.util.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;

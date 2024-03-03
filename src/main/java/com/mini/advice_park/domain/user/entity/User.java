@@ -74,7 +74,7 @@ public class User {
                 lastName,
                 nickname,
                 image,
-                Role.ROLE_USER);
+                Role.USER);
     }
 
     public static User of(String email,
@@ -93,7 +93,7 @@ public class User {
                 lastName,
                 nickname,
                 image,
-                Role.ROLE_USER);
+                Role.USER);
     }
 
     /**
@@ -109,7 +109,7 @@ public class User {
                 null,
                 "admin",
                 null,
-                Role.ROLE_ADMIN);
+                Role.ADMIN);
     }
 
     public void update(String name,

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,20 +28,25 @@ public class ImageS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
+    /**
+     * 게시물 이미지 업로드
+     */
     public List<Image> uploadMultipleImagesForPost(List<MultipartFile> multipartFiles, Post post) throws IOException {
-        return uploadMultipleImages(multipartFiles, post);
-    }
-
-    private List<Image> uploadMultipleImages(List<MultipartFile> multipartFiles, Post post) throws IOException {
         if (multipartFiles == null || multipartFiles.isEmpty()) {
             return Collections.emptyList();
         }
 
         return multipartFiles.stream()
-                .map(multipartFile -> uploadSingleImage(multipartFile, post))
+                .map(multipartFile -> {
+                    return uploadSingleImage(multipartFile, post);
+                })
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 게시물 이미지 단일 업로드
+     */
     private Image uploadSingleImage(MultipartFile multipartFile, Post post) {
         String storedImagePath = uploadFileToS3(multipartFile);
         String originName = multipartFile.getOriginalFilename();

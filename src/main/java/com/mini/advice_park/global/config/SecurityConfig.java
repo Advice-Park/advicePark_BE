@@ -35,10 +35,7 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
-            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html",
-            "/", "/error", "/favicon.ico", "/**/*.png",
-            "/**/*.gif", "/**/*.svg", "/**/*.jpg",
-            "/**/*.html", "/**/*.css", "/**/*.js"
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/"
     };
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -66,12 +63,12 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .requestMatchers(antMatcher("/api/auth/**")).permitAll()
-                        .requestMatchers(antMatcher("/health-check")).permitAll()
-                        .requestMatchers(antMatcher("/login/**")).permitAll() // http://localhost:8080/login/oauth2/code/google
-                        .requestMatchers(antMatcher("/oauth2/**")).permitAll() // https://mooooonmin.site/oauth2/authorization/google
-                        .requestMatchers(antMatcher("/api/members/user")).hasRole("USER")
-                        .requestMatchers(antMatcher("/api/members/admin")).hasRole("ADMIN")
+                        .requestMatchers("/health-check").permitAll()
+
+                        .requestMatchers("/api/auth/signup").permitAll()
+                        //.requestMatchers("/login/**").permitAll() // http://localhost:8080/login/oauth2/code/google
+                        .requestMatchers("/oauth2/**").permitAll() // https://mooooonmin.site/oauth2/authorization/google
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -86,21 +83,6 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("*"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("*"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 
 }
