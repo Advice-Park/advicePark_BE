@@ -88,12 +88,12 @@ public class ImageS3Service {
      * 이미지 삭제
      */
     public void deleteImages(List<Image> images) {
-        if (images != null) {
-            images.stream()
+        if (images != null && !images.isEmpty()) {
+            List<String> imageKeys = images.stream()
                     .map(Image::getStoredImagePath)
-                    .map(this::extractFileName)
-                    .forEach(fileName -> amazonS3.deleteObject(bucketName, fileName));
+                    .collect(Collectors.toList());
 
+            imageKeys.forEach(imageKey -> amazonS3.deleteObject(bucketName, imageKey));
             imageRepository.deleteAll(images);
         }
     }

@@ -2,6 +2,8 @@ package com.mini.advice_park;
 
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.domain.user.UserRepository;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableJpaAuditing
 @SpringBootApplication
 @RequiredArgsConstructor
+@OpenAPIDefinition(servers = {@Server(url = "https://mooooonmin.site", description = "Https swagger")})
 public class AdviceParkApplication {
 
     private final PasswordEncoder encoder;

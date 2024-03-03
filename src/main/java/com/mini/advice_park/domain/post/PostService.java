@@ -94,10 +94,23 @@ public class PostService {
     @Transactional
     public BaseResponse<Void> deletePost(Long postId) {
         try {
-            postRepository.deleteById(postId);
-            return new BaseResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
-        } catch (EmptyResultDataAccessException e) {
-            return new BaseResponse<>(HttpStatus.NOT_FOUND.value(), "삭제할 게시물이 존재하지 않습니다.", null);
+            Optional<Post> optionalPost = postRepository.findById(postId);
+            if (optionalPost.isPresent()) {
+                Post post = optionalPost.get();
+
+                // 첨부된 이미지 확인 및 삭제
+                List<Image> images = post.getImages();
+                if (!images.isEmpty()) {
+                    imageS3Service.deleteImages(images);
+                }
+
+                // 게시물 삭제
+                postRepository.deleteById(postId);
+
+                return new BaseResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
+            } else {
+                return new BaseResponse<>(HttpStatus.NOT_FOUND.value(), "삭제할 게시물이 존재하지 않습니다.", null);
+            }
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "삭제 실패", null);
         }
