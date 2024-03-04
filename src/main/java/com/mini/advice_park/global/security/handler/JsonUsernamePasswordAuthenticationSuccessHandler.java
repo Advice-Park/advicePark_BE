@@ -1,8 +1,8 @@
-package com.mini.advice_park.global.jwt.handler;
+package com.mini.advice_park.global.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mini.advice_park.global.jwt.domain.JwtProvider;
-import com.mini.advice_park.global.jwt.domain.Jwt;
+import com.mini.advice_park.global.security.jwt.JwtUtil;
+import com.mini.advice_park.global.security.jwt.JwtDto;
 import com.mini.advice_park.domain.user.dto.LoginResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JsonUsernamePasswordAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -26,12 +26,12 @@ public class JsonUsernamePasswordAuthenticationSuccessHandler implements Authent
                                         HttpServletResponse response,
                                         Authentication authentication) {
 
-        Jwt token = jwtProvider.createToken(authentication);
+        JwtDto token = jwtUtil.createToken(authentication);
 
         LoginResponse loginResponse = LoginResponse.of(token.getAccessToken(), token.getRefreshToken());
 
         try {
-            jwtProvider.saveRefreshToken(authentication, token.getRefreshToken());
+            jwtUtil.saveRefreshToken(authentication, token.getRefreshToken());
 
             String tokenResponse = objectMapper.writeValueAsString(loginResponse);
             response.setContentType("application/json");

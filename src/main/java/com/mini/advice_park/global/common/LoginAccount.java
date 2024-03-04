@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.util;
+package com.mini.advice_park.global.common;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

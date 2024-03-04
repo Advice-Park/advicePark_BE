@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.jwt.handler;
+package com.mini.advice_park.global.security.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

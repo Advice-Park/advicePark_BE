@@ -3,7 +3,7 @@ package com.mini.advice_park.domain.post.entity;
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.user.entity.User;
-import com.mini.advice_park.global.util.BaseTimeEntity;
+import com.mini.advice_park.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

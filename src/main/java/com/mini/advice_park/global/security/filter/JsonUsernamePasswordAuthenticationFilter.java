@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.jwt.filter;
+package com.mini.advice_park.global.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mini.advice_park.domain.user.dto.LoginRequest;

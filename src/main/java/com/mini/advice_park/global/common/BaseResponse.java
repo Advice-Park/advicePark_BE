@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.util;
+package com.mini.advice_park.global.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

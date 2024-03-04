@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.prod;
+package com.mini.advice_park.global.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

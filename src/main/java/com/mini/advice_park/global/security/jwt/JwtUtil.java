@@ -1,8 +1,8 @@
-package com.mini.advice_park.global.jwt.domain;
+package com.mini.advice_park.global.security.jwt;
 
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
-import com.mini.advice_park.global.jwt.service.RefreshTokenService;
+import com.mini.advice_park.global.security.refreshToken.RefreshTokenService;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
 import com.mini.advice_park.domain.oauth2.domain.UserProvider;
 import io.jsonwebtoken.*;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtProvider {
+public class JwtUtil {
 
     public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
     public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 12;
@@ -51,7 +51,7 @@ public class JwtProvider {
     /**
      * JWT 토큰 생성
      */
-    public com.mini.advice_park.global.jwt.domain.Jwt createToken(Authentication authentication) {
+    public JwtDto createToken(Authentication authentication) {
 
         Object principal = authentication.getPrincipal();
 
@@ -92,7 +92,7 @@ public class JwtProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        return new Jwt(accessToken, refreshToken);
+        return new JwtDto(accessToken, refreshToken);
     }
 
     public void saveRefreshToken(Authentication authentication, String token) {

@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.jwt.service;
+package com.mini.advice_park.global.security;
 
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.domain.user.UserRepository;
@@ -23,8 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository.findByEmail(username)

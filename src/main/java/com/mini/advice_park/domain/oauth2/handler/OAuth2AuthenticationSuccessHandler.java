@@ -2,9 +2,9 @@ package com.mini.advice_park.domain.oauth2.handler;
 
 import com.mini.advice_park.domain.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.mini.advice_park.domain.oauth2.exception.OAuth2AuthenticationProcessingException;
-import com.mini.advice_park.global.jwt.domain.Jwt;
-import com.mini.advice_park.global.jwt.domain.JwtProvider;
-import com.mini.advice_park.global.util.CookieUtils;
+import com.mini.advice_park.global.security.jwt.JwtDto;
+import com.mini.advice_park.global.security.jwt.JwtUtil;
+import com.mini.advice_park.global.security.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     /**
@@ -67,8 +67,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             throw new OAuth2AuthenticationProcessingException("Invalid redirect URL: " + targetUrl);
         }
 
-        Jwt token = jwtProvider.createToken(authentication);
-        jwtProvider.saveRefreshToken(authentication, token.getRefreshToken());
+        JwtDto token = jwtUtil.createToken(authentication);
+        jwtUtil.saveRefreshToken(authentication, token.getRefreshToken());
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("access_token", token.getAccessToken())

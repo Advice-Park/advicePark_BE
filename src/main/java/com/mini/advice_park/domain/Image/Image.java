@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.Image;
 
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "images")
-public class Image {
+public class Image extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;

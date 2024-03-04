@@ -1,14 +1,12 @@
-package com.mini.advice_park.global.jwt.service;
+package com.mini.advice_park.global.security.refreshToken;
 
-import com.mini.advice_park.global.jwt.RefreshTokenRepository;
-import com.mini.advice_park.global.jwt.domain.RefreshToken;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * RefreshToken 저장 및 조회 서비스
+ * RefreshToken 저장 및 조회 갱신
  */
 @Service
 @RequiredArgsConstructor

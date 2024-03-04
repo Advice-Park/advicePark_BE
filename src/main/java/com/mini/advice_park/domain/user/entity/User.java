@@ -1,7 +1,7 @@
 package com.mini.advice_park.domain.user.entity;
 
 import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
-import com.mini.advice_park.global.util.BaseTimeEntity;
+import com.mini.advice_park.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

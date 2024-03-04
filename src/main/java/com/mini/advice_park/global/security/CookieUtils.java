@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.util;
+package com.mini.advice_park.global.security;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

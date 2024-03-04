@@ -1,6 +1,6 @@
-package com.mini.advice_park.global.jwt.filter;
+package com.mini.advice_park.global.security.filter;
 
-import com.mini.advice_park.global.jwt.domain.JwtProvider;
+import com.mini.advice_park.global.security.jwt.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,9 +23,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private final JwtUtil jwtUtil;
     private static final String BEARER_PREFIX = "Bearer ";
-    private final JwtProvider jwtProvider;
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -36,8 +36,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String token = resolveToken(request);
 
             if (StringUtils.hasText(token)) {
-                jwtProvider.validateToken(token);
-                Authentication authentication = jwtProvider.getAuthentication(token);
+                jwtUtil.validateToken(token);
+                Authentication authentication = jwtUtil.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {

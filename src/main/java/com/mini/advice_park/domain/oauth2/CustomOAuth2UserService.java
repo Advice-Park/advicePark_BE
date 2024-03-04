@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.oauth2.service;
+package com.mini.advice_park.domain.oauth2;
 
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserInfo;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserInfoFactory;

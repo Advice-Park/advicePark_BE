@@ -1,4 +1,4 @@
-package com.mini.advice_park.global.jwt.domain;
+package com.mini.advice_park.global.security.refreshToken;
 
 import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
 import jakarta.persistence.*;
