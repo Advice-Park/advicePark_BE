@@ -7,10 +7,13 @@ import lombok.Getter;
 @Getter
 public class CommentResponse {
 
-    private final Long commentId;
-    private final Long userId;
-    private final Long postId;
-    private final String content;
+    // TODO 댓글에 닉네임 들어감?
+
+    private Long commentId;
+    private Long userId;
+    private Long postId;
+    private String content;
+    private int likeCount;
 
     @Builder
     public CommentResponse(Long commentId, Long userId, Long postId, String content) {

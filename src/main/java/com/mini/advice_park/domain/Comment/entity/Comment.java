@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.Comment.entity;
 
 import com.mini.advice_park.domain.Comment.dto.CommentRequest;
+import com.mini.advice_park.domain.like.Like;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseTimeEntity;
@@ -9,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Getter
 @Entity
@@ -33,6 +36,9 @@ public class Comment extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private Set<Like> likes;
+
     @Builder
     public Comment(User user, Post post, String content) {
         this.user = user;
@@ -46,6 +52,10 @@ public class Comment extends BaseTimeEntity {
                 .post(post)
                 .content(commentRequest.getContent())
                 .build();
+    }
+
+    public int getLikeCount() {
+        return likes.size();
     }
 
 }
