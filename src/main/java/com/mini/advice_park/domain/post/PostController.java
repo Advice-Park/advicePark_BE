@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.post.controller;
+package com.mini.advice_park.domain.post;
 
 import com.mini.advice_park.domain.post.PostService;
 import com.mini.advice_park.domain.post.dto.PostRequest;

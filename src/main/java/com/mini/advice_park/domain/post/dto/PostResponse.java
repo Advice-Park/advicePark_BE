@@ -20,7 +20,9 @@ public class PostResponse {
 
     private final Category category;
     private final boolean isVotingEnabled;
-    private long viewCount;
+
+    private final long viewCount;
+    private final long commentCount;
 
     private final List<String> imageUrls;
 
@@ -32,6 +34,7 @@ public class PostResponse {
                         Category category,
                         boolean isVotingEnabled,
                         long viewCount,
+                        long commentCount, // 댓글 수 추가 필드
                         List<String> imageUrls) {
 
         this.postId = postId;
@@ -41,6 +44,7 @@ public class PostResponse {
         this.category = category;
         this.isVotingEnabled = isVotingEnabled;
         this.viewCount = viewCount;
+        this.commentCount = commentCount; // 댓글 수 필드 초기화
         this.imageUrls = imageUrls != null ? imageUrls : Collections.emptyList(); // 이미지 URL 리스트가 null일 경우 빈 리스트로 초기화
 
     }
@@ -60,7 +64,9 @@ public class PostResponse {
                 .category(post.getCategory())
                 .isVotingEnabled(post.isVotingEnabled())
                 .viewCount(post.getViewCount())
+                .commentCount(post.getCommentCount()) // 댓글 수 추가
                 .imageUrls(imageUrls)
                 .build();
     }
+
 }

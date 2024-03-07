@@ -13,7 +13,9 @@ public class CommentResponse {
     private Long userId;
     private Long postId;
     private String content;
+
     private int likeCount;
+    private int commentCount;
 
     @Builder
     public CommentResponse(Long commentId, Long userId, Long postId, String content) {

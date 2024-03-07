@@ -41,7 +41,10 @@ public class Post extends BaseTimeEntity {
     private boolean isVotingEnabled;
 
     @Column(nullable = false)
-    private long viewCount; // 조회수를 나타내는 필드
+    private long viewCount;
+
+    @Column(nullable = false)
+    private long commentCount;
 
     @Builder
     public Post(String title,
@@ -92,6 +95,18 @@ public class Post extends BaseTimeEntity {
     // 조회수 증가 메서드
     public void increaseViewCount() {
         this.viewCount++;
+    }
+
+    // 댓글 수를 증가시키는 메서드
+    public void increaseCommentCount() {
+        this.commentCount++;
+    }
+
+    // 댓글 수를 감소시키는 메서드
+    public void decreaseCommentCount() {
+        if (this.commentCount > 0) {
+            this.commentCount--;
+        }
     }
 
 

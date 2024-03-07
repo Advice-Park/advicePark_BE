@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.user.controller;
+package com.mini.advice_park.domain.user;
 
 import com.mini.advice_park.domain.user.UserService;
 import com.mini.advice_park.domain.user.dto.SignUpRequest;
