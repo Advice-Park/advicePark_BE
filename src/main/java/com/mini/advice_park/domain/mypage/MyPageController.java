@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.mypage;
 
+import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.security.jwt.JwtUtil;
@@ -24,7 +25,7 @@ public class MyPageController {
     /**
      * 등록 질문글 조회
      */
-    @GetMapping("/api/post/mypage")
+    @GetMapping("/api/mypage/post")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<BaseResponse<List<PostResponse>>> getPostByCurrentUser(Authentication authentication) {
 
@@ -38,5 +39,15 @@ public class MyPageController {
     /**
      * 내가 작성한 댓글 모두 조회
      */
+    @GetMapping("/api/mypage/comment")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<BaseResponse<List<CommentResponse>>> getCommentsByCurrentUser(Authentication authentication) {
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String providerId = userDetails.getUsername();
+        List<CommentResponse> comments = myPageService.getCommentsByCurrentUser(providerId).getResult();
+
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK, "성공", comments));
+    }
 
 }

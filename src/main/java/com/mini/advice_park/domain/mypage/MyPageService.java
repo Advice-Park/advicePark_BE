@@ -1,5 +1,8 @@
 package com.mini.advice_park.domain.mypage;
 
+import com.mini.advice_park.domain.Comment.CommentRepository;
+import com.mini.advice_park.domain.Comment.dto.CommentResponse;
+import com.mini.advice_park.domain.Comment.entity.Comment;
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
@@ -22,6 +25,7 @@ public class MyPageService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     /**
      * 등록글 조회
@@ -47,5 +51,22 @@ public class MyPageService {
     /**
      * 내가 작성한 댓글 모두 조회
      */
+    @Transactional(readOnly = true)
+    public BaseResponse<List<CommentResponse>> getCommentsByCurrentUser(String providerId) {
+        // providerId로 사용자를 찾음
+        User currentUser = userRepository.findByProviderId(providerId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        List<Comment> comments = commentRepository.findByUser(currentUser);
+        if (comments.isEmpty()) {
+            return new BaseResponse<>(HttpStatus.NOT_FOUND, "사용자의 댓글이 없습니다.", null);
+        }
+
+        // 댓글 Response 객체 생성
+        List<CommentResponse> commentDtos = comments.stream()
+                .map(CommentResponse::from).collect(Collectors.toList());
+
+        return new BaseResponse<>(HttpStatus.OK, "조회 성공", commentDtos);
+    }
 
 }

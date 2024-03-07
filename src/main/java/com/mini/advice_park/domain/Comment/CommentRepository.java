@@ -16,6 +16,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByPost(Post post);
 
+    List<Comment> findByUser(User user); // 사용자가 작성한 모든 댓글 조회
+
     @Query("SELECT r FROM Comment r WHERE r.post.postId = :postId")
     List<Comment> findByPostId(@Param("postId") Long postId);
 
