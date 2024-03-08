@@ -51,7 +51,8 @@ public enum ErrorCode {
     /**
      * 500: Internal Server Error
      */
-    INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버에 오류가 발생하였습니다.");
+    INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버에 오류가 발생하였습니다."),
+    DATA_BASE_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "데이터베이스 오류가 발생하였습니다.");
 
 
     private final Integer code;

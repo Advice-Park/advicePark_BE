@@ -7,6 +7,7 @@ import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
+import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import com.mini.advice_park.global.exception.ImageUploadException;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,20 +48,13 @@ public class PostService {
 
             return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", postResponse);
 
+        } catch (IOException e) {
+            // 이미지 업로드 실패 시
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), "이미지 업로드에 실패했습니다.", null);
+
         } catch (DataAccessException e) {
-            // 데이터베이스 접근 오류
-            e.printStackTrace();
-            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage(), null);
-
-        } catch (ImageUploadException e) {
-            // 이미지 업로드 실패
-            e.printStackTrace();
-            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
-
-        } catch (Exception e) {
-            // 기타 예외
-            e.printStackTrace();
-            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "등록 실패: " + e.getMessage(), null);
+            // 데이터베이스 에러
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
         }
     }
 
