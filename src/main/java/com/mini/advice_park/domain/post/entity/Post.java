@@ -31,14 +31,15 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @Enumerated(EnumType.STRING)
+    private VoteOption voteOption;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Image> images = new ArrayList<>(); // 이미지 리스트를 비어있는 리스트로 초기화
-
-    private boolean isVotingEnabled;
 
     @Column(nullable = false)
     private long viewCount;
@@ -50,6 +51,7 @@ public class Post extends BaseTimeEntity {
     public Post(String title,
                 String contents,
                 Category category,
+                VoteOption voteOption,
                 User user,
                 List<Image> images,
                 boolean isVotingEnabled,
@@ -57,11 +59,11 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.contents = contents;
         this.category = category;
+        this.voteOption = voteOption;
         this.user = user;
         if (images != null) {
             this.images.addAll(images);
         }
-        this.isVotingEnabled = isVotingEnabled;
         this.viewCount = viewCount;
     }
 
@@ -70,17 +72,17 @@ public class Post extends BaseTimeEntity {
                 .title(postRequest.getTitle())
                 .contents(postRequest.getContents())
                 .category(postRequest.getCategory())
-                .isVotingEnabled(postRequest.isVotingEnabled())
+                .voteOption(postRequest.getVoteOption())
                 .user(user)
                 .images(new ArrayList<>())
                 .build();
     }
 
-    public void updatePostDetails(String title, String contents, Category category, boolean isVotingEnabled) {
+    public void updatePostDetails(String title, String contents, Category category, VoteOption voteOption) {
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.isVotingEnabled = isVotingEnabled;
+        this.voteOption = voteOption;
     }
 
     public void addImage(Image image) {

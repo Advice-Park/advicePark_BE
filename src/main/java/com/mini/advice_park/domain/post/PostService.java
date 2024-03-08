@@ -34,7 +34,6 @@ public class PostService {
         try {
             // 게시물 생성
             Post post = Post.of(postRequest, currentUser);
-            postRepository.save(post);
 
             // 이미지 업로드
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
@@ -42,6 +41,9 @@ public class PostService {
 
             // 저장된 게시물로부터 PostResponse 생성
             PostResponse postResponse = PostResponse.from(post);
+
+            // 저장
+            postRepository.save(post);
 
             return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", postResponse);
 
@@ -55,6 +57,7 @@ public class PostService {
      */
     @Transactional(readOnly = true)
     public BaseResponse<List<PostResponse>> getAllPosts() {
+
         try {
             List<Post> posts = postRepository.findAll();
             List<PostResponse> postResponses = posts.stream()
@@ -62,6 +65,7 @@ public class PostService {
                     .collect(Collectors.toList());
 
             return new BaseResponse<>(HttpStatus.OK.value(), "조회 성공", postResponses);
+
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패", null);
         }

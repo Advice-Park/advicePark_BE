@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.post.dto;
 
 import com.mini.advice_park.domain.post.entity.Category;
+import com.mini.advice_park.domain.post.entity.VoteOption;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -23,20 +24,19 @@ public class PostRequest {
     private String contents;
 
     private Category category;
-
-    private boolean isVotingEnabled;
+    private VoteOption voteOption;
 
     private List<MultipartFile> imageFiles;
 
     public PostRequest(String title,
                        String contents,
                        Category category,
-                       boolean isVotingEnabled,
+                       VoteOption voteOption,
                        List<MultipartFile> imageFiles) {
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.isVotingEnabled = isVotingEnabled;
+        this.voteOption = voteOption;
         this.imageFiles = imageFiles;
     }
 }

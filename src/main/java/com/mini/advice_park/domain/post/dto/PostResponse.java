@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.post.dto;
 
 import com.mini.advice_park.domain.post.entity.Category;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.post.entity.VoteOption;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,7 +20,7 @@ public class PostResponse {
     private final String contents;
 
     private final Category category;
-    private final boolean isVotingEnabled;
+    private final VoteOption voteOption;
 
     private final long viewCount;
     private final long commentCount;
@@ -32,7 +33,7 @@ public class PostResponse {
                         String title,
                         String contents,
                         Category category,
-                        boolean isVotingEnabled,
+                        VoteOption voteOption,
                         long viewCount,
                         long commentCount, // 댓글 수 추가 필드
                         List<String> imageUrls) {
@@ -42,7 +43,7 @@ public class PostResponse {
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.isVotingEnabled = isVotingEnabled;
+        this.voteOption = voteOption;
         this.viewCount = viewCount;
         this.commentCount = commentCount; // 댓글 수 필드 초기화
         this.imageUrls = imageUrls != null ? imageUrls : Collections.emptyList(); // 이미지 URL 리스트가 null일 경우 빈 리스트로 초기화
@@ -62,7 +63,7 @@ public class PostResponse {
                 .title(post.getTitle())
                 .contents(post.getContents())
                 .category(post.getCategory())
-                .isVotingEnabled(post.isVotingEnabled())
+                .voteOption(post.getVoteOption())
                 .viewCount(post.getViewCount())
                 .commentCount(post.getCommentCount()) // 댓글 수 추가
                 .imageUrls(imageUrls)
