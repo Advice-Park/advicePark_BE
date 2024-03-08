@@ -29,7 +29,7 @@ public class ImageS3Service {
     private String bucketName;
 
     /**
-     * 게시물 이미지 업로드
+     * 게시물 이미지 다중 업로드
      */
     public List<Image> uploadMultipleImagesForPost(List<MultipartFile> multipartFiles, Post post) throws IOException {
         if (multipartFiles == null || multipartFiles.isEmpty()) {

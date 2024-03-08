@@ -7,7 +7,10 @@ import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
+import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.global.exception.ImageUploadException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +50,15 @@ public class PostService {
 
             return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", postResponse);
 
+        } catch (DataAccessException e) {
+            // 데이터베이스 접근 오류
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage(), null);
+        } catch (ImageUploadException e) {
+            // 이미지 업로드 실패
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
         } catch (Exception e) {
-            // TODO 오류처리 명확하게 하기
-            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "등록 실패", null);
+            // 기타 예외
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "등록 실패: " + e.getMessage(), null);
         }
     }
 
