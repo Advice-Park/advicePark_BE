@@ -15,11 +15,11 @@ import java.util.List;
 public class PostRequest {
 
     @NotBlank(message = "제목을 입력해주세요")
-    @Size(min = 2, message = "최소 2자 이상 작성해주세요.")
+    @Size(min = 2, max = 25, message = "2~25자 범위로 작성해주세요.")
     private String title;
 
     @NotBlank(message = "내용을 입력해주세요")
-    @Size(min = 2, message = "최소 2자 이상 작성해주세요.")
+    @Size(min = 10, max = 1000, message = "10~1000자 범위로 작성해주세요.")
     private String contents;
 
     private Category category;

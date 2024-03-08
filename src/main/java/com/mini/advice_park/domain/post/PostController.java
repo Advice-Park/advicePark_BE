@@ -25,7 +25,7 @@ public class PostController {
      * 질문글 등록
      */
     @PostMapping("")
-    public ResponseEntity<BaseResponse<PostResponse>> createPost(@RequestBody PostRequest postRequest,
+    public ResponseEntity<BaseResponse<PostResponse>> createPost(@ModelAttribute PostRequest postRequest,
                                                                  @RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
                                                                  @LoginAccount User currentUser) {
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, currentUser);
