@@ -35,29 +35,29 @@ public class PostService {
                                                  List<MultipartFile> imageFiles,
                                                  User currentUser) {
         try {
-            // 게시물 생성
             Post post = Post.of(postRequest, currentUser);
 
-            // 이미지 업로드
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
             uploadedImages.forEach(post::addImage);
 
-            // 저장된 게시물로부터 PostResponse 생성
             PostResponse postResponse = PostResponse.from(post);
-
-            // 저장
             postRepository.save(post);
 
             return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", postResponse);
 
         } catch (DataAccessException e) {
             // 데이터베이스 접근 오류
+            e.printStackTrace();
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage(), null);
+
         } catch (ImageUploadException e) {
             // 이미지 업로드 실패
+            e.printStackTrace();
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
+
         } catch (Exception e) {
             // 기타 예외
+            e.printStackTrace();
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "등록 실패: " + e.getMessage(), null);
         }
     }
