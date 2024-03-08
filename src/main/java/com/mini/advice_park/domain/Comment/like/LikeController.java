@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.like;
+package com.mini.advice_park.domain.Comment.like;
 
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.user.UserRepository;

@@ -16,7 +16,7 @@ import java.util.List;
 public class PostRequest {
 
     @NotBlank(message = "제목을 입력해주세요")
-    @Size(min = 2, max = 25, message = "2~25자 범위로 작성해주세요.")
+    @Size(min = 3, max = 25, message = "3~25자 범위로 작성해주세요.")
     private String title;
 
     @NotBlank(message = "내용을 입력해주세요")

@@ -40,12 +40,15 @@ public class CommentController {
 
         // OAuth2로 인증된 사용자의 이메일 주소를 사용하여 검색
         String email = principal.getUsername();
+
+        // User 객체를 이용하여 사용자 정보를 가져옴
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        commentService.createComment(user.getUserId(), postId, commentRequest);
+        // 사용자 아이디로 리뷰 등록
+        CommentResponse commentResponse = commentService.createComment(user.getUserId(), postId, commentRequest).getResult();
 
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED, "성공", null));
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.CREATED, "성공", commentResponse));
     }
 
     /**
@@ -53,7 +56,7 @@ public class CommentController {
      */
     @GetMapping("")
     public ResponseEntity<BaseResponse<List<CommentResponse>>> getAllComments(@PathVariable("postId") Long postId) {
-        List<CommentResponse> comments = commentService.getAllComments(postId);
+        List<CommentResponse> comments = commentService.getAllComments(postId).getResult();
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK, "성공", comments));
     }
 

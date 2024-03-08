@@ -48,6 +48,7 @@ public class PostService {
             return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", postResponse);
 
         } catch (Exception e) {
+            // TODO 오류처리 명확하게 하기
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "등록 실패", null);
         }
     }

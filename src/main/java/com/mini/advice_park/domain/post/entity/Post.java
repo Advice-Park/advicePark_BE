@@ -54,7 +54,6 @@ public class Post extends BaseTimeEntity {
                 VoteOption voteOption,
                 User user,
                 List<Image> images,
-                boolean isVotingEnabled,
                 long viewCount) {
         this.title = title;
         this.contents = contents;
@@ -110,6 +109,5 @@ public class Post extends BaseTimeEntity {
             this.commentCount--;
         }
     }
-
 
 }
