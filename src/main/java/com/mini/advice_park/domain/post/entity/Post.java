@@ -66,7 +66,7 @@ public class Post extends BaseTimeEntity {
         this.viewCount = viewCount;
     }
 
-    public static Post of(PostRequest postRequest, User user) {
+/*    public static Post of(PostRequest postRequest, User user) {
         return Post.builder()
                 .title(postRequest.getTitle())
                 .contents(postRequest.getContents())
@@ -75,6 +75,17 @@ public class Post extends BaseTimeEntity {
                 .user(user)
                 .images(new ArrayList<>())
                 .build();
+    }*/
+
+    public static Post of(PostRequest postRequest) {
+        return Post.builder()
+                .title(postRequest.getTitle())
+                .contents(postRequest.getContents())
+                .category(postRequest.getCategory())
+                .voteOption(postRequest.getVoteOption())
+                .images(new ArrayList<>())
+                .build();
+
     }
 
     public void updatePostDetails(String title, String contents, Category category, VoteOption voteOption) {

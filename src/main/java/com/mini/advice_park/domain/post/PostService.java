@@ -35,10 +35,9 @@ public class PostService {
      */
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
-                                                 List<MultipartFile> imageFiles,
-                                                 User currentUser) {
+                                                 List<MultipartFile> imageFiles) {
         try {
-            Post post = Post.of(postRequest, currentUser);
+            Post post = Post.of(postRequest);
 
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
             uploadedImages.forEach(post::addImage);
