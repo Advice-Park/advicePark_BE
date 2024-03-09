@@ -51,10 +51,6 @@ public class ImageS3Service {
         String storedImagePath = uploadFileToS3(multipartFile);
         String originName = multipartFile.getOriginalFilename();
 
-        if (post != null) {
-            throw new CustomException(ErrorCode.IMAGE_UPLOAD_FAILED);
-        }
-
         Image image = Image.builder()
                 .originName(originName)
                 .storedImagePath(storedImagePath)

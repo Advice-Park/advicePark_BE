@@ -43,13 +43,14 @@ public class PostService {
             uploadedImages.forEach(post::addImage);
 
             PostResponse postResponse = PostResponse.from(post);
+
             postRepository.save(post);
 
             return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", postResponse);
 
         } catch (IOException e) {
             // 이미지 업로드 실패 시
-            return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), "이미지 업로드에 실패했습니다.", null);
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
 
         } catch (DataAccessException e) {
             // 데이터베이스 에러
