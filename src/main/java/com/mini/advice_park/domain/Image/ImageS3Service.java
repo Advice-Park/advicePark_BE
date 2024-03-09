@@ -64,8 +64,14 @@ public class ImageS3Service {
      * 이미지 업로드
      */
     private String uploadFileToS3(MultipartFile image) {
+
         String originName = image.getOriginalFilename();
-        String ext = originName.substring(originName.lastIndexOf("."));
+        String ext = "";
+
+        if (originName != null && originName.contains(".")) {
+            ext = originName.substring(originName.lastIndexOf("."));
+        }
+
         String changedName = UUID.randomUUID().toString() + ext;
 
         ObjectMetadata metadata = new ObjectMetadata();
