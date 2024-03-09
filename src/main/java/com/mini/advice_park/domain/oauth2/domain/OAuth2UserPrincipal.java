@@ -91,4 +91,5 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvide
     public OAuth2Provider getProvider() {
         return provider;
     }
+
 }

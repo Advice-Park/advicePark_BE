@@ -12,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,13 +36,14 @@ public class PostController {
     public ResponseEntity<BaseResponse<PostResponse>> createPost(@ModelAttribute PostRequest postRequest,
                                                                  @RequestPart(value = "imageFiles",
                                                                          required = false) List<MultipartFile> imageFiles,
-                                                                 OAuth2UserPrincipal oauth2UserPrincipal) {
+                                                                 @AuthenticationPrincipal OAuth2UserPrincipal oAuth2UserPrincipal) {
 
-        User loginUser = customOAuth2UserService.getUserFromOAuth2Principal(oauth2UserPrincipal);
+        User loginUser = (User) customOAuth2UserService.loadUser(oAuth2UserPrincipal);
 
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
         return ResponseEntity.status(response.getCode()).body(response);
     }
+
 
     /**
      * 질문글 전체 조회

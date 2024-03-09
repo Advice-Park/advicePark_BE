@@ -54,6 +54,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     /**
      * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
+     * @param oAuth2UserPrincipal OAuth2 사용자 정보
+     * @return OAuth2UserPrincipal
+     */
+    public OAuth2User loadUser(OAuth2UserPrincipal oAuth2UserPrincipal) {
+
+        // OAuth2UserPrincipal로부터 필요한 정보 추출 및 처리
+        String email = oAuth2UserPrincipal.getUsername(); // 이메일 추출
+        // 해당 이메일을 사용하여 사용자 정보를 가져옴
+        userRepository.findByEmail(email);
+
+        // 여기서는 사용자 정보를 직접 반환하지만, 실제로는 필요한 정보를 추출하여 처리해야 함
+        return oAuth2UserPrincipal;
+    }
+
+    /**
+     * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
      * @param userRequest OAuth2 요청
      * @param oAuth2User OAuth2 사용자 정보
      * @return OAuth2UserPrincipal
@@ -127,39 +143,5 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuth2UserInfo.getImage());
         return userRepository.save(user);
     }
-
-    public User getUserFromOAuth2Principal(OAuth2UserPrincipal oauth2UserPrincipal) {
-
-        // OAuth2UserPrincipal에서 필요한 사용자 정보를 추출
-        OAuth2Provider provider = oauth2UserPrincipal.getProvider();
-        String email = oauth2UserPrincipal.getUsername(); // 이메일 정보를 사용
-        String password = oauth2UserPrincipal.getPassword(); // 비밀번호는 OAuth2 사용자 정보에 저장되어 있지 않음
-        // OAuth2 사용자 정보에는 authorities가 포함되어 있지만, 이 예제에서는 사용하지 않음
-
-        // OAuth2 사용자 정보에서 추가적인 필요한 정보가 있다면 attributes에서 추출하여 사용
-
-        // 이메일을 기준으로 DB에서 사용자를 찾거나, 없으면 새로운 사용자를 생성
-        Optional<User> userOptional = userRepository.findByEmailAndOAuth2Provider(email, provider);
-        User user;
-
-        if (userOptional.isPresent()) {
-            user = userOptional.get();
-            // 기존 사용자 정보 업데이트 등의 추가 로직이 있다면 여기에 추가
-        } else {
-            // 새로운 사용자 생성
-            user = User.of(provider,
-                    oauth2UserPrincipal.getAttributes().get("id").toString(), // OAuth2에서 제공하는 고유 ID 사용
-                    email,
-                    oauth2UserPrincipal.getAttributes().get("name").toString(),
-                    oauth2UserPrincipal.getAttributes().get("given_name").toString(),
-                    oauth2UserPrincipal.getAttributes().get("family_name").toString(),
-                    oauth2UserPrincipal.getAttributes().get("nickname").toString(),
-                    oauth2UserPrincipal.getAttributes().get("picture").toString());
-            userRepository.save(user);
-        }
-
-        return user;
-    }
-
 
 }
