@@ -79,7 +79,7 @@ public class ImageS3Service {
         try {
             amazonS3.putObject(new PutObjectRequest(bucketName, changedName, image.getInputStream(), metadata));
         } catch (IOException e) {
-            throw new RuntimeException("이미지 S3 업로드 실패", e);
+            throw new CustomException(ErrorCode.IMAGE_UPLOAD_FAILED);
         }
         return amazonS3.getUrl(bucketName, changedName).toString();
     }
@@ -93,7 +93,16 @@ public class ImageS3Service {
                     .map(Image::getStoredImagePath)
                     .collect(Collectors.toList());
 
-            imageKeys.forEach(imageKey -> amazonS3.deleteObject(bucketName, imageKey));
+            imageKeys.forEach(imageKey -> {
+                try {
+                    amazonS3.deleteObject(bucketName, imageKey);
+                } catch (Exception e) {
+                    // S3 이미지 삭제 실패 시 예외 처리
+                    throw new CustomException(ErrorCode.IMAGE_DELETE_FAILED);
+                }
+            });
+
+            // 이미지 삭제 후 DB에서도 삭제
             imageRepository.deleteAll(images);
         }
     }
