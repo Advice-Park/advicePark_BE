@@ -15,6 +15,7 @@ import com.mini.advice_park.global.exception.ImageUploadException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,7 +41,7 @@ public class PostService {
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
                                                  List<MultipartFile> imageFiles,
-                                                 User loginUser) {
+                                                 @AuthenticationPrincipal User loginUser) {
         try {
             // 이미지 업로드와 관련된 로직은 그대로 유지됩니다.
             Post post = Post.of(postRequest);
@@ -63,6 +64,7 @@ public class PostService {
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
         }
     }
+
 
 
     /**

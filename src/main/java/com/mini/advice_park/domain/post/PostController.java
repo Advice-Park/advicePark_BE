@@ -9,6 +9,7 @@ import com.mini.advice_park.global.common.LoginAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +29,7 @@ public class PostController {
     public ResponseEntity<BaseResponse<PostResponse>> createPost(@ModelAttribute PostRequest postRequest,
                                                                  @RequestPart(value = "imageFiles",
                                                                          required = false) List<MultipartFile> imageFiles,
-                                                                 @LoginAccount User loginUser) {
+                                                                 @AuthenticationPrincipal User loginUser) {
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
         return ResponseEntity.status(response.getCode()).body(response);
     }
