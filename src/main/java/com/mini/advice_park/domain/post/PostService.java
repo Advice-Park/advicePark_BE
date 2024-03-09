@@ -5,6 +5,8 @@ import com.mini.advice_park.domain.Image.ImageS3Service;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.user.UserRepository;
+import com.mini.advice_park.domain.user.UserService;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
@@ -29,34 +31,39 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ImageS3Service imageS3Service;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     /**
      * 질문글 등록
      */
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
-                                                 List<MultipartFile> imageFiles) {
+                                                 List<MultipartFile> imageFiles,
+                                                 User loginUser) {
         try {
+            // 이미지 업로드와 관련된 로직은 그대로 유지됩니다.
             Post post = Post.of(postRequest);
-
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
             uploadedImages.forEach(post::addImage);
 
-            PostResponse postResponse = PostResponse.from(post);
+            // 로그인된 사용자의 정보를 사용하여 게시물 작성자 정보를 설정합니다.
+            post.setUser(loginUser);
 
+            // 게시물 저장
             postRepository.save(post);
 
-            return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", postResponse);
-
+            // 성공 응답 반환
+            return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", PostResponse.from(post));
         } catch (IOException e) {
             // 이미지 업로드 실패 시
             return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
-
         } catch (DataAccessException e) {
             // 데이터베이스 에러
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
         }
     }
+
 
     /**
      * 질문글 전체 조회
