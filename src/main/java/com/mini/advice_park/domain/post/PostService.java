@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,15 +42,21 @@ public class PostService {
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
                                                  List<MultipartFile> imageFiles,
-                                                 @AuthenticationPrincipal User loginUser) {
+                                                 @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
+            // 소셜 로그인 사용자 정보에서 필요한 정보 추출하여 처리
+            String email = oauth2User.getAttribute("email");
+            // 이메일을 사용하여 사용자 정보를 가져옴
+            Optional<User> loginUser = userRepository.findByEmail(email);
+
+            if (loginUser.isEmpty()) {
+                throw new CustomException(ErrorCode.NOT_FOUND_USER);
+            }
+
             // 이미지 업로드와 관련된 로직은 그대로 유지됩니다.
             Post post = Post.of(postRequest);
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
             uploadedImages.forEach(post::addImage);
-
-            // 로그인된 사용자의 정보를 사용하여 게시물 작성자 정보를 설정합니다.
-            post.setUser(loginUser);
 
             // 게시물 저장
             postRepository.save(post);

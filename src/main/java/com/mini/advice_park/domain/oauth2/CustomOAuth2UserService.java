@@ -61,10 +61,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // OAuth2UserPrincipal로부터 필요한 정보 추출 및 처리
         String email = oAuth2UserPrincipal.getUsername(); // 이메일 추출
+
         // 해당 이메일을 사용하여 사용자 정보를 가져옴
         userRepository.findByEmail(email);
 
-        // 여기서는 사용자 정보를 직접 반환하지만, 실제로는 필요한 정보를 추출하여 처리해야 함
         return oAuth2UserPrincipal;
     }
 
@@ -101,8 +101,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             if (!user.getProviderId().equals(oAuth2UserInfo.getId())) {
                 throw new OAuth2AuthenticationProcessingException("Provider ID is invalid");
             }
-
             user = updateExistingUser(user, oAuth2UserInfo);
+
         } else {
             user = registerNewUser(oAuth2Provider, oAuth2UserInfo);
         }

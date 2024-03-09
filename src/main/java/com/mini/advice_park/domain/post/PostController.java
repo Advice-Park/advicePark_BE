@@ -40,7 +40,7 @@ public class PostController {
 
         User loginUser = (User) customOAuth2UserService.loadUser(oAuth2UserPrincipal);
 
-        BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
+        BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, (OAuth2User) loginUser);
         return ResponseEntity.status(response.getCode()).body(response);
     }
 

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -124,10 +125,5 @@ public class Post extends BaseTimeEntity {
             this.commentCount--;
         }
     }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
 
 }
