@@ -35,8 +35,12 @@ public class Post extends BaseTimeEntity {
     private VoteOption voteOption;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumns({
+            @JoinColumn(name = "user_id", referencedColumnName = "userId"),
+            @JoinColumn(name = "provider_id", referencedColumnName = "providerId")
+    })
     private User user;
+
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Image> images = new ArrayList<>(); // 이미지 리스트를 비어있는 리스트로 초기화

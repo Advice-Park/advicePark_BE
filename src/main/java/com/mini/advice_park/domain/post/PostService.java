@@ -56,6 +56,7 @@ public class PostService {
 
             // 성공 응답 반환
             return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", PostResponse.from(post));
+
         } catch (IOException e) {
             // 이미지 업로드 실패 시
             return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);

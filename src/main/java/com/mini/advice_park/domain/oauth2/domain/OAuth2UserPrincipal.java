@@ -24,6 +24,12 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvide
     private final Collection<? extends GrantedAuthority> authorities;
     private final Map<String, Object> attributes;
 
+    /**
+     * 소셜 로그인 사용자 정보를 담는 클래스를 생성
+     * @param user
+     * @param attributes
+     * @return
+     */
     public static OAuth2UserPrincipal create(User user, Map<String, Object> attributes) {
         List<GrantedAuthority> authorities = Collections.
                 singletonList(new SimpleGrantedAuthority(user.getRole().name()));

@@ -20,13 +20,15 @@ public class User extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(unique = true)
+    private String providerId;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Enumerated(EnumType.STRING)
     private OAuth2Provider oAuth2Provider;
 
-    private String providerId;
     private String email;
     private String password;
     private String name;

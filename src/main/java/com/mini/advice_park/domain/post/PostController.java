@@ -1,5 +1,7 @@
 package com.mini.advice_park.domain.post;
 
+import com.mini.advice_park.domain.oauth2.CustomOAuth2UserService;
+import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.post.PostService;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
@@ -21,6 +23,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     /**
      * 질문글 등록
@@ -29,7 +32,10 @@ public class PostController {
     public ResponseEntity<BaseResponse<PostResponse>> createPost(@ModelAttribute PostRequest postRequest,
                                                                  @RequestPart(value = "imageFiles",
                                                                          required = false) List<MultipartFile> imageFiles,
-                                                                 @AuthenticationPrincipal User loginUser) {
+                                                                 OAuth2UserPrincipal oauth2UserPrincipal) {
+
+        User loginUser = customOAuth2UserService.getUserFromOAuth2Principal(oauth2UserPrincipal);
+
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
         return ResponseEntity.status(response.getCode()).body(response);
     }
