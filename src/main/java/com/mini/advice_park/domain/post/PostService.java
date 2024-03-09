@@ -38,20 +38,11 @@ public class PostService {
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
                                                  List<MultipartFile> imageFiles,
-                                                 @AuthenticationPrincipal OAuth2User oauth2User) {
+                                                 User loginUser) {
         try {
-
-            if (oauth2User == null) {
+            // 사용자가 없으면 예외 처리
+            if (loginUser == null) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-            }
-
-            // 로그인한 사용자 정보 확인 (이메일로 사용자 조회)
-            String email = oauth2User.getAttribute("email");
-            Optional<User> loginUser = userRepository.findByEmail(email);
-
-            // 로그인한 사용자가 없을 경우 예외 처리
-            if (loginUser.isEmpty()) {
-                throw new CustomException(ErrorCode.NOT_FOUND_USER);
             }
 
             // 이미지 업로드
@@ -68,6 +59,7 @@ public class PostService {
         } catch (IOException e) {
             // 이미지 업로드 실패 시
             return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
+
         } catch (DataAccessException e) {
             // 데이터베이스 에러
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);

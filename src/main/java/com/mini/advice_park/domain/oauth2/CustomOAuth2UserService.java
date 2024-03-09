@@ -23,7 +23,6 @@ import org.springframework.util.StringUtils;
 import java.util.Arrays;
 import java.util.Optional;
 
-
 /**
  * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
  */
@@ -56,9 +55,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     /**
-     * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
-     * @param oAuth2UserPrincipal OAuth2 사용자 정보
-     * @return OAuth2UserPrincipal
+     * OAuth2 사용자 정보의 유효성을 검사하고 email을 사용하여 사용자 정보를 가져옵니다.
      */
     @Transactional
     public OAuth2User loadUser(OAuth2UserPrincipal oAuth2UserPrincipal) {
@@ -87,7 +84,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw e;
         }
     }
-
 
     /**
      * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
