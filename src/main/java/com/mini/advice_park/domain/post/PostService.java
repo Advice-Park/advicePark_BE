@@ -6,12 +6,10 @@ import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.UserRepository;
-import com.mini.advice_park.domain.user.UserService;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
-import com.mini.advice_park.global.exception.ImageUploadException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -33,7 +30,6 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ImageS3Service imageS3Service;
-    private final UserService userService;
     private final UserRepository userRepository;
 
     /**
@@ -44,16 +40,21 @@ public class PostService {
                                                  List<MultipartFile> imageFiles,
                                                  @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-            // 소셜 로그인 사용자 정보에서 필요한 정보 추출하여 처리
+
+            if (oauth2User == null) {
+                throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
+            }
+
+            // 로그인한 사용자 정보 확인 (이메일로 사용자 조회)
             String email = oauth2User.getAttribute("email");
-            // 이메일을 사용하여 사용자 정보를 가져옴
             Optional<User> loginUser = userRepository.findByEmail(email);
 
+            // 로그인한 사용자가 없을 경우 예외 처리
             if (loginUser.isEmpty()) {
                 throw new CustomException(ErrorCode.NOT_FOUND_USER);
             }
 
-            // 이미지 업로드와 관련된 로직은 그대로 유지됩니다.
+            // 이미지 업로드
             Post post = Post.of(postRequest);
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
             uploadedImages.forEach(post::addImage);
@@ -72,8 +73,6 @@ public class PostService {
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
         }
     }
-
-
 
     /**
      * 질문글 전체 조회

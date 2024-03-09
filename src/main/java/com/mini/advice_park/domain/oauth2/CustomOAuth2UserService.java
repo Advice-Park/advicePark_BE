@@ -7,6 +7,8 @@ import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2Provider;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
+import com.mini.advice_park.global.exception.CustomException;
+import com.mini.advice_park.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -15,6 +17,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
@@ -57,16 +60,34 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * @param oAuth2UserPrincipal OAuth2 사용자 정보
      * @return OAuth2UserPrincipal
      */
+    @Transactional
     public OAuth2User loadUser(OAuth2UserPrincipal oAuth2UserPrincipal) {
 
-        // OAuth2UserPrincipal로부터 필요한 정보 추출 및 처리
-        String email = oAuth2UserPrincipal.getUsername(); // 이메일 추출
+        try {
 
-        // 해당 이메일을 사용하여 사용자 정보를 가져옴
-        userRepository.findByEmail(email);
+            if (oAuth2UserPrincipal == null) {
+                throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
+            }
 
-        return oAuth2UserPrincipal;
+            // OAuth2UserPrincipal로부터 필요한 정보 추출
+            String email = oAuth2UserPrincipal.getUsername(); // 이메일 추출
+
+            // 해당 이메일을 사용하여 사용자 정보를 가져옴
+            Optional<User> userOptional = userRepository.findByEmail(email);
+
+            if (userOptional.isEmpty()) {
+                throw new CustomException(ErrorCode.NOT_FOUND_USER);
+            }
+
+            // 사용자 정보 반환
+            return (OAuth2User) userOptional.get();
+
+        } catch (CustomException e) {
+            // 예외 처리
+            throw e;
+        }
     }
+
 
     /**
      * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
