@@ -55,37 +55,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     /**
-     * OAuth2 사용자 정보의 유효성을 검사하고 email을 사용하여 사용자 정보를 가져옵니다.
-     */
-    @Transactional
-    public OAuth2User loadUser(OAuth2UserPrincipal oAuth2UserPrincipal) {
-
-        try {
-
-            if (oAuth2UserPrincipal == null) {
-                throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-            }
-
-            // OAuth2UserPrincipal로부터 필요한 정보 추출
-            String email = oAuth2UserPrincipal.getUsername(); // 이메일 추출
-
-            // 해당 이메일을 사용하여 사용자 정보를 가져옴
-            Optional<User> userOptional = userRepository.findByEmail(email);
-
-            if (userOptional.isEmpty()) {
-                throw new CustomException(ErrorCode.NOT_FOUND_USER);
-            }
-
-            // 사용자 정보 반환
-            return (OAuth2User) userOptional.get();
-
-        } catch (CustomException e) {
-            // 예외 처리
-            throw e;
-        }
-    }
-
-    /**
      * OAuth2 사용자 정보의 유효성을 검사하고 DB 에 저장합니다.
      * @param userRequest OAuth2 요청
      * @param oAuth2User OAuth2 사용자 정보

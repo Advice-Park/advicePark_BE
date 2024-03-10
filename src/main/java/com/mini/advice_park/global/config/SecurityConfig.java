@@ -64,9 +64,6 @@ public class SecurityConfig {
                         // 질문글 조회
                         .requestMatchers(HttpMethod.GET,"/api/post/**").permitAll()
 
-                        // 질문글 등록 임시 허가 (테스트용)
-                        .requestMatchers(HttpMethod.POST,"/api/post/**").permitAll()
-
                         .requestMatchers("/api/auth/signup").permitAll()
                         //.requestMatchers("/login/**").permitAll() // http://localhost:8080/login/oauth2/code/google
                         .requestMatchers("/oauth2/**").permitAll() // https://mooooonmin.site/oauth2/authorization/google

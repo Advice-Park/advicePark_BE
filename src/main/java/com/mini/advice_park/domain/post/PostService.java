@@ -30,7 +30,6 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ImageS3Service imageS3Service;
-    private final UserRepository userRepository;
 
     /**
      * 질문글 등록

@@ -16,7 +16,7 @@ public class AuthenticationService {
     public User getLoggedInUserFromCookie(HttpServletRequest request) {
 
         // 쿠키에서 사용자 정보를 추출하는 로직 구현
-        Optional<Cookie> userCookie = CookieUtils.getCookie(request, "userCookieName");
+        Optional<Cookie> userCookie = CookieUtils.getCookie(request, "token");
 
         if (userCookie.isPresent()) {
             Cookie cookie = userCookie.get();

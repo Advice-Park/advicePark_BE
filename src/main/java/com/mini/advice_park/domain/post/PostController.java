@@ -23,7 +23,6 @@ public class PostController {
     private final PostService postService;
     private final AuthenticationService authenticationService;
 
-
     /**
      * 질문글 등록
      */
@@ -46,7 +45,6 @@ public class PostController {
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
         return ResponseEntity.status(response.getCode()).body(response);
     }
-
 
     /**
      * 질문글 전체 조회
