@@ -5,6 +5,8 @@ import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
+import com.mini.advice_park.global.exception.CustomException;
+import com.mini.advice_park.global.exception.ErrorCode;
 import com.mini.advice_park.global.security.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +39,7 @@ public class PostController {
         // 쿠키에서 로그인한 사용자 정보 가져오기
         OAuth2UserPrincipal loginUser = authenticationService.getLoggedInUserFromCookie(request);
 
-        // 로그인한 사용자 정보가 없으면 권한이 없다는 응답 반환
+        // 사용자 정보가 없는 경우 UNAUTHORIZED 응답 반환
         if (loginUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), "로그인이 필요합니다.", null));
@@ -46,7 +49,6 @@ public class PostController {
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
         return ResponseEntity.status(response.getCode()).body(response);
     }
-
 
     /**
      * 질문글 전체 조회
