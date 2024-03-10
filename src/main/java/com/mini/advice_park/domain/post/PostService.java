@@ -2,19 +2,16 @@ package com.mini.advice_park.domain.post;
 
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.Image.ImageS3Service;
+import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
-import com.mini.advice_park.domain.user.UserRepository;
-import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +34,7 @@ public class PostService {
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
                                                  List<MultipartFile> imageFiles,
-                                                 User loginUser) {
+                                                 OAuth2UserPrincipal loginUser) {
         try {
             // 사용자가 없으면 예외 처리
             if (loginUser == null) {

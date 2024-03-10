@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.post;
 
+import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.user.entity.User;
@@ -33,7 +34,7 @@ public class PostController {
                                                                  HttpServletRequest request) {
 
         // 쿠키에서 로그인한 사용자 정보 가져오기
-        User loginUser = authenticationService.getLoggedInUserFromCookie(request);
+        OAuth2UserPrincipal loginUser = authenticationService.getLoggedInUserFromCookie(request);
 
         // 로그인한 사용자 정보가 없으면 권한이 없다는 응답 반환
         if (loginUser == null) {
@@ -45,6 +46,7 @@ public class PostController {
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
         return ResponseEntity.status(response.getCode()).body(response);
     }
+
 
     /**
      * 질문글 전체 조회
