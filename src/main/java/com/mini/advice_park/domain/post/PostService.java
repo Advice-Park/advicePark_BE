@@ -2,10 +2,10 @@ package com.mini.advice_park.domain.post;
 
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.Image.ImageS3Service;
-import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
@@ -34,7 +34,7 @@ public class PostService {
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
                                                  List<MultipartFile> imageFiles,
-                                                 OAuth2UserPrincipal loginUser) {
+                                                 User loginUser) {
         try {
             // 사용자가 없으면 예외 처리
             if (loginUser == null) {

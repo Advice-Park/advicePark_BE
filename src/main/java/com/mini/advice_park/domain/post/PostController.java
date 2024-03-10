@@ -1,12 +1,9 @@
 package com.mini.advice_park.domain.post;
 
-import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
-import com.mini.advice_park.global.exception.CustomException;
-import com.mini.advice_park.global.exception.ErrorCode;
 import com.mini.advice_park.global.security.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +34,16 @@ public class PostController {
                                                                  HttpServletRequest request) {
 
         // 쿠키에서 로그인한 사용자 정보 가져오기
-        OAuth2UserPrincipal loginUser = authenticationService.getLoggedInUserFromCookie(request);
+        Optional<User> optionalLoggedInUser = authenticationService.getLoggedInUserFromCookie(request);
 
         // 사용자 정보가 없는 경우 UNAUTHORIZED 응답 반환
-        if (loginUser == null) {
+        if (optionalLoggedInUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), "로그인이 필요합니다.", null));
         }
+
+        // 사용자 정보 추출
+        User loginUser = optionalLoggedInUser.get();
 
         // 글 작성 권한 확인 및 처리
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
