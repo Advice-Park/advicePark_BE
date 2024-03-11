@@ -9,6 +9,7 @@ import com.mini.advice_park.global.common.LoginAccount;
 import com.mini.advice_park.global.security.AuthenticationService;
 import com.mini.advice_park.global.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,30 +26,21 @@ import java.util.Optional;
 public class PostController {
 
     private final PostService postService;
-    private final AuthenticationService authenticationService;
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
 
     /**
      * 질문글 등록
      */
     @PostMapping("")
-    public ResponseEntity<BaseResponse<PostResponse>> createPost(@ModelAttribute PostRequest postRequest,
+    public ResponseEntity<BaseResponse<PostResponse>> createPost(@Valid @ModelAttribute PostRequest postRequest,
                                                                  @RequestPart(value = "imageFiles",
                                                                          required = false) List<MultipartFile> imageFiles,
                                                                  @LoginAccount User loginUser) {
-        // 사용자가 로그인하지 않은 경우 UNAUTHORIZED 응답 반환
-        if (loginUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), "로그인이 필요합니다.", null));
-        }
 
         // 글 작성 권한 확인 및 처리
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
-        return ResponseEntity.status(response.getCode()).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new BaseResponse<>(response.getCode(), response.getMessage(), response.getResult()));
     }
-
-
 
     /**
      * 질문글 전체 조회

@@ -7,6 +7,7 @@ import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
+import com.mini.advice_park.global.common.LoginAccount;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class PostService {
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
                                                  List<MultipartFile> imageFiles,
-                                                 User loginUser) {
+                                                 @LoginAccount User loginUser) {
         try {
             // 사용자가 없으면 예외 처리
             if (loginUser == null) {
@@ -50,7 +51,7 @@ public class PostService {
             postRepository.save(post);
 
             // 성공 응답 반환
-            return new BaseResponse<>(HttpStatus.CREATED.value(), "등록 성공", PostResponse.from(post));
+            return new BaseResponse<>(HttpStatus.CREATED.value(), "질문글 등록 성공", PostResponse.from(post));
 
         } catch (IOException e) {
             // 이미지 업로드 실패 시
