@@ -49,7 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     // 헤더에서 토큰 추출
-    private String resolveToken(HttpServletRequest request) {
+    public static String resolveToken(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION_HEADER);
 
         if (StringUtils.hasText(token) && token.startsWith(BEARER_PREFIX)) {

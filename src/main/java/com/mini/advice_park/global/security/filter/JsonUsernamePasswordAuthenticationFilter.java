@@ -33,7 +33,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
     }
 
     /**
-     * 사용자가 제공한 정보를 사용하여 인증을 시도합니다.
+     * 사용자가 제공한 정보(이메일, 비밀번호)를 사용하여 인증을 시도합니다.
      */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {

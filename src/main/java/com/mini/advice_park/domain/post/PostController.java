@@ -34,10 +34,10 @@ public class PostController {
     public ResponseEntity<BaseResponse<PostResponse>> createPost(@Valid @ModelAttribute PostRequest postRequest,
                                                                  @RequestPart(value = "imageFiles",
                                                                          required = false) List<MultipartFile> imageFiles,
-                                                                 @LoginAccount User loginUser) {
+                                                                 HttpServletRequest httpServletRequest) {
 
         // 글 작성 권한 확인 및 처리
-        BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, loginUser);
+        BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, httpServletRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(response.getCode(), response.getMessage(), response.getResult()));
     }

@@ -5,16 +5,20 @@ import com.mini.advice_park.domain.Image.ImageS3Service;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
-import com.mini.advice_park.global.common.LoginAccount;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.global.security.filter.JwtAuthorizationFilter;
+import com.mini.advice_park.global.security.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -26,8 +30,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final JwtUtil jwtUtil;
     private final PostRepository postRepository;
     private final ImageS3Service imageS3Service;
+    private final UserRepository userRepository;
 
     /**
      * 질문글 등록
@@ -35,14 +41,20 @@ public class PostService {
     @Transactional
     public BaseResponse<PostResponse> createPost(PostRequest postRequest,
                                                  List<MultipartFile> imageFiles,
-                                                 @LoginAccount User loginUser) {
+                                                 HttpServletRequest httpServletRequest) {
         try {
-            // 1. 사용자 인증 확인
-            if (loginUser == null) {
+            // 1. JWT 토큰을 이용하여 사용자 인증 확인
+            String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
+            if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
             }
 
-            // 2. 게시물 생성
+            // 2. JWT 토큰에서 사용자 정보 추출
+            String email = jwtUtil.getEmail(token);
+            User loginUser = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+
+            // 3. 게시물 생성
             Post post = Post.builder()
                     .title(postRequest.getTitle())
                     .contents(postRequest.getContents())
@@ -51,16 +63,16 @@ public class PostService {
                     .user(loginUser)
                     .build();
 
-            // 3. 이미지 업로드 (게시물 저장 이전에 이미지 업로드 처리)
+            // 4. 이미지 업로드 (게시물 저장 이전에 이미지 업로드 처리)
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
 
-            // 4. 이미지 추가
+            // 5. 이미지 추가
             uploadedImages.forEach(post::addImage);
 
-            // 5. 게시물 저장
+            // 6. 게시물 저장
             postRepository.save(post);
 
-            // 6. 성공 응답 반환
+            // 7. 성공 응답 반환
             return new BaseResponse<>(HttpStatus.CREATED.value(), "질문글 등록 성공", PostResponse.from(post));
 
         } catch (IOException e) {
