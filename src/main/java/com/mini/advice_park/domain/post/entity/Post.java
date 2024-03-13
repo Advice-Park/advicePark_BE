@@ -58,29 +58,15 @@ public class Post extends BaseTimeEntity {
                 Category category,
                 VoteOption voteOption,
                 User user,
-                List<Image> images,
                 long viewCount) {
         this.title = title;
         this.contents = contents;
         this.category = category;
         this.voteOption = voteOption;
         this.user = user;
-        if (images != null) {
-            this.images.addAll(images);
-        }
         this.viewCount = viewCount;
+        this.commentCount = 0; // 댓글 수 초기화
     }
-
-/*    public static Post of(PostRequest postRequest, User user) {
-        return Post.builder()
-                .title(postRequest.getTitle())
-                .contents(postRequest.getContents())
-                .category(postRequest.getCategory())
-                .voteOption(postRequest.getVoteOption())
-                .user(user)
-                .images(new ArrayList<>())
-                .build();
-    }*/
 
     public static Post of(PostRequest postRequest) {
         return Post.builder()
@@ -88,9 +74,7 @@ public class Post extends BaseTimeEntity {
                 .contents(postRequest.getContents())
                 .category(postRequest.getCategory())
                 .voteOption(postRequest.getVoteOption())
-                .images(new ArrayList<>())
-                .build();
-
+                .build(); // 이미지 리스트 초기화 없이 생성
     }
 
     public void updatePostDetails(String title, String contents, Category category, VoteOption voteOption) {

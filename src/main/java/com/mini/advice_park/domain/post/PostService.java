@@ -37,20 +37,30 @@ public class PostService {
                                                  List<MultipartFile> imageFiles,
                                                  @LoginAccount User loginUser) {
         try {
-            // 사용자가 없으면 예외 처리
+            // 1. 사용자 인증 확인
             if (loginUser == null) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
             }
 
-            // 이미지 업로드
-            Post post = Post.of(postRequest);
+            // 2. 게시물 생성
+            Post post = Post.builder()
+                    .title(postRequest.getTitle())
+                    .contents(postRequest.getContents())
+                    .category(postRequest.getCategory())
+                    .voteOption(postRequest.getVoteOption())
+                    .user(loginUser)
+                    .build();
+
+            // 3. 이미지 업로드 (게시물 저장 이전에 이미지 업로드 처리)
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
+
+            // 4. 이미지 추가
             uploadedImages.forEach(post::addImage);
 
-            // 게시물 저장
+            // 5. 게시물 저장
             postRepository.save(post);
 
-            // 성공 응답 반환
+            // 6. 성공 응답 반환
             return new BaseResponse<>(HttpStatus.CREATED.value(), "질문글 등록 성공", PostResponse.from(post));
 
         } catch (IOException e) {
