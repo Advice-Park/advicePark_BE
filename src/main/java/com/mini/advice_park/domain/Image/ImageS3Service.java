@@ -7,6 +7,7 @@ import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ImageS3Service {
@@ -32,6 +34,7 @@ public class ImageS3Service {
      * 게시물 이미지 다중 업로드
      */
     public List<Image> uploadMultipleImagesForPost(List<MultipartFile> multipartFiles, Post post) throws IOException {
+
         if (multipartFiles == null || multipartFiles.isEmpty()) {
             return Collections.emptyList();
         }
@@ -95,19 +98,20 @@ public class ImageS3Service {
                     .map(Image::getStoredImagePath)
                     .collect(Collectors.toList());
 
-            imageKeys.forEach(imageKey -> {
+            for (String imageKey : imageKeys) {
                 try {
                     amazonS3.deleteObject(bucketName, imageKey);
                 } catch (Exception e) {
-                    // S3 이미지 삭제 실패 시 예외 처리
-                    throw new CustomException(ErrorCode.IMAGE_DELETE_FAILED);
+                    // 이미지 삭제에 실패한 경우에 대한 예외 처리를 하지 않고, 로그를 출력한다.
+                    log.error("Failed to delete image from S3: " + imageKey, e);
                 }
-            });
+            }
 
             // 이미지 삭제 후 DB에서도 삭제
             imageRepository.deleteAll(images);
         }
     }
+
 
     private String extractFileName(String fileUrl) {
         return fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
