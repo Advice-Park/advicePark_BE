@@ -58,8 +58,12 @@ public class PostService {
             return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
 
         } catch (DataAccessException e) {
-            // 데이터베이스 에러
+            // 데이터베이스 저장 실패 시
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
+
+        } catch (CustomException e) {
+            // 사용자 인증 실패 시
+            return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }
 
