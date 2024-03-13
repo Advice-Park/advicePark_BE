@@ -64,9 +64,9 @@ public class PostController {
      * 질문글 삭제
      */
     @DeleteMapping("/{postId}")
-    @PreAuthorize("hasRole('ADMIN') or @postService.isPostOwner(#postId, principal.id)")
-    public ResponseEntity<BaseResponse<Void>> deletePost(@PathVariable Long postId) {
-        BaseResponse<Void> response = postService.deletePost(postId);
+    public ResponseEntity<BaseResponse<Void>> deletePost(@PathVariable Long postId,
+                                                         HttpServletRequest httpServletRequest) {
+        BaseResponse<Void> response = postService.deletePost(postId, httpServletRequest);
         return ResponseEntity.status(response.getCode()).body(response);
     }
 

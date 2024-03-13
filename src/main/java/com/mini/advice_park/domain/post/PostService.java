@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.post;
 
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.Image.ImageS3Service;
+import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
@@ -16,6 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -111,7 +114,9 @@ public class PostService {
     /**
      * 특정 질문글 조회
      */
+    @Transactional(readOnly = true)
     public BaseResponse<PostResponse> getPostById(Long postId) {
+
         try {
             Optional<Post> optionalPost = postRepository.findById(postId);
             if (optionalPost.isPresent()) {
@@ -132,36 +137,63 @@ public class PostService {
      * 질문글 삭제
      */
     @Transactional
-    public BaseResponse<Void> deletePost(Long postId) {
+    public BaseResponse<Void> deletePost(Long postId, HttpServletRequest httpServletRequest) {
         try {
+            // HTTP 요청 헤더에서 토큰 추출
+            String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
+
+            // 토큰을 사용하여 사용자 인증 및 정보 가져오기
+            if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
+                // 토큰이 없거나 유효하지 않으면 권한 없음 응답 반환
+                return new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), "인증되지 않은 사용자입니다.", null);
+            }
+
+            // 토큰에서 사용자 정보 추출
+            String email = jwtUtil.getEmail(token);
+            User loginUser = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+
+            // 게시물 조회
             Optional<Post> optionalPost = postRepository.findById(postId);
             if (optionalPost.isPresent()) {
                 Post post = optionalPost.get();
 
-                // 첨부된 이미지 확인 및 삭제
-                List<Image> images = post.getImages();
-                if (!images.isEmpty()) {
-                    imageS3Service.deleteImages(images);
+                // 현재 사용자가 게시물 소유자인지 확인
+                if (isCurrentUserPostOwner(post, loginUser)) {
+                    // 첨부된 이미지 확인 및 삭제
+                    List<Image> images = post.getImages();
+                    if (!images.isEmpty()) {
+                        imageS3Service.deleteImages(images);
+                    }
+
+                    // 게시물 삭제
+                    postRepository.deleteById(postId);
+
+                    return new BaseResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
+                } else {
+                    // 사용자가 게시물 소유자가 아니면 권한 없음 응답 반환
+                    return new BaseResponse<>(HttpStatus.FORBIDDEN.value(), "삭제할 권한이 없습니다.", null);
                 }
-
-                // 게시물 삭제
-                postRepository.deleteById(postId);
-
-                return new BaseResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
             } else {
+                // 삭제할 게시물이 존재하지 않으면 존재하지 않음 응답 반환
                 return new BaseResponse<>(HttpStatus.NOT_FOUND.value(), "삭제할 게시물이 존재하지 않습니다.", null);
             }
-        } catch (Exception e) {
-            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "삭제 실패", null);
+
+        } catch (DataAccessException e) {
+            // 데이터베이스 저장 실패 시
+            return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
+
+        } catch (CustomException e) {
+            // 사용자 인증 실패 시
+            return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }
 
     /**
-     * 게시물 소유자 확인
+     * 사용자와 게시물 소유자 비교
      */
-    public boolean isPostOwner(Long postId, Long userId) {
-        Optional<Post> postOptional = postRepository.findById(postId);
-        return postOptional.map(post -> post.getUser().getUserId().equals(userId)).orElse(false);
+    private boolean isCurrentUserPostOwner(Post post, User user) {
+        return post.getUser().equals(user);
     }
 
 }

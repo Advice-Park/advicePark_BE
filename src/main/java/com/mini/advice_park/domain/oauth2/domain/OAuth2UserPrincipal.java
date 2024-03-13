@@ -23,6 +23,7 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvide
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
     private final Map<String, Object> attributes;
+    private final Long userId; // 추가된 필드
 
     /**
      * 소셜 로그인 사용자 정보를 담는 클래스를 생성
@@ -31,15 +32,15 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvide
      * @return
      */
     public static OAuth2UserPrincipal create(User user, Map<String, Object> attributes) {
-        List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority(user.getRole().name()));
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
 
         return new OAuth2UserPrincipal(
                 user.getOAuth2Provider(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities,
-                attributes);
+                attributes,
+                user.getUserId()); // userId를 추가하여 전달
     }
 
     @Override
@@ -90,6 +91,10 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails, UserProvide
     @Override
     public OAuth2Provider getProvider() {
         return provider;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
 }
