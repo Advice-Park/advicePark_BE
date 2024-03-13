@@ -36,7 +36,7 @@ public class ImageS3Service {
     public List<Image> uploadMultipleImagesForPost(List<MultipartFile> multipartFiles, Post post) throws IOException {
 
         if (multipartFiles == null || multipartFiles.isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptyList(); // 이미지가 없는 경우 빈 리스트 반환
         }
 
         return multipartFiles.stream()
@@ -46,6 +46,7 @@ public class ImageS3Service {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
+
 
     /**
      * 게시물 이미지 단일 업로드

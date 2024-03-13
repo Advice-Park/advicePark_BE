@@ -66,14 +66,14 @@ public class PostService {
                     .user(loginUser)
                     .build();
 
-            // 4. 이미지 업로드 (게시물 저장 이전에 이미지 업로드 처리)
+            // 4. 게시물 저장
+            post = postRepository.save(post);
+
+            // 5. 이미지 업로드 (게시물 저장 이후에 이미지 업로드 처리)
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
 
-            // 5. 이미지 추가
+            // 6. 이미지 추가
             uploadedImages.forEach(post::addImage);
-
-            // 6. 게시물 저장
-            postRepository.save(post);
 
             // 7. 성공 응답 반환
             return new BaseResponse<>(HttpStatus.CREATED.value(), "질문글 등록 성공", PostResponse.from(post));
@@ -91,6 +91,7 @@ public class PostService {
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }
+
 
     /**
      * 질문글 전체 조회
