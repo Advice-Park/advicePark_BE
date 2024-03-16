@@ -19,6 +19,7 @@ public enum ErrorCode {
     ALREADY_LIKED(400, HttpStatus.BAD_REQUEST, "이미 좋아요를 누르셨습니다."),
     IMAGE_UPLOAD_FAILED(400, HttpStatus.BAD_REQUEST, "이미지 업로드에 실패하였습니다."),
     IMAGE_DELETE_FAILED(400, HttpStatus.BAD_REQUEST, "이미지 삭제에 실패하였습니다."),
+    ALREADY_VOTED(400, HttpStatus.BAD_REQUEST, "이미 투표하셨습니다."),
 
 
     /**
@@ -43,6 +44,7 @@ public enum ErrorCode {
     NOT_FOUND_POST(404, HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
     NOT_FOUND_COMMENT(404, HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."),
     NOT_FOUND_LIKE(404, HttpStatus.NOT_FOUND, "좋아요를 찾을 수 없습니다."),
+    NOT_FOUND_VOTE(404, HttpStatus.NOT_FOUND, "투표를 찾을 수 없습니다."),
 
     /**
      * 405: Method Not Allowed
