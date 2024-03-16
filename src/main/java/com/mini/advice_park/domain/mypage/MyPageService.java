@@ -11,10 +11,14 @@ import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
+import com.mini.advice_park.global.security.filter.JwtAuthorizationFilter;
+import com.mini.advice_park.global.security.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MyPageService {
 
+    private final JwtUtil jwtUtil;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
@@ -31,17 +36,24 @@ public class MyPageService {
      * 등록글 조회
      */
     @Transactional(readOnly = true)
-    public BaseResponse<List<PostResponse>> getPostsByCurrentUser(String providerId) {
-        // providerId로 사용자를 찾음
-        User currentUser = userRepository.findByProviderId(providerId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+    public BaseResponse<List<PostResponse>> getPostsByCurrentUser(HttpServletRequest httpServletRequest) {
 
-        List<Post> posts = postRepository.findByUser(currentUser);
+        // 1. JWT 토큰을 이용하여 사용자 인증 확인
+        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
+        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        // 2. JWT 토큰에서 사용자 정보 추출
+        String email = jwtUtil.getEmail(token);
+        User loginUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+
+        List<Post> posts = postRepository.findByUser(loginUser);
         if (posts.isEmpty()) {
             return new BaseResponse<>(HttpStatus.NOT_FOUND, "사용자의 글이 없습니다.", null);
         }
 
-        // 댓글 수를 포함한 PostResponse 객체 생성
         List<PostResponse> postDtos = posts.stream()
                 .map(PostResponse::from).collect(Collectors.toList());
 
@@ -52,12 +64,21 @@ public class MyPageService {
      * 내가 작성한 댓글 모두 조회
      */
     @Transactional(readOnly = true)
-    public BaseResponse<List<CommentResponse>> getCommentsByCurrentUser(String providerId) {
-        // providerId로 사용자를 찾음
-        User currentUser = userRepository.findByProviderId(providerId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+    public BaseResponse<List<CommentResponse>> getCommentsByCurrentUser(HttpServletRequest httpServletRequest) {
 
-        List<Comment> comments = commentRepository.findByUser(currentUser);
+        // 1. JWT 토큰을 이용하여 사용자 인증 확인
+        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
+        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        // 2. JWT 토큰에서 사용자 정보 추출
+        String email = jwtUtil.getEmail(token);
+        User loginUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+
+
+        List<Comment> comments = commentRepository.findByUser(loginUser);
         if (comments.isEmpty()) {
             return new BaseResponse<>(HttpStatus.NOT_FOUND, "사용자의 댓글이 없습니다.", null);
         }

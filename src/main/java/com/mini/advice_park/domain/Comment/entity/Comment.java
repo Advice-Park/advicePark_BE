@@ -1,6 +1,5 @@
 package com.mini.advice_park.domain.Comment.entity;
 
-import com.mini.advice_park.domain.Comment.dto.CommentRequest;
 import com.mini.advice_park.domain.Comment.like.Like;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;

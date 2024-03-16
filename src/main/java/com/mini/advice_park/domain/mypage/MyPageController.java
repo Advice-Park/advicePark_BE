@@ -1,15 +1,14 @@
 package com.mini.advice_park.domain.mypage;
 
 import com.mini.advice_park.domain.Comment.dto.CommentResponse;
+import com.mini.advice_park.domain.post.PostService;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.global.common.BaseResponse;
-import com.mini.advice_park.global.security.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,29 +22,25 @@ public class MyPageController {
     private final MyPageService myPageService;
 
     /**
-     * 등록 질문글 조회
+     * 내가 작성한 질문글 모두 조회
      */
     @GetMapping("/api/mypage/post")
-    public ResponseEntity<BaseResponse<List<PostResponse>>> getPostByCurrentUser(Authentication authentication) {
+    public ResponseEntity<BaseResponse<List<PostResponse>>> getPostByCurrentUser(HttpServletRequest httpServletRequest) {
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String providerId = userDetails.getUsername();
-        List<PostResponse> posts = myPageService.getPostsByCurrentUser(providerId).getResult();
+        BaseResponse<List<PostResponse>> response = myPageService.getPostsByCurrentUser(httpServletRequest);
 
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK, "성공", posts));
+        return ResponseEntity.status(response.getCode()).body(response);
     }
 
     /**
      * 내가 작성한 댓글 모두 조회
      */
     @GetMapping("/api/mypage/comment")
-    public ResponseEntity<BaseResponse<List<CommentResponse>>> getCommentsByCurrentUser(Authentication authentication) {
+    public ResponseEntity<BaseResponse<List<CommentResponse>>> getCommentsByCurrentUser(HttpServletRequest httpServletRequest) {
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String providerId = userDetails.getUsername();
-        List<CommentResponse> comments = myPageService.getCommentsByCurrentUser(providerId).getResult();
+        BaseResponse<List<CommentResponse>> response = myPageService.getCommentsByCurrentUser(httpServletRequest);
 
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK, "성공", comments));
+        return ResponseEntity.status(response.getCode()).body(response);
     }
 
 }

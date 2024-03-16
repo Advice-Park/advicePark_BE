@@ -73,7 +73,7 @@ public class CommentService {
     }
 
     /**
-     * 모든 댓글 조회
+     * 특정 게시물의 모든 댓글 조회
      */
     @Transactional(readOnly = true)
     public BaseResponse<List<CommentResponse>> getAllComments(Long postId) {
@@ -137,6 +137,7 @@ public class CommentService {
             commentRepository.delete(comment);
 
             return new BaseResponse<>(HttpStatus.OK, "성공", null);
+
         } catch (CustomException e) {
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
