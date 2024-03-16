@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.vote;
+package com.mini.advice_park.domain.vote.entity;
 
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;

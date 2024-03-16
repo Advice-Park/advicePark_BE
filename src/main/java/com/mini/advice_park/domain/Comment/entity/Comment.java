@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -44,6 +45,7 @@ public class Comment extends BaseTimeEntity {
         this.user = user;
         this.post = post;
         this.content = content;
+        this.likes = new HashSet<>();
     }
 
     public static Comment of(String content, User user, Post post) {

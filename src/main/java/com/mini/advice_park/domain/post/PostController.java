@@ -48,7 +48,9 @@ public class PostController {
      */
     @GetMapping("")
     public ResponseEntity<BaseResponse<List<PostResponse>>> getAllPosts() {
+
         BaseResponse<List<PostResponse>> response = postService.getAllPosts();
+
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
@@ -57,7 +59,9 @@ public class PostController {
      */
     @GetMapping("/{postId}")
     public ResponseEntity<BaseResponse<PostResponse>> getPostById(@PathVariable Long postId) {
+
         BaseResponse<PostResponse> response = postService.getPostById(postId);
+
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
@@ -67,7 +71,9 @@ public class PostController {
     @DeleteMapping("/{postId}")
     public ResponseEntity<BaseResponse<Void>> deletePost(@PathVariable Long postId,
                                                          HttpServletRequest httpServletRequest) {
+
         BaseResponse<Void> response = postService.deletePost(postId, httpServletRequest);
+
         return ResponseEntity.status(response.getCode()).body(response);
     }
 

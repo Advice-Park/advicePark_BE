@@ -26,7 +26,6 @@ public class MyPageController {
      * 등록 질문글 조회
      */
     @GetMapping("/api/mypage/post")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<BaseResponse<List<PostResponse>>> getPostByCurrentUser(Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -40,7 +39,6 @@ public class MyPageController {
      * 내가 작성한 댓글 모두 조회
      */
     @GetMapping("/api/mypage/comment")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<BaseResponse<List<CommentResponse>>> getCommentsByCurrentUser(Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

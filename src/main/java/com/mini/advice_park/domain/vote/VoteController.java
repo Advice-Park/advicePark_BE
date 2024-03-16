@@ -3,6 +3,7 @@ package com.mini.advice_park.domain.vote;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
+import com.mini.advice_park.domain.vote.entity.VoteOption;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
