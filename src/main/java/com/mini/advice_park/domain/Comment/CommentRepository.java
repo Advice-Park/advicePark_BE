@@ -14,21 +14,11 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findAllByPost(Post post);
-
-    List<Comment> findByUser(User user); // 사용자가 작성한 모든 댓글 조회
+    List<Comment> findByUser(User user);
 
     @Query("SELECT r FROM Comment r WHERE r.post.postId = :postId")
     List<Comment> findByPostId(@Param("postId") Long postId);
 
-    void deleteByPost(Post post);
-
-    void deleteByUser(User user);
-
-    int countByPost(Post post);
-
     Optional<Comment> findByCommentIdAndPost(Long commentId, Post post);
-
-    boolean existsByUserAndPost(User user, Post post);
 
 }

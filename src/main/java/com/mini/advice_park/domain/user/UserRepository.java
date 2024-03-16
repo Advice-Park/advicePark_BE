@@ -17,8 +17,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT m FROM User m WHERE m.email = :email AND m.oAuth2Provider = :provider")
     Optional<User> findByEmailAndOAuth2Provider(@Param("email") String email, @Param("provider") OAuth2Provider oAuth2Provider);
 
-    Optional<User> findByProviderId(String providerId);
-
-    Optional<User> findByUserId(Long userId);
-
 }

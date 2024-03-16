@@ -38,13 +38,11 @@ public class MyPageService {
     @Transactional(readOnly = true)
     public BaseResponse<List<PostResponse>> getPostsByCurrentUser(HttpServletRequest httpServletRequest) {
 
-        // 1. JWT 토큰을 이용하여 사용자 인증 확인
         String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
         if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
             throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
         }
 
-        // 2. JWT 토큰에서 사용자 정보 추출
         String email = jwtUtil.getEmail(token);
         User loginUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
@@ -66,13 +64,11 @@ public class MyPageService {
     @Transactional(readOnly = true)
     public BaseResponse<List<CommentResponse>> getCommentsByCurrentUser(HttpServletRequest httpServletRequest) {
 
-        // 1. JWT 토큰을 이용하여 사용자 인증 확인
         String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
         if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
             throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
         }
 
-        // 2. JWT 토큰에서 사용자 정보 추출
         String email = jwtUtil.getEmail(token);
         User loginUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
@@ -83,7 +79,6 @@ public class MyPageService {
             return new BaseResponse<>(HttpStatus.NOT_FOUND, "사용자의 댓글이 없습니다.", null);
         }
 
-        // 댓글 Response 객체 생성
         List<CommentResponse> commentDtos = comments.stream()
                 .map(CommentResponse::from).collect(Collectors.toList());
 

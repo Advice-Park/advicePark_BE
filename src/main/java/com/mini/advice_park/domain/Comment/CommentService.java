@@ -44,6 +44,7 @@ public class CommentService {
                                                        HttpServletRequest httpServletRequest) {
 
         try {
+
             String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
             if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
@@ -78,14 +79,11 @@ public class CommentService {
     @Transactional(readOnly = true)
     public BaseResponse<List<CommentResponse>> getAllComments(Long postId) {
 
-        // 게시물 정보 가져오기
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-        // 게시물에 달린 댓글들 가져오기
         List<Comment> comments = commentRepository.findByPostId(postId);
 
-        // 댓글들을 CommentResponse로 변환
         List<CommentResponse> commentResponses = comments.stream()
                 .map(comment -> {
                     int likeCount = likeRepository.countByComment(comment);
@@ -109,31 +107,26 @@ public class CommentService {
     public BaseResponse<Void> deleteComment(Long postId, Long commentId, HttpServletRequest httpServletRequest) {
 
         try {
-            // 1. JWT 토큰을 이용하여 사용자 인증 확인
+
             String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
             if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
             }
 
-            // 2. JWT 토큰에서 사용자 정보 추출
             String email = jwtUtil.getEmail(token);
             User loginUser = userRepository.findByEmail(email)
                     .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
 
-            // 3. 게시물 조회
             Post post = postRepository.findById(postId)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-            // 4. 게시물에 달린 댓글 정보 조회
             Comment comment = commentRepository.findByCommentIdAndPost(commentId, post)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
-            // 5. 댓글 작성자와 로그인한 사용자 일치 여부 확인
             if (!comment.getUser().equals(loginUser)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
             }
 
-            // 6. 댓글 삭제
             commentRepository.delete(comment);
 
             return new BaseResponse<>(HttpStatus.OK, "성공", null);
