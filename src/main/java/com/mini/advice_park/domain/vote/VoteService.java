@@ -21,16 +21,25 @@ public class VoteService {
     private final PostRepository postRepository;
 
     /**
+     * 사용자 조회
+     */
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    private Post findPostById(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+    }
+
+    /**
      * 투표 등록
      */
     @Transactional
     public void createVote(Long userId, Long postId, VoteOption voteOption) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+        User user = findUserById(userId);
+        Post post = findPostById(postId);
 
         voteRepository.findByUserAndPost(user, post)
                 .ifPresent(vote -> { throw new CustomException(ErrorCode.ALREADY_VOTED); });
@@ -43,12 +52,8 @@ public class VoteService {
      */
     @Transactional(readOnly = true)
     public VoteOption getVoteOption(Long userId, Long postId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+        User user = findUserById(userId);
+        Post post = findPostById(postId);
 
         return voteRepository.findByUserAndPost(user, post)
                 .map(Vote::getVoteOption)
@@ -60,17 +65,12 @@ public class VoteService {
      */
     @Transactional
     public void deleteVote(Long userId, Long postId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+        User user = findUserById(userId);
+        Post post = findPostById(postId);
 
         Vote vote = voteRepository.findByUserAndPost(user, post)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
 
         voteRepository.delete(vote);
     }
-
 }
