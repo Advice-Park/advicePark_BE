@@ -63,6 +63,11 @@ public class CommentService {
 
             comment = commentRepository.save(comment);
 
+            // 게시물의 댓글 수 증가
+            Post post = comment.getPost();
+            post.increaseCommentCount();
+            postRepository.save(post);
+
             return new BaseResponse<>(HttpStatus.CREATED, "성공", CommentResponse.from(comment));
 
         } catch (DataAccessException e) {
@@ -119,6 +124,10 @@ public class CommentService {
             }
 
             commentRepository.delete(comment);
+
+            // 게시물의 댓글 수 감소
+            post.decreaseCommentCount();
+            postRepository.save(post);
 
             return new BaseResponse<>(HttpStatus.OK, "성공", null);
 

@@ -42,9 +42,8 @@ public class Post extends BaseTimeEntity {
     })
     private User user;
 
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Image> images = new ArrayList<>(); // 이미지 리스트를 비어있는 리스트로 초기화
+    private List<Image> images = new ArrayList<>();
 
     @Column(nullable = false)
     private long viewCount;

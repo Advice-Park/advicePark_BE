@@ -46,7 +46,7 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
         this.content = content;
         this.likes = new HashSet<>();
-        this.likeCount = 0; // 초기값 설정
+        this.likeCount = 0;
     }
 
     public static Comment of(String content, User user, Post post) {
@@ -61,14 +61,14 @@ public class Comment extends BaseTimeEntity {
     public void incrementLikeCount() {
         if (likes.stream().noneMatch(like -> like.getUser().equals(user))) {
             likes.add(new Like(user, this)); // 현재 댓글에 대한 좋아요 추가
-            updateLikeCount(); // 좋아요 수 업데이트
+            updateLikeCount();
         }
     }
 
     // 좋아요 카운트 감소 메서드
     public void decrementLikeCount() {
         likes.removeIf(like -> like.getUser().equals(user)); // 현재 사용자의 좋아요 제거
-        updateLikeCount(); // 좋아요 수 업데이트
+        updateLikeCount();
     }
 
     // 좋아요 수를 업데이트하는 메서드
