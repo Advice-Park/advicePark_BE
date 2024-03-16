@@ -1,6 +1,9 @@
 package com.mini.advice_park.domain.vote;
 
+import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.user.UserRepository;
+import com.mini.advice_park.domain.user.entity.User;
+import com.mini.advice_park.domain.vote.entity.VoteOption;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
@@ -19,38 +22,64 @@ public class VoteController {
     private final UserRepository userRepository;
 
     /**
-     * 특정 게시물에 대한 투표 등록
+     * 투표 등록
      */
-    @PostMapping("/register")
+    @PostMapping("")
     public ResponseEntity<BaseResponse<Void>> registerVote(@PathVariable("postId") Long postId,
-                                                           @RequestParam("voteOption") VoteOption voteOption,
+                                                           @RequestBody VoteOption voteOption,
                                                            Authentication authentication) {
-        Long userId = getUserIdFromAuthentication(authentication);
 
-        voteService.createVote(userId, postId, voteOption);
+        // OAuth2UserPrincipal 클래스를 이용하여 유저 정보를 가져옴
+        OAuth2UserPrincipal principal = (OAuth2UserPrincipal) authentication.getPrincipal();
+
+        // OAuth2로 인증된 사용자의 이메일 주소를 사용하여 검색
+        String email = principal.getUsername();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        voteService.createVote(user.getUserId(), postId, voteOption);
+
         return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.CREATED, "투표 등록이 완료되었습니다.", null));
     }
 
     /**
-     * 특정 게시물에 대한 투표 상태 조회
+     * 투표 상태 반환
      */
-    @GetMapping("/status")
+    @GetMapping("")
     public ResponseEntity<BaseResponse<VoteOption>> getVoteStatus(@PathVariable("postId") Long postId,
                                                                   Authentication authentication) {
-        Long userId = getUserIdFromAuthentication(authentication);
 
-        VoteOption voteOption = voteService.getVoteOption(userId, postId);
+        // OAuth2UserPrincipal 클래스를 이용하여 유저 정보를 가져옴
+        OAuth2UserPrincipal principal = (OAuth2UserPrincipal) authentication.getPrincipal();
+
+        // OAuth2로 인증된 사용자의 이메일 주소를 사용하여 검색
+        String email = principal.getUsername();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        VoteOption voteOption = voteService.getVoteOption(user.getUserId(), postId);
+
         return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "투표 상태 조회가 완료되었습니다.", voteOption));
     }
 
     /**
-     * 인증된 사용자의 ID 가져오기
+     * 투표 삭제
      */
-    private Long getUserIdFromAuthentication(Authentication authentication) {
-        String email = (String) authentication.getPrincipal();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER))
-                .getUserId();
+    @DeleteMapping("")
+    public ResponseEntity<BaseResponse<Void>> deleteVote(@PathVariable("postId") Long postId,
+                                                         Authentication authentication) {
+
+        // OAuth2UserPrincipal 클래스를 이용하여 유저 정보를 가져옴
+        OAuth2UserPrincipal principal = (OAuth2UserPrincipal) authentication.getPrincipal();
+
+        // OAuth2로 인증된 사용자의 이메일 주소를 사용하여 검색
+        String email = principal.getUsername();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        voteService.deleteVote(user.getUserId(), postId);
+
+        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "투표 삭제가 완료되었습니다.", null));
     }
 
 }

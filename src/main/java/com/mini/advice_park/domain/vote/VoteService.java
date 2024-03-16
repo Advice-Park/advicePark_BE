@@ -4,6 +4,8 @@ import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
+import com.mini.advice_park.domain.vote.entity.Vote;
+import com.mini.advice_park.domain.vote.entity.VoteOption;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class VoteService {
      */
     @Transactional
     public void createVote(Long userId, Long postId, VoteOption voteOption) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
@@ -40,6 +43,7 @@ public class VoteService {
      */
     @Transactional(readOnly = true)
     public VoteOption getVoteOption(Long userId, Long postId) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
@@ -56,6 +60,7 @@ public class VoteService {
      */
     @Transactional
     public void deleteVote(Long userId, Long postId) {
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
