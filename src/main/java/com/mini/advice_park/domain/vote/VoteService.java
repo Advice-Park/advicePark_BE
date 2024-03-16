@@ -4,8 +4,6 @@ import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
-import com.mini.advice_park.domain.vote.entity.Vote;
-import com.mini.advice_park.domain.vote.entity.VoteOption;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

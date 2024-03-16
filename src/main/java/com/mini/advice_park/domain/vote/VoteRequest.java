@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.vote.dto;
+package com.mini.advice_park.domain.vote;
 
 import com.mini.advice_park.domain.post.entity.VoteOption;
 import lombok.AccessLevel;

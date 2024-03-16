@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.vote.entity;
+package com.mini.advice_park.domain.vote;
 
 public enum VoteOption {
     SUPPORT,
