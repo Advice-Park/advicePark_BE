@@ -30,6 +30,7 @@ public class LikeService {
      */
     @Transactional
     public BaseResponse<Void> createLike(Long commentId, HttpServletRequest httpServletRequest) {
+
         // 현재 사용자 정보 가져오기
         User user = getCurrentUser(httpServletRequest);
 
@@ -45,6 +46,9 @@ public class LikeService {
         // 좋아요 등록
         likeRepository.save(new Like(user, comment));
 
+        // 댓글의 좋아요 카운트 증가
+        comment.incrementLikeCount();
+
         return new BaseResponse<>(HttpStatus.CREATED, "좋아요 등록 성공", null);
     }
 
@@ -53,6 +57,7 @@ public class LikeService {
      */
     @Transactional(readOnly = true)
     public boolean isLiked(Long commentId, HttpServletRequest httpServletRequest) {
+
         // 현재 사용자 정보 가져오기
         User user = getCurrentUser(httpServletRequest);
 
@@ -69,6 +74,7 @@ public class LikeService {
      */
     @Transactional
     public BaseResponse<Void> deleteLike(Long commentId, HttpServletRequest httpServletRequest) {
+
         // 현재 사용자 정보 가져오기
         User user = getCurrentUser(httpServletRequest);
 
@@ -83,6 +89,9 @@ public class LikeService {
 
         // 좋아요 삭제
         likeRepository.deleteByUserAndComment(user, comment);
+
+        // 댓글의 좋아요 카운트 감소
+        comment.decrementLikeCount();
 
         return new BaseResponse<>(HttpStatus.OK, "좋아요 삭제 성공", null);
     }

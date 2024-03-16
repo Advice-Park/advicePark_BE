@@ -9,11 +9,10 @@ import java.time.LocalDateTime;
 @Getter
 public class CommentResponse {
 
-    // TODO 댓글에 닉네임 들어감?
-
     private Long commentId;
     private Long userId;
     private Long postId;
+
     private String content;
 
     private int likeCount;

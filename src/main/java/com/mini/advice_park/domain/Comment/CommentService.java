@@ -85,17 +85,8 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByPostId(postId);
 
         List<CommentResponse> commentResponses = comments.stream()
-                .map(comment -> {
-                    int likeCount = likeRepository.countByComment(comment);
-
-                    return new CommentResponse(
-                            comment.getCommentId(),
-                            comment.getUser().getUserId(),
-                            comment.getPost().getPostId(),
-                            comment.getContent(),
-                            0,
-                            comment.getCreatedTime());
-                }).collect(Collectors.toList());
+                .map(comment -> CommentResponse.from(comment))
+                .collect(Collectors.toList());
 
         return new BaseResponse<>(HttpStatus.OK, "성공", commentResponses);
     }
