@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class UserPostFavoriteService {
@@ -67,20 +64,6 @@ public class UserPostFavoriteService {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(HttpStatus.CREATED, "즐겨찾기 추가 성공", null));
-    }
-
-    /**
-     * 즐겨찾기 조회
-     */
-    @Transactional(readOnly = true)
-    public List<Post> getFavoritePosts(HttpServletRequest httpServletRequest) {
-
-        User user = getCurrentUser(httpServletRequest);
-
-        return favoriteRepository.findByUser(user)
-                .stream()
-                .map(UserPostFavorite::getPost)
-                .collect(Collectors.toList());
     }
 
     /**

@@ -3,6 +3,8 @@ package com.mini.advice_park.domain.mypage;
 import com.mini.advice_park.domain.Comment.CommentRepository;
 import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.Comment.entity.Comment;
+import com.mini.advice_park.domain.favorite.UserPostFavorite;
+import com.mini.advice_park.domain.favorite.UserPostFavoriteRepository;
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
@@ -31,12 +33,12 @@ public class MyPageService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final UserPostFavoriteRepository favoriteRepository;
 
     /**
-     * 등록글 조회
+     * 현재 사용자 정보 가져오기
      */
-    @Transactional(readOnly = true)
-    public BaseResponse<List<PostResponse>> getPostsByCurrentUser(HttpServletRequest httpServletRequest) {
+    private User getCurrentUser(HttpServletRequest httpServletRequest) {
 
         String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
         if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
@@ -44,10 +46,19 @@ public class MyPageService {
         }
 
         String email = jwtUtil.getEmail(token);
-        User loginUser = userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+    }
 
-        List<Post> posts = postRepository.findByUser(loginUser);
+    /**
+     * 등록글 조회
+     */
+    @Transactional(readOnly = true)
+    public BaseResponse<List<PostResponse>> getPostsByCurrentUser(HttpServletRequest httpServletRequest) {
+
+        User user = getCurrentUser(httpServletRequest);
+
+        List<Post> posts = postRepository.findByUser(user);
         if (posts.isEmpty()) {
             return new BaseResponse<>(HttpStatus.NOT_FOUND, "사용자의 글이 없습니다.", null);
         }
@@ -64,17 +75,9 @@ public class MyPageService {
     @Transactional(readOnly = true)
     public BaseResponse<List<CommentResponse>> getCommentsByCurrentUser(HttpServletRequest httpServletRequest) {
 
-        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-        }
+        User user = getCurrentUser(httpServletRequest);
 
-        String email = jwtUtil.getEmail(token);
-        User loginUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-
-
-        List<Comment> comments = commentRepository.findByUser(loginUser);
+        List<Comment> comments = commentRepository.findByUser(user);
         if (comments.isEmpty()) {
             return new BaseResponse<>(HttpStatus.NOT_FOUND, "사용자의 댓글이 없습니다.", null);
         }
@@ -83,6 +86,20 @@ public class MyPageService {
                 .map(CommentResponse::from).collect(Collectors.toList());
 
         return new BaseResponse<>(HttpStatus.OK, "조회 성공", commentDtos);
+    }
+
+    /**
+     * 내가 등록한 즐겨찾기 조회
+     */
+    @Transactional(readOnly = true)
+    public List<Post> getFavoritePosts(HttpServletRequest httpServletRequest) {
+
+        User user = getCurrentUser(httpServletRequest);
+
+        return favoriteRepository.findByUser(user)
+                .stream()
+                .map(UserPostFavorite::getPost)
+                .collect(Collectors.toList());
     }
 
 }
