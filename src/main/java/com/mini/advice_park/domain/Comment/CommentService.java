@@ -32,7 +32,6 @@ public class CommentService {
     private final JwtUtil jwtUtil;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
 
     /**

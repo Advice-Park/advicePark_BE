@@ -73,7 +73,7 @@ public class Post extends BaseTimeEntity {
                 .contents(postRequest.getContents())
                 .category(postRequest.getCategory())
                 .voteOption(postRequest.getVoteOption())
-                .build(); // 이미지 리스트 초기화 없이 생성
+                .build();
     }
 
     public void updatePostDetails(String title, String contents, Category category, VoteOption voteOption) {

@@ -120,9 +120,15 @@ public class PostService {
 
         try {
             Optional<Post> optionalPost = postRepository.findById(postId);
+
             if (optionalPost.isPresent()) {
                 Post post = optionalPost.get();
                 PostResponse postResponse = PostResponse.from(post);
+
+                // 조회수 증가
+                post.increaseViewCount();
+                postRepository.save(post); // 변경된 조회수를 저장
+
                 return new BaseResponse<>(HttpStatus.OK.value(), "조회 성공", postResponse);
 
             } else {
@@ -132,6 +138,17 @@ public class PostService {
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패", null);
         }
+    }
+
+    /**
+     * 특정 글의 조회수 증가
+     */
+    @Transactional
+    public void increaseViewCount(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+        post.increaseViewCount();
+        postRepository.save(post);
     }
 
     /**
