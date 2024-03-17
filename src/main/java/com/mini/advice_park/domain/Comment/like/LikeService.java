@@ -31,23 +31,17 @@ public class LikeService {
     @Transactional
     public BaseResponse<Void> createLike(Long commentId, HttpServletRequest httpServletRequest) {
 
-        // 현재 사용자 정보 가져오기
         User user = getCurrentUser(httpServletRequest);
-
-        // 댓글 가져오기
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
-        // 이미 좋아요를 등록한 경우
         if (likeRepository.findByUserAndComment(user, comment).isPresent()) {
             throw new CustomException(ErrorCode.ALREADY_LIKED);
         }
 
-        // 좋아요 등록
-        likeRepository.save(new Like(user, comment));
-
         // 댓글의 좋아요 카운트 증가
         comment.incrementLikeCount();
+        likeRepository.save(new Like(user, comment));
 
         return new BaseResponse<>(HttpStatus.CREATED, "좋아요 등록 성공", null);
     }
@@ -58,14 +52,10 @@ public class LikeService {
     @Transactional(readOnly = true)
     public boolean isLiked(Long commentId, HttpServletRequest httpServletRequest) {
 
-        // 현재 사용자 정보 가져오기
         User user = getCurrentUser(httpServletRequest);
-
-        // 댓글 가져오기
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
-        // 해당 댓글에 좋아요를 등록한 경우 true 반환
         return likeRepository.findByUserAndComment(user, comment).isPresent();
     }
 
@@ -75,23 +65,17 @@ public class LikeService {
     @Transactional
     public BaseResponse<Void> deleteLike(Long commentId, HttpServletRequest httpServletRequest) {
 
-        // 현재 사용자 정보 가져오기
         User user = getCurrentUser(httpServletRequest);
-
-        // 댓글 가져오기
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
-        // 해당 댓글에 좋아요가 없는 경우
         if (!likeRepository.findByUserAndComment(user, comment).isPresent()) {
             throw new CustomException(ErrorCode.NOT_FOUND_LIKE);
         }
 
-        // 좋아요 삭제
-        likeRepository.deleteByUserAndComment(user, comment);
-
         // 댓글의 좋아요 카운트 감소
         comment.decrementLikeCount();
+        likeRepository.deleteByUserAndComment(user, comment);
 
         return new BaseResponse<>(HttpStatus.OK, "좋아요 삭제 성공", null);
     }
