@@ -115,7 +115,7 @@ public class PostService {
     /**
      * 특정 질문글 조회
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public BaseResponse<PostResponse> getPostById(Long postId) {
 
         try {
