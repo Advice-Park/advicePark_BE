@@ -49,7 +49,7 @@ public class VoteController {
 
         voteService.deleteVote(postId, httpServletRequest);
 
-        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "투표 삭제가 완료되었습니다.", null));
+        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.NO_CONTENT, "투표 삭제가 완료되었습니다.", null));
     }
 
 }

@@ -36,10 +36,7 @@ public class Post extends BaseTimeEntity {
     private VoteOption voteOption;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumns({
-            @JoinColumn(name = "user_id", referencedColumnName = "userId"),
-            @JoinColumn(name = "provider_id", referencedColumnName = "providerId")
-    })
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

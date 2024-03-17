@@ -23,7 +23,7 @@ public class LikeController {
 
         BaseResponse<Void> response = likeService.createLike(commentId, httpServletRequest);
 
-        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "좋아요 등록 성공", null));
+        return ResponseEntity.status(response.getCode()).body(response);
     }
 
     /**
@@ -48,7 +48,7 @@ public class LikeController {
 
         BaseResponse<Void> response = likeService.deleteLike(commentId, httpServletRequest);
 
-        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "좋아요 삭제 성공", null));
+        return ResponseEntity.status(response.getCode()).body(response);
     }
 
 }

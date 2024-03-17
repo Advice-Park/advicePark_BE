@@ -26,6 +26,21 @@ public class LikeService {
     private final CommentRepository commentRepository;
 
     /**
+     * 현재 사용자 정보 가져오기
+     */
+    private User getCurrentUser(HttpServletRequest httpServletRequest) {
+
+        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
+        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        String email = jwtUtil.getEmail(token);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+    }
+
+    /**
      * 좋아요 등록
      */
     @Transactional
@@ -78,21 +93,6 @@ public class LikeService {
         likeRepository.deleteByUserAndComment(user, comment);
 
         return new BaseResponse<>(HttpStatus.OK, "좋아요 삭제 성공", null);
-    }
-
-    /**
-     * 현재 사용자 정보 가져오기
-     */
-    private User getCurrentUser(HttpServletRequest httpServletRequest) {
-
-        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-        }
-
-        String email = jwtUtil.getEmail(token);
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
     }
 
 }
