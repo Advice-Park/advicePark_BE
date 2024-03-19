@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.user;
 
 import com.mini.advice_park.domain.user.dto.SignUpRequest;
+import com.mini.advice_park.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

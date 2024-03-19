@@ -8,7 +8,7 @@ import com.mini.advice_park.domain.favorite.UserPostFavoriteRepository;
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
-import com.mini.advice_park.domain.user.AuthService;
+import com.mini.advice_park.domain.user.service.AuthService;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;

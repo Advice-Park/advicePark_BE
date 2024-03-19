@@ -2,21 +2,17 @@ package com.mini.advice_park.domain.favorite;
 
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
-import com.mini.advice_park.domain.user.AuthService;
-import com.mini.advice_park.domain.user.UserRepository;
+import com.mini.advice_park.domain.user.service.AuthService;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
-import com.mini.advice_park.global.security.filter.JwtAuthorizationFilter;
-import com.mini.advice_park.global.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor

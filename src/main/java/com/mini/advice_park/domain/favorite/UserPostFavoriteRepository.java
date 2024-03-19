@@ -12,4 +12,5 @@ public interface UserPostFavoriteRepository extends JpaRepository<UserPostFavori
     boolean existsByUserAndPost(User user, Post post);
     void deleteByUserAndPost(User user, Post post);
     List<UserPostFavorite> findByUser(User user);
+    List<UserPostFavorite> findByPost(Post post);
 }

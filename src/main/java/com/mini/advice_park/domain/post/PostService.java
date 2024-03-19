@@ -6,27 +6,22 @@ import com.mini.advice_park.domain.Comment.like.Like;
 import com.mini.advice_park.domain.Comment.like.LikeRepository;
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.Image.ImageS3Service;
-import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
+import com.mini.advice_park.domain.favorite.UserPostFavorite;
+import com.mini.advice_park.domain.favorite.UserPostFavoriteRepository;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
-import com.mini.advice_park.domain.user.AuthService;
-import com.mini.advice_park.domain.user.UserRepository;
+import com.mini.advice_park.domain.user.service.AuthService;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
-import com.mini.advice_park.global.security.filter.JwtAuthorizationFilter;
-import com.mini.advice_park.global.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,6 +38,7 @@ public class PostService {
     private final ImageS3Service imageS3Service;
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
+    private final UserPostFavoriteRepository favoriteRepository;
 
     /**
      * 사용자와 게시물 소유자 비교
@@ -158,32 +154,30 @@ public class PostService {
         try {
             User user = authService.getCurrentUser(httpServletRequest);
 
-            // 게시물 조회
             Optional<Post> optionalPost = postRepository.findById(postId);
             if (optionalPost.isPresent()) {
                 Post post = optionalPost.get();
 
-                // 현재 사용자가 게시물 소유자인지 확인
                 if (isCurrentUserPostOwner(post, user)) {
-                    // 첨부된 이미지 확인 및 삭제
+
                     List<Image> images = post.getImages();
                     if (!images.isEmpty()) {
                         imageS3Service.deleteImages(images);
                     }
 
-                    // 게시글에 작성된 댓글 삭제
                     List<Comment> comments = commentRepository.findByPost(post);
                     commentRepository.deleteAll(comments);
 
-                    // 게시글에 작성된 댓글 좋아요 정보 삭제
                     List<Like> commentLikes = likeRepository.findByCommentIn(comments);
                     likeRepository.deleteAll(commentLikes);
 
-                    // 게시글 삭제
+                    // 해당 게시물에 대한 모든 즐겨찾기 등록 내역 삭제
+                    List<UserPostFavorite> favorites = favoriteRepository.findByPost(post);
+                    favoriteRepository.deleteAll(favorites);
+
                     postRepository.deleteById(postId);
 
-                    // 성공 응답 반환
-                    return new BaseResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
+                    return new BaseResponse<>(HttpStatus.NO_CONTENT.value(), "삭제 성공", null);
 
                 } else {
                     // 사용자가 게시물 소유자가 아니면 권한 없음 응답 반환
