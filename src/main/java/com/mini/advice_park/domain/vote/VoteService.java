@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.vote;
 
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.user.AuthService;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.domain.vote.entity.Vote;
@@ -20,25 +21,9 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class VoteService {
 
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final AuthService authService;
     private final VoteRepository voteRepository;
     private final PostRepository postRepository;
-
-    /**
-     * 현재 사용자 정보 가져오기
-     */
-    private User getCurrentUser(HttpServletRequest httpServletRequest) {
-
-        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-        }
-
-        String email = jwtUtil.getEmail(token);
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-    }
 
     /**
      * 투표 등록
@@ -46,7 +31,7 @@ public class VoteService {
     @Transactional
     public void createVote(Long postId, VoteOption voteOption, HttpServletRequest httpServletRequest) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
@@ -62,7 +47,7 @@ public class VoteService {
     @Transactional(readOnly = true)
     public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
@@ -77,7 +62,7 @@ public class VoteService {
     @Transactional
     public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 

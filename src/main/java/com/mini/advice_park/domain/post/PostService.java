@@ -1,11 +1,16 @@
 package com.mini.advice_park.domain.post;
 
+import com.mini.advice_park.domain.Comment.CommentRepository;
+import com.mini.advice_park.domain.Comment.entity.Comment;
+import com.mini.advice_park.domain.Comment.like.Like;
+import com.mini.advice_park.domain.Comment.like.LikeRepository;
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.Image.ImageS3Service;
 import com.mini.advice_park.domain.oauth2.domain.OAuth2UserPrincipal;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.user.AuthService;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
@@ -33,10 +38,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final JwtUtil jwtUtil;
+    private final AuthService authService;
     private final PostRepository postRepository;
     private final ImageS3Service imageS3Service;
-    private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
+
+    /**
+     * 사용자와 게시물 소유자 비교
+     */
+    private boolean isCurrentUserPostOwner(Post post, User user) {
+        return post.getUser().equals(user);
+    }
 
     /**
      * 질문글 등록
@@ -46,36 +59,22 @@ public class PostService {
                                                  List<MultipartFile> imageFiles,
                                                  HttpServletRequest httpServletRequest) {
         try {
-            // 1. JWT 토큰을 이용하여 사용자 인증 확인
-            String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-            if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-                throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-            }
+            User user = authService.getCurrentUser(httpServletRequest);
 
-            // 2. JWT 토큰에서 사용자 정보 추출
-            String email = jwtUtil.getEmail(token);
-            User loginUser = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-
-            // 3. 게시물 생성
             Post post = Post.builder()
                     .title(postRequest.getTitle())
                     .contents(postRequest.getContents())
                     .category(postRequest.getCategory())
                     .voteOption(postRequest.getVoteOption())
-                    .user(loginUser)
+                    .user(user)
                     .build();
 
-            // 4. 게시물 저장
             post = postRepository.save(post);
 
-            // 5. 이미지 업로드 (게시물 저장 이후에 이미지 업로드 처리)
             List<Image> uploadedImages = imageS3Service.uploadMultipleImagesForPost(imageFiles, post);
 
-            // 6. 이미지 추가
             uploadedImages.forEach(post::addImage);
 
-            // 7. 성공 응답 반환
             return new BaseResponse<>(HttpStatus.CREATED.value(), "질문글 등록 성공", PostResponse.from(post));
 
         } catch (IOException e) {
@@ -91,7 +90,6 @@ public class PostService {
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }
-
 
     /**
      * 질문글 전체 조회
@@ -156,20 +154,9 @@ public class PostService {
      */
     @Transactional
     public BaseResponse<Void> deletePost(Long postId, HttpServletRequest httpServletRequest) {
+
         try {
-            // HTTP 요청 헤더에서 토큰 추출
-            String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-
-            // 토큰을 사용하여 사용자 인증 및 정보 가져오기
-            if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-                // 토큰이 없거나 유효하지 않으면 권한 없음 응답 반환
-                return new BaseResponse<>(HttpStatus.UNAUTHORIZED.value(), "인증되지 않은 사용자입니다.", null);
-            }
-
-            // 토큰에서 사용자 정보 추출
-            String email = jwtUtil.getEmail(token);
-            User loginUser = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+            User user = authService.getCurrentUser(httpServletRequest);
 
             // 게시물 조회
             Optional<Post> optionalPost = postRepository.findById(postId);
@@ -177,21 +164,32 @@ public class PostService {
                 Post post = optionalPost.get();
 
                 // 현재 사용자가 게시물 소유자인지 확인
-                if (isCurrentUserPostOwner(post, loginUser)) {
+                if (isCurrentUserPostOwner(post, user)) {
                     // 첨부된 이미지 확인 및 삭제
                     List<Image> images = post.getImages();
                     if (!images.isEmpty()) {
                         imageS3Service.deleteImages(images);
                     }
 
-                    // 게시물 삭제
+                    // 게시글에 작성된 댓글 삭제
+                    List<Comment> comments = commentRepository.findByPost(post);
+                    commentRepository.deleteAll(comments);
+
+                    // 게시글에 작성된 댓글 좋아요 정보 삭제
+                    List<Like> commentLikes = likeRepository.findByCommentIn(comments);
+                    likeRepository.deleteAll(commentLikes);
+
+                    // 게시글 삭제
                     postRepository.deleteById(postId);
 
+                    // 성공 응답 반환
                     return new BaseResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
+
                 } else {
                     // 사용자가 게시물 소유자가 아니면 권한 없음 응답 반환
                     return new BaseResponse<>(HttpStatus.FORBIDDEN.value(), "삭제할 권한이 없습니다.", null);
                 }
+
             } else {
                 // 삭제할 게시물이 존재하지 않으면 존재하지 않음 응답 반환
                 return new BaseResponse<>(HttpStatus.NOT_FOUND.value(), "삭제할 게시물이 존재하지 않습니다.", null);
@@ -205,13 +203,6 @@ public class PostService {
             // 사용자 인증 실패 시
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
-    }
-
-    /**
-     * 사용자와 게시물 소유자 비교
-     */
-    private boolean isCurrentUserPostOwner(Post post, User user) {
-        return post.getUser().equals(user);
     }
 
 }

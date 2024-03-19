@@ -1,8 +1,7 @@
 package com.mini.advice_park.domain.user;
 
-import com.mini.advice_park.domain.user.UserRepository;
-import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.domain.user.dto.SignUpRequest;
+import com.mini.advice_park.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

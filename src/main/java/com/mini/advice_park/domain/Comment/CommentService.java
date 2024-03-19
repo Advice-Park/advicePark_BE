@@ -6,6 +6,7 @@ import com.mini.advice_park.domain.Comment.entity.Comment;
 import com.mini.advice_park.domain.Comment.like.LikeRepository;
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.user.AuthService;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
@@ -29,25 +30,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final JwtUtil jwtUtil;
+    private final AuthService authService;
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-
-    /**
-     * 현재 사용자 정보 가져오기
-     */
-    private User getCurrentUser(HttpServletRequest httpServletRequest) {
-
-        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-        }
-
-        String email = jwtUtil.getEmail(token);
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-    }
 
     /**
      * 게시물에서 댓글 조회
@@ -81,7 +66,7 @@ public class CommentService {
 
         try {
             // 현재 사용자 정보 가져오기
-            User user = getCurrentUser(httpServletRequest);
+            User user = authService.getCurrentUser(httpServletRequest);
 
             // 게시물 조회
             Post post = postRepository.findById(postId)
@@ -139,13 +124,13 @@ public class CommentService {
     public BaseResponse<Void> deleteComment(Long postId, Long commentId, HttpServletRequest httpServletRequest) {
         try {
             // 사용자 인증 및 권한 확인
-            User loginUser = getCurrentUser(httpServletRequest);
+            User user = authService.getCurrentUser(httpServletRequest);
 
             // 댓글 조회
             Comment comment = getComment(postId, commentId);
 
             // 권한 확인: 댓글 작성자만 삭제 가능
-            if (!comment.getUser().equals(loginUser)) {
+            if (!comment.getUser().equals(user)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
             }
 

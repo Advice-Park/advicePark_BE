@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.favorite;
 
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
+import com.mini.advice_park.domain.user.AuthService;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.global.common.BaseResponse;
@@ -21,25 +22,10 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class UserPostFavoriteService {
 
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final AuthService authService;
     private final PostRepository postRepository;
     private final UserPostFavoriteRepository favoriteRepository;
 
-    /**
-     * 현재 사용자 정보 가져오기
-     */
-    private User getCurrentUser(HttpServletRequest httpServletRequest) {
-
-        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-        }
-
-        String email = jwtUtil.getEmail(token);
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-    }
 
     /**
      * 즐겨찾기 추가
@@ -47,7 +33,7 @@ public class UserPostFavoriteService {
     @Transactional
     public ResponseEntity<BaseResponse<Void>> addFavorite(HttpServletRequest httpServletRequest, Long postId) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
@@ -72,9 +58,8 @@ public class UserPostFavoriteService {
     @Transactional
     public ResponseEntity<BaseResponse<Void>> removeFavorite(HttpServletRequest httpServletRequest, Long postId) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
 
-        // 수정 후
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
