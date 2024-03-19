@@ -35,6 +35,43 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     /**
+     * 현재 사용자 정보 가져오기
+     */
+    private User getCurrentUser(HttpServletRequest httpServletRequest) {
+
+        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
+        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
+        }
+
+        String email = jwtUtil.getEmail(token);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
+    }
+
+    /**
+     * 게시물에서 댓글 조회
+     */
+    private Comment getComment(Long postId, Long commentId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+        return commentRepository.findByCommentIdAndPost(commentId, post)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
+    }
+
+    /**
+     * 게시물의 댓글 수 감소
+     */
+    private void decreaseCommentCount(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+        post.decreaseCommentCount();
+        postRepository.save(post);
+    }
+
+    /**
      * 댓글 등록
      */
     @Transactional
@@ -43,36 +80,36 @@ public class CommentService {
                                                        HttpServletRequest httpServletRequest) {
 
         try {
+            // 현재 사용자 정보 가져오기
+            User user = getCurrentUser(httpServletRequest);
 
-            String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-            if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-                throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-            }
+            // 게시물 조회
+            Post post = postRepository.findById(postId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-            String email = jwtUtil.getEmail(token);
-            User loginUser = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-
+            // 댓글 생성
             Comment comment = Comment.builder()
                     .content(commentRequest.getContent())
-                    .user(loginUser)
-                    .post(postRepository.findById(postId)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST)))
+                    .user(user)
+                    .post(post)
                     .build();
 
+            // 댓글 저장
             comment = commentRepository.save(comment);
 
             // 게시물의 댓글 수 증가
-            Post post = comment.getPost();
             post.increaseCommentCount();
             postRepository.save(post);
 
-            return new BaseResponse<>(HttpStatus.CREATED, "성공", CommentResponse.from(comment));
+            // 댓글 생성 성공 응답 반환
+            return new BaseResponse<>(HttpStatus.CREATED, "댓글 등록 성공", CommentResponse.from(comment));
 
         } catch (DataAccessException e) {
+            // 데이터베이스 접근 오류가 발생한 경우
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
 
         } catch (CustomException e) {
+            // 커스텀 예외 발생 시 해당하는 에러코드와 메시지를 응답으로 반환
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }
@@ -100,37 +137,28 @@ public class CommentService {
      */
     @Transactional
     public BaseResponse<Void> deleteComment(Long postId, Long commentId, HttpServletRequest httpServletRequest) {
-
         try {
+            // 사용자 인증 및 권한 확인
+            User loginUser = getCurrentUser(httpServletRequest);
 
-            String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-            if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-                throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-            }
+            // 댓글 조회
+            Comment comment = getComment(postId, commentId);
 
-            String email = jwtUtil.getEmail(token);
-            User loginUser = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-
-            Post post = postRepository.findById(postId)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-
-            Comment comment = commentRepository.findByCommentIdAndPost(commentId, post)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
-
+            // 권한 확인: 댓글 작성자만 삭제 가능
             if (!comment.getUser().equals(loginUser)) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
             }
 
+            // 댓글 삭제
             commentRepository.delete(comment);
 
             // 게시물의 댓글 수 감소
-            post.decreaseCommentCount();
-            postRepository.save(post);
+            decreaseCommentCount(postId);
 
-            return new BaseResponse<>(HttpStatus.OK, "성공", null);
-
+            // 성공 응답 반환
+            return new BaseResponse<>(HttpStatus.OK, "댓글 삭제 성공", null);
         } catch (CustomException e) {
+            // 예외 발생 시 해당하는 에러코드와 메시지를 응답으로 반환
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }
