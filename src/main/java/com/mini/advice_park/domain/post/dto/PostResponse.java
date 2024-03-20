@@ -24,6 +24,7 @@ public class PostResponse {
     private final VoteOption voteOption;
 
     private final long viewCount;
+    private final long favoriteCount;
     private final long commentCount;
 
     private LocalDateTime createdTime;
@@ -38,7 +39,8 @@ public class PostResponse {
                         Category category,
                         VoteOption voteOption,
                         long viewCount,
-                        long commentCount, // 댓글 수 추가 필드
+                        long favoriteCount,
+                        long commentCount,
                         LocalDateTime createdTime,
                         List<String> imageUrls) {
 
@@ -49,7 +51,8 @@ public class PostResponse {
         this.category = category;
         this.voteOption = voteOption;
         this.viewCount = viewCount;
-        this.commentCount = commentCount; // 댓글 수 필드 초기화
+        this.favoriteCount = favoriteCount;
+        this.commentCount = commentCount;
         this.createdTime = createdTime;
         this.imageUrls = imageUrls != null ? imageUrls : Collections.emptyList(); // 이미지 URL 리스트가 null일 경우 빈 리스트로 초기화
 
@@ -70,7 +73,8 @@ public class PostResponse {
                 .category(post.getCategory())
                 .voteOption(post.getVoteOption())
                 .viewCount(post.getViewCount())
-                .commentCount(post.getCommentCount()) // 댓글 수 추가
+                .favoriteCount(post.getFavoriteCount())
+                .commentCount(post.getCommentCount())
                 .createdTime(post.getCreatedTime())
                 .imageUrls(imageUrls)
                 .build();

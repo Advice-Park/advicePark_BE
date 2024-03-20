@@ -48,19 +48,24 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     private long commentCount;
 
+    @Column(nullable = false)
+    private Long favoriteCount;
+
     @Builder
     public Post(String title,
                 String contents,
                 Category category,
                 VoteOption voteOption,
                 User user,
-                long viewCount) {
+                long viewCount,
+                long favoriteCount) {
         this.title = title;
         this.contents = contents;
         this.category = category;
         this.voteOption = voteOption;
         this.user = user;
         this.viewCount = viewCount;
+        this.favoriteCount = favoriteCount;
         this.commentCount = 0; // 댓글 수 초기화
     }
 
@@ -89,20 +94,36 @@ public class Post extends BaseTimeEntity {
         this.images.clear();
     }
 
-    // 조회수 증가 메서드
+    /**
+     * 조회수를 증가 시키는 메서드
+     */
     public void increaseViewCount() {
         this.viewCount++;
     }
 
-    // 댓글 수를 증가시키는 메서드
+    /**
+     * 댓글 수를 증가,감소 시키는 메서드
+     */
     public void increaseCommentCount() {
         this.commentCount++;
     }
 
-    // 댓글 수를 감소시키는 메서드
     public void decreaseCommentCount() {
         if (this.commentCount > 0) {
             this.commentCount--;
+        }
+    }
+
+    /**
+     * 즐겨찾기 수를 증가,감소 시키는 메서드
+     */
+    public void increaseFavoriteCount() {
+        this.favoriteCount++;
+    }
+
+    public void decreaseFavoriteCount() {
+        if (this.favoriteCount > 0) {
+            this.favoriteCount--;
         }
     }
 

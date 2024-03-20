@@ -42,6 +42,9 @@ public class UserPostFavoriteService {
                 .user(user)
                 .post(post)
                 .build();
+
+        post.increaseFavoriteCount();
+
         favoriteRepository.save(favorite);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -78,6 +81,8 @@ public class UserPostFavoriteService {
         }
 
         favoriteRepository.deleteByUserAndPost(user, post);
+
+        post.decreaseFavoriteCount();
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(new BaseResponse<>(HttpStatus.NO_CONTENT, "즐겨찾기 삭제 성공", null));
