@@ -84,5 +84,4 @@ public class MyPageService {
                 .collect(Collectors.toList());
     }
 
-
 }

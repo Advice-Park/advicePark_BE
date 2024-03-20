@@ -23,4 +23,5 @@ public class UserPostFavoriteDto {
                 userPostFavorite.getPost().getPostId()
         );
     }
+
 }

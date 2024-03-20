@@ -68,6 +68,7 @@ public class LikeService {
     public boolean isLiked(Long commentId, HttpServletRequest httpServletRequest) {
 
         User user = getCurrentUser(httpServletRequest);
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 

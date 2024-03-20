@@ -23,7 +23,6 @@ public class UserPostFavoriteService {
     private final PostRepository postRepository;
     private final UserPostFavoriteRepository favoriteRepository;
 
-
     /**
      * 즐겨찾기 추가
      */
@@ -47,6 +46,20 @@ public class UserPostFavoriteService {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(HttpStatus.CREATED, "즐겨찾기 추가 성공", null));
+    }
+
+    /**
+     * 즐겨찾기 상태 반환
+     */
+    @Transactional(readOnly = true)
+    public boolean isFavorite(Long postId, HttpServletRequest httpServletRequest) {
+
+        User user = authService.getCurrentUser(httpServletRequest);
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+        return favoriteRepository.findByUserAndPost(user, post).isPresent();
     }
 
     /**
