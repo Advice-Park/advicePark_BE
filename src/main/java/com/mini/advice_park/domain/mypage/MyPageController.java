@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.mypage;
 
 import com.mini.advice_park.domain.Comment.dto.CommentResponse;
+import com.mini.advice_park.domain.favorite.dto.UserPostFavoriteDto;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.global.common.BaseResponse;
@@ -47,11 +48,11 @@ public class MyPageController {
      * 내가 등록한 즐겨찾기 조회
      */
     @GetMapping("/favorite")
-    public ResponseEntity<BaseResponse<List<Post>>> getFavoritePosts(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<BaseResponse<List<UserPostFavoriteDto>>> getFavoritePosts(HttpServletRequest httpServletRequest) {
 
-        List<Post> favoritePosts = myPageService.getFavoritePosts(httpServletRequest);
+        List<UserPostFavoriteDto> favoritePostDTOs = myPageService.getFavoritePosts(httpServletRequest);
 
-        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "즐겨찾기 목록 조회 성공", favoritePosts));
+        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "즐겨찾기 목록 조회 성공", favoritePostDTOs));
     }
 
 }

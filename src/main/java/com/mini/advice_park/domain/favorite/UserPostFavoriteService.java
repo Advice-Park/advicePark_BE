@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.favorite;
 
+import com.mini.advice_park.domain.favorite.entity.UserPostFavorite;
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.service.AuthService;
@@ -34,8 +35,8 @@ public class UserPostFavoriteService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-        if (!favoriteRepository.existsByUserAndPost(user, post)) {
-            throw new CustomException(ErrorCode.NOT_FAVORITE);
+        if (favoriteRepository.existsByUserAndPost(user, post)) {
+            throw new CustomException(ErrorCode.ALREADY_FAVORITE);
         }
 
         UserPostFavorite favorite = UserPostFavorite.builder()

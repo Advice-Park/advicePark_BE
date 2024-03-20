@@ -3,7 +3,8 @@ package com.mini.advice_park.domain.mypage;
 import com.mini.advice_park.domain.Comment.CommentRepository;
 import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.Comment.entity.Comment;
-import com.mini.advice_park.domain.favorite.UserPostFavorite;
+import com.mini.advice_park.domain.favorite.dto.UserPostFavoriteDto;
+import com.mini.advice_park.domain.favorite.entity.UserPostFavorite;
 import com.mini.advice_park.domain.favorite.UserPostFavoriteRepository;
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.dto.PostResponse;
@@ -72,14 +73,16 @@ public class MyPageService {
      * 내가 등록한 즐겨찾기 조회
      */
     @Transactional(readOnly = true)
-    public List<Post> getFavoritePosts(HttpServletRequest httpServletRequest) {
+    public List<UserPostFavoriteDto> getFavoritePosts(HttpServletRequest httpServletRequest) {
 
         User user = authService.getCurrentUser(httpServletRequest);
 
-        return favoriteRepository.findByUser(user)
-                .stream()
-                .map(UserPostFavorite::getPost)
+        List<UserPostFavorite> userPostFavorites = favoriteRepository.findByUser(user);
+
+        return userPostFavorites.stream()
+                .map(UserPostFavoriteDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
 
 }

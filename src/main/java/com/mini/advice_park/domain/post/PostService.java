@@ -6,7 +6,7 @@ import com.mini.advice_park.domain.Comment.like.Like;
 import com.mini.advice_park.domain.Comment.like.LikeRepository;
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.Image.ImageS3Service;
-import com.mini.advice_park.domain.favorite.UserPostFavorite;
+import com.mini.advice_park.domain.favorite.entity.UserPostFavorite;
 import com.mini.advice_park.domain.favorite.UserPostFavoriteRepository;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;

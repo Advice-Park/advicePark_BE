@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.favorite;
 
+import com.mini.advice_park.domain.favorite.entity.UserPostFavorite;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
