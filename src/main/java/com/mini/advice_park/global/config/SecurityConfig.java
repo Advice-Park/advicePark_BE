@@ -61,8 +61,8 @@ public class SecurityConfig {
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers("/health-check").permitAll()
 
-                        // 질문글 조회
                         .requestMatchers(HttpMethod.GET,"/api/post/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/search/**").permitAll()
 
                         .requestMatchers("/api/auth/signup").permitAll()
                         //.requestMatchers("/login/**").permitAll() // http://localhost:8080/login/oauth2/code/google

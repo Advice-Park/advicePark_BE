@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/favorites")
+@RequestMapping("/api/favorite")
 public class UserPostFavoriteController {
 
     private final UserPostFavoriteService favoriteService;
