@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.search;
 
+import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,10 @@ public class SearchController {
     /**
      * 검색어로 댓글 검색
      */
+    @GetMapping("/comment")
+    public ResponseEntity<List<CommentResponse>> searchComments(@RequestParam("keyword") String keyword) {
+        List<CommentResponse> searchResults = searchService.searchComments(keyword);
+        return ResponseEntity.ok(searchResults);
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.mini.advice_park.domain.search;
 
+import com.mini.advice_park.domain.Comment.CommentRepository;
+import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.stream.Stream;
 public class SearchService {
 
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     /**
      * 검색어로 게시글 검색
@@ -38,6 +41,20 @@ public class SearchService {
                 .collect(Collectors.toList());
 
         return combinedResults;
+    }
+
+    /**
+     * 검색어로 댓글 검색
+     */
+    @Transactional(readOnly = true)
+    public List<CommentResponse> searchComments(String keyword) {
+
+        // 댓글 내용에 대한 검색 결과 가져오기
+        List<CommentResponse> commentsByContent = commentRepository.findByContentContaining(keyword).stream()
+                .map(CommentResponse::from)
+                .collect(Collectors.toList());
+
+        return commentsByContent;
     }
 
 }
