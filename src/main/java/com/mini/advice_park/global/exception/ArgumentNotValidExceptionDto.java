@@ -29,4 +29,5 @@ public class ArgumentNotValidExceptionDto extends ExceptionDto {
         exception.getConstraintViolations()
                 .forEach(e -> this.errorFields.put(e.getPropertyPath().toString(), e.getMessage()));
     }
+
 }

@@ -16,7 +16,7 @@ public class UserPostFavoriteDto {
         this.postId = postId;
     }
 
-    public static UserPostFavoriteDto fromEntity(UserPostFavorite userPostFavorite) {
+    public static UserPostFavoriteDto from(UserPostFavorite userPostFavorite) {
         return new UserPostFavoriteDto(
                 userPostFavorite.getFavoriteId(),
                 userPostFavorite.getUser().getUserId(),

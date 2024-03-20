@@ -4,6 +4,7 @@ import com.mini.advice_park.domain.Comment.CommentRepository;
 import com.mini.advice_park.domain.Comment.entity.Comment;
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.entity.User;
+import com.mini.advice_park.domain.user.service.AuthService;
 import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
@@ -20,25 +21,9 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class LikeService {
 
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final AuthService authService;
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
-
-    /**
-     * 현재 사용자 정보 가져오기
-     */
-    private User getCurrentUser(HttpServletRequest httpServletRequest) {
-
-        String token = JwtAuthorizationFilter.resolveToken(httpServletRequest);
-        if (!StringUtils.hasText(token) || !jwtUtil.validateToken(token)) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED_ERROR);
-        }
-
-        String email = jwtUtil.getEmail(token);
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED_ERROR));
-    }
 
     /**
      * 좋아요 등록
@@ -46,7 +31,8 @@ public class LikeService {
     @Transactional
     public BaseResponse<Void> createLike(Long commentId, HttpServletRequest httpServletRequest) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
@@ -67,7 +53,7 @@ public class LikeService {
     @Transactional(readOnly = true)
     public boolean isLiked(Long commentId, HttpServletRequest httpServletRequest) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
@@ -81,7 +67,8 @@ public class LikeService {
     @Transactional
     public BaseResponse<Void> deleteLike(Long commentId, HttpServletRequest httpServletRequest) {
 
-        User user = getCurrentUser(httpServletRequest);
+        User user = authService.getCurrentUser(httpServletRequest);
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_COMMENT));
 
@@ -89,7 +76,6 @@ public class LikeService {
             throw new CustomException(ErrorCode.NOT_FOUND_LIKE);
         }
 
-        // 댓글의 좋아요 카운트 감소
         comment.decrementLikeCount();
         likeRepository.deleteByUserAndComment(user, comment);
 

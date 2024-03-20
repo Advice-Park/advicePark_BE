@@ -38,4 +38,5 @@ public class BaseResponse<T> {
         this.code = status.value();
         this.result = null;
     }
+
 }

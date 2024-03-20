@@ -57,21 +57,24 @@ public class Comment extends BaseTimeEntity {
                 .build();
     }
 
-    // 좋아요 카운트 증가 메서드
+    /**
+     * 좋아요 카운트 증가, 감소 메서드
+     */
     public void incrementLikeCount() {
         if (likes.stream().noneMatch(like -> like.getUser().equals(user))) {
-            likes.add(new Like(user, this)); // 현재 댓글에 대한 좋아요 추가
+            likes.add(new Like(user, this));
             updateLikeCount();
         }
     }
 
-    // 좋아요 카운트 감소 메서드
     public void decrementLikeCount() {
-        likes.removeIf(like -> like.getUser().equals(user)); // 현재 사용자의 좋아요 제거
+        likes.removeIf(like -> like.getUser().equals(user));
         updateLikeCount();
     }
 
-    // 좋아요 수를 업데이트하는 메서드
+    /**
+     * 좋아요 카운트 업데이트 메서드
+     */
     public void updateLikeCount() {
         this.likeCount = likes.size();
     }

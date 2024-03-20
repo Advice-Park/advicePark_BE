@@ -80,7 +80,7 @@ public class MyPageService {
         List<UserPostFavorite> userPostFavorites = favoriteRepository.findByUser(user);
 
         return userPostFavorites.stream()
-                .map(UserPostFavoriteDto::fromEntity)
+                .map(UserPostFavoriteDto::from)
                 .collect(Collectors.toList());
     }
 

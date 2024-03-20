@@ -24,4 +24,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByPost(Post post);
 
     List<Comment> findByContentContaining(String keyword);
+
 }

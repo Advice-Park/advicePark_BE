@@ -74,15 +74,12 @@ public class PostService {
             return new BaseResponse<>(HttpStatus.CREATED.value(), "질문글 등록 성공", PostResponse.from(post));
 
         } catch (IOException e) {
-            // 이미지 업로드 실패 시
             return new BaseResponse<>(HttpStatus.BAD_REQUEST.value(), ErrorCode.IMAGE_UPLOAD_FAILED.getMessage(), null);
 
         } catch (DataAccessException e) {
-            // 데이터베이스 저장 실패 시
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
 
         } catch (CustomException e) {
-            // 사용자 인증 실패 시
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }
@@ -119,9 +116,8 @@ public class PostService {
                 Post post = optionalPost.get();
                 PostResponse postResponse = PostResponse.from(post);
 
-                // 조회수 증가
                 post.increaseViewCount();
-                postRepository.save(post); // 변경된 조회수를 저장
+                postRepository.save(post);
 
                 return new BaseResponse<>(HttpStatus.OK.value(), "조회 성공", postResponse);
 
@@ -132,17 +128,6 @@ public class PostService {
         } catch (Exception e) {
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "조회 실패", null);
         }
-    }
-
-    /**
-     * 특정 글의 조회수 증가
-     */
-    @Transactional
-    public void increaseViewCount(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-        post.increaseViewCount();
-        postRepository.save(post);
     }
 
     /**
@@ -171,7 +156,6 @@ public class PostService {
                     List<Like> commentLikes = likeRepository.findByCommentIn(comments);
                     likeRepository.deleteAll(commentLikes);
 
-                    // 해당 게시물에 대한 모든 즐겨찾기 등록 내역 삭제
                     List<UserPostFavorite> favorites = favoriteRepository.findByPost(post);
                     favoriteRepository.deleteAll(favorites);
 
@@ -180,21 +164,17 @@ public class PostService {
                     return new BaseResponse<>(HttpStatus.NO_CONTENT.value(), "삭제 성공", null);
 
                 } else {
-                    // 사용자가 게시물 소유자가 아니면 권한 없음 응답 반환
                     return new BaseResponse<>(HttpStatus.FORBIDDEN.value(), "삭제할 권한이 없습니다.", null);
                 }
 
             } else {
-                // 삭제할 게시물이 존재하지 않으면 존재하지 않음 응답 반환
                 return new BaseResponse<>(HttpStatus.NOT_FOUND.value(), "삭제할 게시물이 존재하지 않습니다.", null);
             }
 
         } catch (DataAccessException e) {
-            // 데이터베이스 저장 실패 시
             return new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErrorCode.DATA_BASE_ERROR.getMessage(), null);
 
         } catch (CustomException e) {
-            // 사용자 인증 실패 시
             return new BaseResponse<>(e.getErrorCode().getStatus(), e.getErrorCode().getMessage(), null);
         }
     }

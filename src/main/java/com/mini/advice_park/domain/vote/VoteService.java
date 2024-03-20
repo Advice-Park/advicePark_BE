@@ -28,6 +28,7 @@ public class VoteService {
     public void createVote(Long postId, VoteOption voteOption, HttpServletRequest httpServletRequest) {
 
         User user = authService.getCurrentUser(httpServletRequest);
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
@@ -44,6 +45,7 @@ public class VoteService {
     public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
 
         User user = authService.getCurrentUser(httpServletRequest);
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
@@ -59,6 +61,7 @@ public class VoteService {
     public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
 
         User user = authService.getCurrentUser(httpServletRequest);
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 

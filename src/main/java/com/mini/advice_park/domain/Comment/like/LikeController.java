@@ -33,7 +33,6 @@ public class LikeController {
     public ResponseEntity<BaseResponse<Boolean>> checkLikeStatus(@PathVariable("commentId") Long commentId,
                                                                  HttpServletRequest httpServletRequest) {
 
-        // 좋아요 서비스 호출하여 상태 확인
         boolean isLiked = likeService.isLiked(commentId, httpServletRequest);
 
         return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "좋아요 상태 확인 성공", isLiked));

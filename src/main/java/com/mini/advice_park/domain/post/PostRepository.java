@@ -13,9 +13,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByUser(User user);
 
-    // 사용자와 관련된 속성을 사용하지 않도록 수정
     List<Post> findByTitleContaining(String title);
 
-    // 사용자와 관련된 속성을 사용하지 않도록 수정
     List<Post> findByContentsContaining(String contents);
+
 }

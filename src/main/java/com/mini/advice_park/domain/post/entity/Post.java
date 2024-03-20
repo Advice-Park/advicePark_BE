@@ -78,20 +78,9 @@ public class Post extends BaseTimeEntity {
                 .build();
     }
 
-    public void updatePostDetails(String title, String contents, Category category, VoteOption voteOption) {
-        this.title = title;
-        this.contents = contents;
-        this.category = category;
-        this.voteOption = voteOption;
-    }
-
     public void addImage(Image image) {
         images.add(image);
         image.setPost(this);
-    }
-
-    public void clearImages() {
-        this.images.clear();
     }
 
     /**

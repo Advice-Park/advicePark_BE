@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtUtil {
 
-    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
+    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60; // 1시간
     public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 12; // 12시간
     public static final String PROVIDER_CLAIM_NAME = "provider";
     public static final String AUTHORITIES_CLAIM_NAME = "authorities";

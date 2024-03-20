@@ -48,4 +48,5 @@ public class ResponseDto<T> {
     public static ResponseDto<Object> fail(final CustomException e) {
         return new ResponseDto<>(e.getErrorCode().getStatus(), false, null, new ExceptionDto(e.getErrorCode()));
     }
+
 }

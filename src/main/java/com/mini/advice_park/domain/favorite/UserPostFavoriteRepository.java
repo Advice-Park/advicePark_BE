@@ -13,9 +13,13 @@ import java.util.Optional;
 public interface UserPostFavoriteRepository extends JpaRepository<UserPostFavorite, Long> {
 
     boolean existsByUserAndPost(User user, Post post);
+
     void deleteByUserAndPost(User user, Post post);
+
     List<UserPostFavorite> findByUser(User user);
+
     List<UserPostFavorite> findByPost(Post post);
+
     Optional<UserPostFavorite> findByUserAndPost(User user, Post post);
 
 }

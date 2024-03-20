@@ -36,4 +36,5 @@ public class SwaggerConfig {
                 .addSecurityItem(new SecurityRequirement().addList(REFRESH_TOKEN_SCHEME_NAME));
 
     }
+
 }

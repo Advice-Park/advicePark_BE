@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
-    // TODO 탈퇴여부 필요? 관리자 계정도 필요? 추후에 리팩토링 생각해보기
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
@@ -129,4 +127,5 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.image = image;
     }
+
 }

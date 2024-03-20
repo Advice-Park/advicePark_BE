@@ -27,7 +27,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
-    // JWT 토큰을 인증 정보로 변환하여 SecurityContext에 저장
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -48,7 +47,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // 헤더에서 토큰 추출
     public static String resolveToken(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION_HEADER);
 

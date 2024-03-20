@@ -33,6 +33,7 @@ public class CommentService {
      * 게시물에서 댓글 조회
      */
     private Comment getComment(Long postId, Long commentId) {
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
@@ -44,6 +45,7 @@ public class CommentService {
      * 게시물의 댓글 수 감소
      */
     private void decreaseCommentCount(Long postId) {
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 

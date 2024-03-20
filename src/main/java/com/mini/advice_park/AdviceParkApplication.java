@@ -21,11 +21,6 @@ public class AdviceParkApplication {
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
 
-//    @PostConstruct
-//    public void init() {
-//        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-//    }
-
     public static void main(String[] args) {
         SpringApplication.run(AdviceParkApplication.class, args);
     }

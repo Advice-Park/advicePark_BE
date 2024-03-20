@@ -20,4 +20,5 @@ public class JsonUsernamePasswordAuthenticationFailureHandler implements Authent
                                         AuthenticationException exception) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
+
 }

@@ -31,7 +31,7 @@ public class UserPostFavoriteController {
      */
     @GetMapping("")
     public ResponseEntity<BaseResponse<Boolean>> checkFavoriteStatus(HttpServletRequest httpServletRequest,
-                                                                   @RequestParam Long postId) {
+                                                                     @RequestParam Long postId) {
 
         boolean isFavorite = favoriteService.isFavorite(postId, httpServletRequest);
 

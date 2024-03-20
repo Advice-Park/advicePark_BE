@@ -29,4 +29,5 @@ public class ExceptionDto {
     public static ExceptionDto of(ErrorCode errorCode) {
         return new ExceptionDto(errorCode);
     }
+
 }

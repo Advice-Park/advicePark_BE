@@ -29,7 +29,6 @@ public class PostController {
                                                                          required = false) List<MultipartFile> imageFiles,
                                                                  HttpServletRequest httpServletRequest) {
 
-        // 글 작성 권한 확인 및 처리
         BaseResponse<PostResponse> response = postService.createPost(postRequest, imageFiles, httpServletRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
