@@ -2,7 +2,11 @@ package com.mini.advice_park.domain.user.service;
 
 import com.mini.advice_park.domain.user.UserRepository;
 import com.mini.advice_park.domain.user.dto.SignUpRequest;
+import com.mini.advice_park.domain.user.dto.UserInfo;
 import com.mini.advice_park.domain.user.entity.User;
+import com.mini.advice_park.global.exception.CustomException;
+import com.mini.advice_park.global.exception.ErrorCode;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final AuthService authService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -30,6 +35,37 @@ public class UserService {
         User user = User.of(email, password, firstName, lastName, nickname, image, passwordEncoder);
 
         userRepository.save(user);
+    }
+
+    /**
+     * 특정 유저 정보 조회
+     */
+    @Transactional(readOnly = true)
+    public UserInfo getUserInfo(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        return UserInfo.of(user.getProviderId(), user.getRole(), user.getEmail(), user.getName(), user.getImage());
+    }
+
+    /**
+     * 현재 로그인한 사용자 정보 조회
+     */
+    @Transactional(readOnly = true)
+    public UserInfo getCurrentUserInfo(HttpServletRequest httpServletRequest) {
+
+        String userEmail = String.valueOf(authService.getCurrentUser(httpServletRequest));
+
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        return UserInfo.of (
+                user.getProviderId(),
+                user.getRole(),
+                user.getEmail(),
+                user.getName(),
+                user.getImage());
     }
 
 }

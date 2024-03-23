@@ -21,6 +21,7 @@ public class AuthService {
 
     /**
      * 현재 사용자 정보 가져오기
+     * 인증방식
      */
     @Transactional
     public User getCurrentUser(HttpServletRequest httpServletRequest) {

@@ -1,12 +1,14 @@
 package com.mini.advice_park.domain.user;
 
 import com.mini.advice_park.domain.user.dto.SignUpRequest;
+import com.mini.advice_park.domain.user.dto.UserInfo;
 import com.mini.advice_park.domain.user.service.UserService;
+import com.mini.advice_park.global.common.BaseResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +25,22 @@ public class AuthController {
         userService.signUp(request);
     }
 
+    /**
+     * 특정 유저 정보 조회
+     */
+    @GetMapping("/{userId}")
+    public ResponseEntity<BaseResponse<UserInfo>> getUserInfo(@PathVariable Long userId) {
+        UserInfo userInfo = userService.getUserInfo(userId);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), "유저 정보 조회 성공", userInfo));
+    }
+
+    /**
+     * 현재 로그인한 사용자 정보 조회
+     */
+    @GetMapping("/currentUserInfo")
+    public ResponseEntity<BaseResponse<UserInfo>> getCurrentUserInfo(HttpServletRequest httpServletRequest) {
+        UserInfo userInfo = userService.getCurrentUserInfo(httpServletRequest);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), "현재 로그인한 사용자 정보 조회 성공", userInfo));
+    }
+    
 }
