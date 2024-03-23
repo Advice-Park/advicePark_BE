@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.user;
 
 import com.mini.advice_park.domain.user.dto.SignUpRequest;
 import com.mini.advice_park.domain.user.dto.UserInfo;
+import com.mini.advice_park.domain.user.service.AuthService;
 import com.mini.advice_park.domain.user.service.UserService;
 import com.mini.advice_park.global.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;

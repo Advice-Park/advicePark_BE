@@ -55,17 +55,15 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserInfo getCurrentUserInfo(HttpServletRequest httpServletRequest) {
 
-        String userEmail = String.valueOf(authService.getCurrentUser(httpServletRequest));
+        User currentUser = authService.getCurrentUser(httpServletRequest);
 
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-
-        return UserInfo.of (
-                user.getProviderId(),
-                user.getRole(),
-                user.getEmail(),
-                user.getName(),
-                user.getImage());
+        return UserInfo.of(
+                currentUser.getProviderId(),
+                currentUser.getRole(),
+                currentUser.getEmail(),
+                currentUser.getName(),
+                currentUser.getImage()
+        );
     }
 
 }
