@@ -25,6 +25,9 @@ public class OAuth2LoginConfig {
         return new InMemoryClientRegistrationRepository(this.googleClientRegistration());
     }
 
+    /**
+     * 구글 로그인 설정
+     */
     private ClientRegistration googleClientRegistration() {
         OAuth2ClientProperties.Registration registration = oAuth2ClientProperties.getRegistration().get("google");
         return ClientRegistration.withRegistrationId("google")

@@ -35,6 +35,7 @@ public enum ErrorCode {
     FORBIDDEN_ERROR(403, HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
     ACCESS_DENIED(403, HttpStatus.FORBIDDEN, "접근이 거부되었습니다."),
     NOT_MATCHED_USER(403, HttpStatus.FORBIDDEN, "일치하는 사용자가 없습니다."),
+    REVOKE_FAILED(403, HttpStatus.FORBIDDEN, "토큰 해제에 실패하였습니다."),
 
     /**
      * 404: Not Found

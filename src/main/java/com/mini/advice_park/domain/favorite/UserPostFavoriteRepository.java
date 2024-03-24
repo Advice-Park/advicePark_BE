@@ -22,4 +22,5 @@ public interface UserPostFavoriteRepository extends JpaRepository<UserPostFavori
 
     Optional<UserPostFavorite> findByUserAndPost(User user, Post post);
 
+    void deleteAllByUser(User user);
 }

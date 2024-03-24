@@ -3,7 +3,6 @@ package com.mini.advice_park.domain.mypage;
 import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.favorite.dto.UserPostFavoriteDto;
 import com.mini.advice_park.domain.post.dto.PostResponse;
-import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.global.common.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

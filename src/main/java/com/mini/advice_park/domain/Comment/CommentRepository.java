@@ -25,4 +25,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findByContentContaining(String keyword);
 
+    void deleteAllByUser(User user);
 }

@@ -79,7 +79,7 @@ public class LikeService {
         comment.decrementLikeCount();
         likeRepository.deleteByUserAndComment(user, comment);
 
-        return new BaseResponse<>(HttpStatus.OK, "좋아요 삭제 성공", null);
+        return new BaseResponse<>(HttpStatus.NO_CONTENT, "좋아요 삭제 성공", null);
     }
 
 }
