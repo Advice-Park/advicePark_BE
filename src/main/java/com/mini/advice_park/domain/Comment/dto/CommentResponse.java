@@ -12,9 +12,7 @@ public class CommentResponse {
     private Long commentId;
     private Long userId;
     private Long postId;
-
     private String content;
-
     private int likeCount;
     private LocalDateTime createdTime;
 
@@ -25,6 +23,7 @@ public class CommentResponse {
                            String content,
                            int likeCount,
                            LocalDateTime createdTime) {
+
         this.commentId = commentId;
         this.userId = userId;
         this.postId = postId;
@@ -34,6 +33,7 @@ public class CommentResponse {
     }
 
     public static CommentResponse from(Comment comment) {
+
         return CommentResponse.builder()
                 .commentId(comment.getCommentId())
                 .userId(comment.getUser().getUserId())

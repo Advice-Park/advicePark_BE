@@ -1,10 +1,10 @@
 package com.mini.advice_park.global.config;
 
-import com.mini.advice_park.global.security.filter.JwtAuthorizationFilter;
+import com.mini.advice_park.domain.oauth2.CustomOAuth2UserService;
 import com.mini.advice_park.domain.oauth2.config.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.mini.advice_park.domain.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.mini.advice_park.domain.oauth2.handler.OAuth2AuthenticationSuccessHandler;
-import com.mini.advice_park.domain.oauth2.CustomOAuth2UserService;
+import com.mini.advice_park.global.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -62,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/health-check").permitAll()
 
                         .requestMatchers(HttpMethod.GET,"/api/post/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/comment/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/search/**").permitAll()
 
                         .requestMatchers("/api/auth/signup").permitAll()
