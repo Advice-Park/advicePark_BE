@@ -21,7 +21,7 @@ public class ChatController {
     @Value("${openai.api.url}")
     private String apiUrl;
 
-    @GetMapping("/chat")
+    @GetMapping("/api/chatgpt")
     public String chat(@RequestParam String prompt) {
 
         ChatRequest request = new ChatRequest(model, prompt);
