@@ -34,4 +34,5 @@ public class ChatController {
 
         return response.getChoices().get(0).getMessage().getContent();
     }
+
 }
