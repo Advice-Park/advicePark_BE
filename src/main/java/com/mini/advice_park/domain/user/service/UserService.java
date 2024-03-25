@@ -46,7 +46,13 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        return UserInfo.of(user.getProviderId(), user.getRole(), user.getEmail(), user.getName(), user.getImage());
+        return UserInfo.of(
+                user.getUserId(),
+                user.getProviderId(),
+                user.getRole(),
+                user.getEmail(),
+                user.getName(),
+                user.getImage());
     }
 
     /**
@@ -58,6 +64,7 @@ public class UserService {
         User currentUser = authService.getCurrentUser(httpServletRequest);
 
         return UserInfo.of(
+                currentUser.getUserId(),
                 currentUser.getProviderId(),
                 currentUser.getRole(),
                 currentUser.getEmail(),

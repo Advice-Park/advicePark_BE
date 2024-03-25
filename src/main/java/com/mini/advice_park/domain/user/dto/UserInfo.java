@@ -12,18 +12,20 @@ public class UserInfo {
     /**
      * 회원 정보 반환
      */
+    private final Long userId;
     private final String providerId;
     private final Role role;
     private final String email;
     private final String name;
     private final String image;
 
-    public static UserInfo of(String providerId,
+    public static UserInfo of(Long userId,
+                              String providerId,
                               Role role,
                               String email,
                               String name,
                               String image) {
-        return new UserInfo(providerId, role, email, name, image);
+        return new UserInfo(userId, providerId, role, email, name, image);
     }
 
 }
