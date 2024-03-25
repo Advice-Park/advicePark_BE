@@ -63,6 +63,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/search/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/chat-gpt").permitAll() // 테스트용
 
                         .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/api/auth/{userId}").permitAll()

@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/oauth2/revoke")
 public class RevokeController {
 
+    /**
+     * 계정 연결 해제
+     */
     private final RevokeService revokeService;
 
     @DeleteMapping("/google")
