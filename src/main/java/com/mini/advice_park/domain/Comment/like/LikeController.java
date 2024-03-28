@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.Comment.like;
 
 import com.mini.advice_park.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,8 +32,10 @@ public class LikeController {
         }
     )
     @PostMapping("")
-    public ResponseEntity<BaseResponse<Void>> createLike(@PathVariable("commentId") Long commentId,
-                                                         HttpServletRequest httpServletRequest) {
+    public ResponseEntity<BaseResponse<Void>> createLike(
+            @Parameter(description = "댓글 ID", required = true, example = "1")
+            @PathVariable("commentId") Long commentId,
+            HttpServletRequest httpServletRequest) {
 
         BaseResponse<Void> response = likeService.createLike(commentId, httpServletRequest);
 
@@ -50,8 +53,10 @@ public class LikeController {
         }
     )
     @GetMapping("")
-    public ResponseEntity<BaseResponse<Boolean>> checkLikeStatus(@PathVariable("commentId") Long commentId,
-                                                                 HttpServletRequest httpServletRequest) {
+    public ResponseEntity<BaseResponse<Boolean>> checkLikeStatus(
+            @Parameter(description = "댓글 ID", required = true, example = "1")
+            @PathVariable("commentId") Long commentId,
+            HttpServletRequest httpServletRequest) {
 
         boolean isLiked = likeService.isLiked(commentId, httpServletRequest);
 
@@ -70,8 +75,10 @@ public class LikeController {
         }
     )
     @DeleteMapping("")
-    public ResponseEntity<BaseResponse<Void>> deleteLike(@PathVariable("commentId") Long commentId,
-                                                         HttpServletRequest httpServletRequest) {
+    public ResponseEntity<BaseResponse<Void>> deleteLike(
+            @Parameter(description = "댓글 ID", required = true, example = "1")
+            @PathVariable("commentId") Long commentId,
+            HttpServletRequest httpServletRequest) {
 
         BaseResponse<Void> response = likeService.deleteLike(commentId, httpServletRequest);
 
