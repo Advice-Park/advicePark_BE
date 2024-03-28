@@ -58,6 +58,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers("/health-check").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/comment/**").permitAll()

@@ -26,9 +26,12 @@ dependencies {
     // chatgpt
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 
-    // p6spy swagger
+    // p6spy swagger actuator
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation('org.springframework.boot:spring-boot-starter-actuator') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
 
     // spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
