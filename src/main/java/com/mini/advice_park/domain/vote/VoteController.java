@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.vote;
 
 import com.mini.advice_park.domain.vote.entity.VoteOption;
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/vote/{postId}")
+@Tag(name = "투표 API", description = "투표 API")
 public class VoteController {
 
     private final VoteService voteService;

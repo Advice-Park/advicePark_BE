@@ -4,6 +4,7 @@ import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.favorite.dto.UserPostFavoriteDto;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/mypage")
 @RequiredArgsConstructor
+@RequestMapping("/api/mypage")
+@Tag(name = "마이페이지 API", description = "마이페이지 API")
 public class MyPageController {
 
     private final MyPageService myPageService;

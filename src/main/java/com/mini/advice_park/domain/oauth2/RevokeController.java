@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.oauth2;
 
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/oauth2/revoke")
+@Tag(name = "연동 해제 API", description = "연동 해제 API")
 public class RevokeController {
 
     /**

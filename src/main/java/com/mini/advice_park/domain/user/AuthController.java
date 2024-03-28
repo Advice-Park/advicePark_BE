@@ -5,6 +5,7 @@ import com.mini.advice_park.domain.user.dto.UserInfo;
 import com.mini.advice_park.domain.user.service.AuthService;
 import com.mini.advice_park.domain.user.service.UserService;
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@Tag(name = "인증 API", description = "인증 API")
 public class AuthController {
 
     private final UserService userService;

@@ -9,6 +9,7 @@ import com.mini.advice_park.global.common.BaseResponse;
 import com.mini.advice_park.global.exception.CustomException;
 import com.mini.advice_park.global.exception.ErrorCode;
 import com.mini.advice_park.global.security.jwt.JwtUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comment")
+@Tag(name = "댓글 API", description = "댓글 API")
 public class CommentController {
 
     private final CommentService commentService;

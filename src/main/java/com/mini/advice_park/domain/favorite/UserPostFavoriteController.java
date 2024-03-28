@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.favorite;
 
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/favorite")
+@Tag(name = "즐겨찾기 API", description = "즐겨찾기 API")
 public class UserPostFavoriteController {
 
     private final UserPostFavoriteService favoriteService;

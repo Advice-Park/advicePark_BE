@@ -3,6 +3,7 @@ package com.mini.advice_park.domain.post;
 import com.mini.advice_park.domain.post.dto.PostRequest;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
+@Tag(name = "질문글 API", description = "질문글 API")
 public class PostController {
 
     private final PostService postService;

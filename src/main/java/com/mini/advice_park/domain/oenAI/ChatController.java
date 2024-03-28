@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.oenAI;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
+@Tag(name = "Chat API", description = "Chat API")
 public class ChatController {
 
     @Qualifier("openaiRestTemplate")

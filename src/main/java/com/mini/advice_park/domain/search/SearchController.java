@@ -2,6 +2,7 @@ package com.mini.advice_park.domain.search;
 
 import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.post.dto.PostResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/search")
+@Tag(name = "검색 API", description = "검색 API")
 public class SearchController {
 
     private final SearchService searchService;
