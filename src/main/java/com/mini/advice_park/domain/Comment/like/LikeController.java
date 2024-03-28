@@ -1,6 +1,9 @@
 package com.mini.advice_park.domain.Comment.like;
 
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,14 @@ public class LikeController {
     /**
      * 좋아요 등록
      */
+    @Operation(summary = "좋아요 등록", description = "댓글에 좋아요를 등록")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "좋아요 등록 성공"),
+            @ApiResponse(responseCode = "400", description = "이미 좋아요한 댓글입니다"),
+            @ApiResponse(responseCode = "401", description = "로그인이 필요합니다"),
+            @ApiResponse(responseCode = "404", description = "댓글을 찾을 수 없습니다")
+        }
+    )
     @PostMapping("")
     public ResponseEntity<BaseResponse<Void>> createLike(@PathVariable("commentId") Long commentId,
                                                          HttpServletRequest httpServletRequest) {
@@ -31,6 +42,13 @@ public class LikeController {
     /**
      * 좋아요 상태 반환
      */
+    @Operation(summary = "좋아요 상태 확인", description = "댓글에 좋아요 상태를 확인")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "좋아요 상태 확인 성공"),
+            @ApiResponse(responseCode = "401", description = "로그인이 필요합니다"),
+            @ApiResponse(responseCode = "404", description = "댓글을 찾을 수 없습니다")
+        }
+    )
     @GetMapping("")
     public ResponseEntity<BaseResponse<Boolean>> checkLikeStatus(@PathVariable("commentId") Long commentId,
                                                                  HttpServletRequest httpServletRequest) {
@@ -43,6 +61,14 @@ public class LikeController {
     /**
      * 좋아요 삭제
      */
+    @Operation(summary = "좋아요 삭제", description = "댓글에 등록된 좋아요를 삭제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "좋아요 삭제 성공"),
+            @ApiResponse(responseCode = "401", description = "로그인이 필요합니다"),
+            @ApiResponse(responseCode = "404", description = "댓글을 찾을 수 없습니다"),
+            @ApiResponse(responseCode = "404", description = "좋아요를 찾을 수 없습니다")
+        }
+    )
     @DeleteMapping("")
     public ResponseEntity<BaseResponse<Void>> deleteLike(@PathVariable("commentId") Long commentId,
                                                          HttpServletRequest httpServletRequest) {
