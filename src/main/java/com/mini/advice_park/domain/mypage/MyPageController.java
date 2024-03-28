@@ -4,6 +4,9 @@ import com.mini.advice_park.domain.Comment.dto.CommentResponse;
 import com.mini.advice_park.domain.favorite.dto.UserPostFavoriteDto;
 import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.global.common.BaseResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +26,12 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
-    /**
-     * 내가 작성한 질문글 모두 조회
-     */
+    @Operation(summary = "내가 작성한 게시글 조회", description = "내가 작성한 게시글을 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "게시글 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없습니다"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
     @GetMapping("/post")
     public ResponseEntity<BaseResponse<List<PostResponse>>> getPostByCurrentUser(HttpServletRequest httpServletRequest) {
 
@@ -34,9 +40,12 @@ public class MyPageController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    /**
-     * 내가 작성한 댓글 모두 조회
-     */
+    @Operation(summary = "내가 작성한 댓글 조회", description = "내가 작성한 댓글을 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "댓글 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "댓글을 찾을 수 없습니다"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
     @GetMapping("/comment")
     public ResponseEntity<BaseResponse<List<CommentResponse>>> getCommentsByCurrentUser(HttpServletRequest httpServletRequest) {
 
@@ -45,9 +54,12 @@ public class MyPageController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    /**
-     * 내가 등록한 즐겨찾기 조회
-     */
+    @Operation(summary = "즐겨찾기 목록 조회", description = "즐겨찾기한 게시글 목록을 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "즐겨찾기 목록 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "즐겨찾기한 게시글을 찾을 수 없습니다"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
     @GetMapping("/favorite")
     public ResponseEntity<BaseResponse<List<UserPostFavoriteDto>>> getFavoritePosts(HttpServletRequest httpServletRequest) {
 

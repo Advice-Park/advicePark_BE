@@ -1,5 +1,9 @@
 package com.mini.advice_park.domain.oenAI;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,8 +27,15 @@ public class ChatController {
     @Value("${openai.api.url}")
     private String apiUrl;
 
+    @Operation(summary = "Chat", description = "Chat with GPT-3.5 tutor")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
     @GetMapping("/api/chatgpt")
-    public String chat(@RequestParam String prompt) {
+    public String chat(
+            @Parameter(description = "Prompt", required = true, example = "Hello, how are you?")
+            @RequestParam String prompt) {
 
         ChatRequest request = new ChatRequest(model, prompt);
 

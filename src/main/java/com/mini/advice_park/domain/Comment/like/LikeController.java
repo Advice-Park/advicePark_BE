@@ -20,9 +20,6 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    /**
-     * 좋아요 등록
-     */
     @Operation(summary = "좋아요 등록", description = "댓글에 좋아요를 등록")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "좋아요 등록 성공"),
@@ -42,9 +39,6 @@ public class LikeController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    /**
-     * 좋아요 상태 반환
-     */
     @Operation(summary = "좋아요 상태 확인", description = "댓글에 좋아요 상태를 확인")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "좋아요 상태 확인 성공"),
@@ -63,9 +57,6 @@ public class LikeController {
         return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "좋아요 상태 확인 성공", isLiked));
     }
 
-    /**
-     * 좋아요 삭제
-     */
     @Operation(summary = "좋아요 삭제", description = "댓글에 등록된 좋아요를 삭제")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "좋아요 삭제 성공"),
