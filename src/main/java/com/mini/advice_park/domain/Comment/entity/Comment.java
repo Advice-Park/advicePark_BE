@@ -43,19 +43,21 @@ public class Comment extends BaseTimeEntity {
     private CommentType commentType;
 
     @Builder
-    public Comment(User user, Post post, String content) {
+    public Comment(User user, Post post, String content, CommentType commentType) {
         this.user = user;
         this.post = post;
         this.content = content;
         this.likes = new HashSet<>();
         this.likeCount = 0;
+        this.commentType = commentType;
     }
 
-    public static Comment of(String content, User user, Post post) {
+    public static Comment of(String content, User user, Post post, CommentType commentType) {
         return Comment.builder()
                 .user(user)
                 .post(post)
                 .content(content)
+                .commentType(commentType)
                 .build();
     }
 
