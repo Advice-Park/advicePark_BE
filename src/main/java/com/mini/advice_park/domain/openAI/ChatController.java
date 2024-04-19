@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.oenAI;
+package com.mini.advice_park.domain.openAI;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

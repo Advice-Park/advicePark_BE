@@ -1,4 +1,4 @@
-package com.mini.advice_park.domain.oenAI;
+package com.mini.advice_park.domain.openAI;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
