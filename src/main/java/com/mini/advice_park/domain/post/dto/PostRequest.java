@@ -39,4 +39,5 @@ public class PostRequest {
         this.postVoteOption = postVoteOption;
         this.imageFiles = imageFiles;
     }
+
 }

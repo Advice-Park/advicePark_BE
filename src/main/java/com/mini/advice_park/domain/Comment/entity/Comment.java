@@ -39,6 +39,7 @@ public class Comment extends BaseTimeEntity {
     // @Transient // DB에 매핑하지 않음
     private int likeCount;
 
+    @Enumerated(EnumType.STRING)
     private CommentType commentType;
 
     @Builder
