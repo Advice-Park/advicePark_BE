@@ -2,7 +2,7 @@ package com.mini.advice_park.domain.post.dto;
 
 import com.mini.advice_park.domain.post.entity.Category;
 import com.mini.advice_park.domain.post.entity.Post;
-import com.mini.advice_park.domain.post.entity.VoteOption;
+import com.mini.advice_park.domain.post.entity.PostVoteOption;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,7 +21,7 @@ public class PostResponse {
     private final String contents;
 
     private final Category category;
-    private final VoteOption voteOption;
+    private final PostVoteOption postVoteOption;
 
     private final long viewCount;
     private final long favoriteCount;
@@ -37,7 +37,7 @@ public class PostResponse {
                         String title,
                         String contents,
                         Category category,
-                        VoteOption voteOption,
+                        PostVoteOption postVoteOption,
                         long viewCount,
                         long favoriteCount,
                         long commentCount,
@@ -49,7 +49,7 @@ public class PostResponse {
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.voteOption = voteOption;
+        this.postVoteOption = postVoteOption;
         this.viewCount = viewCount;
         this.favoriteCount = favoriteCount;
         this.commentCount = commentCount;
@@ -71,7 +71,7 @@ public class PostResponse {
                 .title(post.getTitle())
                 .contents(post.getContents())
                 .category(post.getCategory())
-                .voteOption(post.getVoteOption())
+                .postVoteOption(post.getPostVoteOption())
                 .viewCount(post.getViewCount())
                 .favoriteCount(post.getFavoriteCount())
                 .commentCount(post.getCommentCount())

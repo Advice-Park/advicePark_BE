@@ -1,6 +1,6 @@
 package com.mini.advice_park.domain.vote.dto;
 
-import com.mini.advice_park.domain.post.entity.VoteOption;
+import com.mini.advice_park.domain.post.entity.PostVoteOption;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VoteRequest {
 
-    private VoteOption voteOption;
+    private PostVoteOption postVoteOption;
+
+    public VoteRequest(PostVoteOption postVoteOption) {
+        this.postVoteOption = postVoteOption;
+    }
 
 }

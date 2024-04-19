@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Entity
@@ -33,7 +32,7 @@ public class Post extends BaseTimeEntity {
     private Category category;
 
     @Enumerated(EnumType.STRING)
-    private VoteOption voteOption;
+    private PostVoteOption postVoteOption;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -55,14 +54,14 @@ public class Post extends BaseTimeEntity {
     public Post(String title,
                 String contents,
                 Category category,
-                VoteOption voteOption,
+                PostVoteOption postVoteOption,
                 User user,
                 long viewCount,
                 long favoriteCount) {
         this.title = title;
         this.contents = contents;
         this.category = category;
-        this.voteOption = voteOption;
+        this.postVoteOption = postVoteOption;
         this.user = user;
         this.viewCount = viewCount;
         this.favoriteCount = favoriteCount;
@@ -74,7 +73,7 @@ public class Post extends BaseTimeEntity {
                 .title(postRequest.getTitle())
                 .contents(postRequest.getContents())
                 .category(postRequest.getCategory())
-                .voteOption(postRequest.getVoteOption())
+                .postVoteOption(postRequest.getPostVoteOption())
                 .build();
     }
 
