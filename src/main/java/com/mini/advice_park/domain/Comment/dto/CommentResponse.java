@@ -45,7 +45,7 @@ public class CommentResponse {
                 .content(comment.getContent())
                 .likeCount(comment.getLikeCount())
                 .createdTime(comment.getCreatedTime())
-                .commentType(comment.getCommentType()) // 수정
+                .commentType(comment.getCommentType())
                 .build();
     }
 
