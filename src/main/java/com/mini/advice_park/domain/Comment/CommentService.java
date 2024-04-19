@@ -71,6 +71,7 @@ public class CommentService {
                     .content(commentRequest.getContent())
                     .user(user)
                     .post(post)
+                    .commentType(commentRequest.getCommentType())
                     .build();
 
             comment = commentRepository.save(comment);
