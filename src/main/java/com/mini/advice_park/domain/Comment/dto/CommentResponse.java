@@ -1,6 +1,7 @@
 package com.mini.advice_park.domain.Comment.dto;
 
 import com.mini.advice_park.domain.Comment.entity.Comment;
+import com.mini.advice_park.domain.Comment.entity.CommentType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +16,7 @@ public class CommentResponse {
     private String content;
     private int likeCount;
     private LocalDateTime createdTime;
+    private CommentType commentType;
 
     @Builder
     public CommentResponse(Long commentId,
@@ -22,7 +24,8 @@ public class CommentResponse {
                            Long postId,
                            String content,
                            int likeCount,
-                           LocalDateTime createdTime) {
+                           LocalDateTime createdTime,
+                           CommentType commentType) {
 
         this.commentId = commentId;
         this.userId = userId;
@@ -30,6 +33,7 @@ public class CommentResponse {
         this.content = content;
         this.likeCount = likeCount;
         this.createdTime = createdTime;
+        this.commentType = commentType;
     }
 
     public static CommentResponse from(Comment comment) {
@@ -41,6 +45,7 @@ public class CommentResponse {
                 .content(comment.getContent())
                 .likeCount(comment.getLikeCount())
                 .createdTime(comment.getCreatedTime())
+                .commentType(comment.getCommentType()) // 수정
                 .build();
     }
 

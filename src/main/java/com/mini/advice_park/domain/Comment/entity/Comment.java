@@ -40,6 +40,8 @@ public class Comment extends BaseTimeEntity {
     // @Transient // DB에 매핑하지 않음
     private int likeCount;
 
+    private CommentType commentType;
+
     @Builder
     public Comment(User user, Post post, String content) {
         this.user = user;
