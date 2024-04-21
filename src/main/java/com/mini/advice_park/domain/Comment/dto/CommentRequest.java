@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class CommentRequest {
 
     @NotBlank(message = "내용을 입력해주세요")
-    @Size(min = 2, max = 300, message = "2자 ~ 300자 이내로 작성해주세요.")
+    //@Size(min = 2, max = 300, message = "2자 ~ 300자 이내로 작성해주세요.")
     private String content;
 
     private CommentType commentType;

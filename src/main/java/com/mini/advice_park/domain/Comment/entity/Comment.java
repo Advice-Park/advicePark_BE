@@ -36,7 +36,6 @@ public class Comment extends BaseTimeEntity {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     private Set<Like> likes;
 
-    // @Transient // DB에 매핑하지 않음
     private int likeCount;
 
     @Enumerated(EnumType.STRING)

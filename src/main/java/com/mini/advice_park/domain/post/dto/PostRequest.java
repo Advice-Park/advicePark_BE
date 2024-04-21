@@ -24,6 +24,7 @@ public class PostRequest {
     private String contents;
 
     private Category category;
+
     private PostVoteOption postVoteOption;
 
     private List<MultipartFile> imageFiles;
