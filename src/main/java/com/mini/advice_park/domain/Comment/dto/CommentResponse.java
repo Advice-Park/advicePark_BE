@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter
 public class CommentResponse {
@@ -16,7 +17,7 @@ public class CommentResponse {
 
     private String content;
     private int likeCount;
-    private LocalDateTime createdTime;
+    private ZonedDateTime createdTime;
     private CommentType commentType;
 
     @Builder
@@ -25,7 +26,7 @@ public class CommentResponse {
                            Long postId,
                            String content,
                            int likeCount,
-                           LocalDateTime createdTime,
+                           ZonedDateTime createdTime,
                            CommentType commentType) {
 
         this.commentId = commentId;

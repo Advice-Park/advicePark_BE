@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class PostResponse {
     private final long favoriteCount;
     private final long commentCount;
 
-    private LocalDateTime createdTime;
+    private ZonedDateTime createdTime;
 
     private final List<String> imageUrls;
 
@@ -41,7 +42,7 @@ public class PostResponse {
                         long viewCount,
                         long favoriteCount,
                         long commentCount,
-                        LocalDateTime createdTime,
+                        ZonedDateTime createdTime,
                         List<String> imageUrls) {
 
         this.postId = postId;
