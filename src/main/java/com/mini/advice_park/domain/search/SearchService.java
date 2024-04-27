@@ -33,13 +33,24 @@ public class SearchService {
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
 
-        // 중복 제거를 위한 LinkedHashSet 사용
-        Set<PostResponse> combinedResults = new LinkedHashSet<>();
-        combinedResults.addAll(postsByTitle);
-        combinedResults.addAll(postsByContents);
+        Set<Long> uniquePostIds = new HashSet<>();
+        List<PostResponse> combinedResults = new ArrayList<>();
 
-        return new ArrayList<>(combinedResults);
+        for (PostResponse post : postsByTitle) {
+            if (uniquePostIds.add(post.getPostId())) {
+                combinedResults.add(post);
+            }
+        }
+
+        for (PostResponse post : postsByContents) {
+            if (uniquePostIds.add(post.getPostId())) {
+                combinedResults.add(post);
+            }
+        }
+
+        return combinedResults;
     }
+
 
 
 
