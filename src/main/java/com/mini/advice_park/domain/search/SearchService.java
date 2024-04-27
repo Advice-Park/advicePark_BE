@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,13 +33,14 @@ public class SearchService {
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
 
-        // 중복 제거
-        Set<PostResponse> combinedResults = new HashSet<>();
+        // 중복 제거를 위한 LinkedHashSet 사용
+        Set<PostResponse> combinedResults = new LinkedHashSet<>();
         combinedResults.addAll(postsByTitle);
         combinedResults.addAll(postsByContents);
 
         return new ArrayList<>(combinedResults);
     }
+
 
 
     /**
