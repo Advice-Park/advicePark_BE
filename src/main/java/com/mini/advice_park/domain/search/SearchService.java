@@ -8,7 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +28,6 @@ public class SearchService {
      */
     @Transactional(readOnly = true)
     public List<PostResponse> searchPosts(String keyword) {
-
         List<PostResponse> postsByTitle = postRepository.findByTitleContaining(keyword).stream()
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
@@ -34,12 +36,14 @@ public class SearchService {
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
 
-        List<PostResponse> combinedResults = Stream.concat(postsByTitle.stream(), postsByContents.stream())
-                .distinct()
-                .collect(Collectors.toList());
+        // 중복 제거
+        Set<PostResponse> combinedResults = new HashSet<>();
+        combinedResults.addAll(postsByTitle);
+        combinedResults.addAll(postsByContents);
 
-        return combinedResults;
+        return new ArrayList<>(combinedResults);
     }
+
 
     /**
      * 검색어로 댓글 검색
