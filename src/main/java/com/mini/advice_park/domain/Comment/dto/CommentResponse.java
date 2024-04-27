@@ -17,7 +17,7 @@ public class CommentResponse {
 
     private String content;
     private int likeCount;
-    private ZonedDateTime createdTime;
+    private LocalDateTime createdTime;
     private CommentType commentType;
 
     @Builder
@@ -26,7 +26,7 @@ public class CommentResponse {
                            Long postId,
                            String content,
                            int likeCount,
-                           ZonedDateTime createdTime,
+                           LocalDateTime createdTime,
                            CommentType commentType) {
 
         this.commentId = commentId;

@@ -28,7 +28,7 @@ public class PostResponse {
     private final long favoriteCount;
     private final long commentCount;
 
-    private ZonedDateTime createdTime;
+    private LocalDateTime createdTime;
 
     private final List<String> imageUrls;
 
@@ -42,7 +42,7 @@ public class PostResponse {
                         long viewCount,
                         long favoriteCount,
                         long commentCount,
-                        ZonedDateTime createdTime,
+                        LocalDateTime createdTime,
                         List<String> imageUrls) {
 
         this.postId = postId;

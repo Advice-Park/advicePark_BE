@@ -16,9 +16,9 @@ import java.time.ZonedDateTime;
 public abstract class BaseTimeEntity {
 
     @CreatedDate
-    private ZonedDateTime createdTime;
+    private LocalDateTime createdTime;
 
     @LastModifiedDate
-    private ZonedDateTime lastModifiedTime;
+    private LocalDateTime lastModifiedTime;
 
 }
