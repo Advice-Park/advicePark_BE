@@ -51,9 +51,6 @@ public class SearchService {
         return combinedResults;
     }
 
-
-
-
     /**
      * 검색어로 댓글 검색
      */

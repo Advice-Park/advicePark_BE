@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mini.advice_park.domain.post.entity.Category;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.post.entity.PostVoteOption;
@@ -7,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +28,7 @@ public class PostResponse {
     private final long favoriteCount;
     private final long commentCount;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
     private final List<String> imageUrls;

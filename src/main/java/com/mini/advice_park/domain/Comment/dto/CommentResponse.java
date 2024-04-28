@@ -1,12 +1,12 @@
 package com.mini.advice_park.domain.Comment.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mini.advice_park.domain.Comment.entity.Comment;
 import com.mini.advice_park.domain.Comment.entity.CommentType;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Getter
 public class CommentResponse {
@@ -17,8 +17,10 @@ public class CommentResponse {
 
     private String content;
     private int likeCount;
-    private LocalDateTime createdTime;
     private CommentType commentType;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime createdTime;
 
     @Builder
     public CommentResponse(Long commentId,
