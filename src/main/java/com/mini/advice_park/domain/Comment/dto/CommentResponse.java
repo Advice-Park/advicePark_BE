@@ -1,6 +1,5 @@
 package com.mini.advice_park.domain.Comment.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mini.advice_park.domain.Comment.entity.Comment;
 import com.mini.advice_park.domain.Comment.entity.CommentType;
 import lombok.Builder;

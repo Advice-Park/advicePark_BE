@@ -1,6 +1,5 @@
 package com.mini.advice_park.domain.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mini.advice_park.domain.post.entity.Category;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.post.entity.PostVoteOption;
