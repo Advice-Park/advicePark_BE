@@ -19,7 +19,6 @@ public class CommentResponse {
     private int likeCount;
     private CommentType commentType;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
     @Builder

@@ -28,7 +28,6 @@ public class PostResponse {
     private final long favoriteCount;
     private final long commentCount;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
     private final List<String> imageUrls;
