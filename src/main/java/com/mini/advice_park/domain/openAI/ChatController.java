@@ -34,7 +34,7 @@ public class ChatController {
     })
     @GetMapping("/api/chatgpt")
     public String chat(
-            @Parameter(description = "Prompt", required = true, example = "Hello, how are you?")
+            @Parameter(description = "Prompt", required = true, example = "질문 입력")
             @RequestParam String prompt) {
 
         ChatRequest request = new ChatRequest(model, prompt);
