@@ -22,6 +22,22 @@ public class VoteService {
     private final PostRepository postRepository;
 
     /**
+     * 투표 상태 반환
+     */
+    @Transactional(readOnly = true)
+    public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
+
+        User user = authService.getCurrentUser(httpServletRequest);
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+        return voteRepository.findByUserAndPost(user, post)
+                .map(Vote::getVoteOption)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
+    }
+
+    /**
      * 투표 등록
      */
     @Transactional
@@ -36,22 +52,6 @@ public class VoteService {
                 .ifPresent(vote -> { throw new CustomException(ErrorCode.ALREADY_VOTED); });
 
         voteRepository.save(new Vote(user, voteOption, post));
-    }
-
-    /**
-     * 투표 상태 반환
-     */
-    @Transactional(readOnly = true)
-    public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
-
-        User user = authService.getCurrentUser(httpServletRequest);
-
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-
-        return voteRepository.findByUserAndPost(user, post)
-                .map(Vote::getVoteOption)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
     }
 
     /**
