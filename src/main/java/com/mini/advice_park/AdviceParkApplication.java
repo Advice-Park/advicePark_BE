@@ -18,7 +18,9 @@ import java.util.TimeZone;
 @EnableJpaAuditing
 @SpringBootApplication
 @RequiredArgsConstructor
-@OpenAPIDefinition(servers = {@Server(url = "https://mooooonmin.site", description = "Https swagger")})
+@OpenAPIDefinition(servers = {
+        @Server(url = "https://mooooonmin.site", description = "Https swagger"),
+        @Server(url = "http://localhost:8080", description = "Http swagger")})
 public class AdviceParkApplication {
 
     private final PasswordEncoder encoder;
