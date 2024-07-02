@@ -3,7 +3,6 @@ package com.mini.advice_park.domain.gallery;
 import com.mini.advice_park.domain.Image.Image;
 import com.mini.advice_park.domain.Image.ImageRepository;
 import com.mini.advice_park.domain.post.PostRepository;
-import com.mini.advice_park.domain.post.dto.PostResponse;
 import com.mini.advice_park.global.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
