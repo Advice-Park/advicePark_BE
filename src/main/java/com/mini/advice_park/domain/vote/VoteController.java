@@ -40,18 +40,6 @@ public class VoteController {
         return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "투표 상태 조회가 완료되었습니다.", voteOption));
     }
 
-    @Operation(summary = "사용자의 투표 상태 조회", description = "사용자가 투표를 찬성했는지 반대했는지 조회")
-    @GetMapping("/user")
-    public ResponseEntity<BaseResponse<String>> getUserVoteStatus(
-            @Parameter(description = "게시글 ID", required = true, example = "1")
-            @PathVariable("postId") Long postId,
-            HttpServletRequest httpServletRequest) {
-
-        String userVoteStatus = voteService.getUserVoteStatus(postId, httpServletRequest);
-
-        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "사용자의 투표 상태 조회가 완료되었습니다.", userVoteStatus));
-    }
-
     @Operation(summary = "찬성 투표 등록", description = "찬성 투표를 등록")
     @PostMapping("/support")
     public ResponseEntity<BaseResponse<Void>> registerSupportVote(
