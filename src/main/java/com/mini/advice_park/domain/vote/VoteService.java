@@ -24,17 +24,28 @@ public class VoteService {
     /**
      * 투표 상태 반환
      */
+//    @Transactional(readOnly = true)
+//    public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
+//
+//        User user = authService.getCurrentUser(httpServletRequest);
+//
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+//
+//        return voteRepository.findByUserAndPost(user, post)
+//                .map(Vote::getVoteOption)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
+//    }
+
     @Transactional(readOnly = true)
     public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
-
         User user = authService.getCurrentUser(httpServletRequest);
-
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
         return voteRepository.findByUserAndPost(user, post)
                 .map(Vote::getVoteOption)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
+                .orElse(VoteOption.NONE);
     }
 
 //    /**
@@ -71,21 +82,59 @@ public class VoteService {
         voteRepository.save(new Vote(user, voteOption, post));
     }
 
+    @Transactional
+    public void createOrUpdateVote(Long postId, VoteOption voteOption, HttpServletRequest httpServletRequest) {
+        User user = authService.getCurrentUser(httpServletRequest);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+        Vote vote = voteRepository.findByUserAndPost(user, post)
+                .orElse(new Vote(user, VoteOption.NONE, post));
+
+        vote.setVoteOption(voteOption);
+        voteRepository.save(vote);
+    }
+
     /**
      * 투표 삭제
      */
+//    @Transactional
+//    public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
+//
+//        User user = authService.getCurrentUser(httpServletRequest);
+//
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+//
+//        Vote vote = voteRepository.findByUserAndPost(user, post)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
+//
+//        voteRepository.delete(vote);
+//    }
+
+//    @Transactional
+//    public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
+//        User user = authService.getCurrentUser(httpServletRequest);
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+//
+//        Vote vote = voteRepository.findByUserAndPost(user, post)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
+//
+//        voteRepository.delete(vote);
+//    }
+
     @Transactional
     public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
-
         User user = authService.getCurrentUser(httpServletRequest);
-
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
         Vote vote = voteRepository.findByUserAndPost(user, post)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
 
-        voteRepository.delete(vote);
+        vote.setVoteOption(VoteOption.NONE);
+        voteRepository.save(vote);
     }
 
 }

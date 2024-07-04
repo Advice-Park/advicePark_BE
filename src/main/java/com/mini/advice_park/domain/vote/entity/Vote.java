@@ -43,4 +43,8 @@ public class Vote {
                 .build();
     }
 
+    public void setVoteOption(VoteOption voteOption) {
+        this.voteOption = voteOption;
+    }
+
 }

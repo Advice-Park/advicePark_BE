@@ -47,7 +47,7 @@ public class VoteController {
             @PathVariable("postId") Long postId,
             HttpServletRequest httpServletRequest) {
 
-        voteService.createVote(postId, VoteOption.SUPPORT, httpServletRequest);
+        voteService.createOrUpdateVote(postId, VoteOption.SUPPORT, httpServletRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(HttpStatus.CREATED, "찬성 투표 등록이 완료되었습니다.", null));
@@ -73,7 +73,7 @@ public class VoteController {
             @PathVariable("postId") Long postId,
             HttpServletRequest httpServletRequest) {
 
-        voteService.createVote(postId, VoteOption.OPPOSE, httpServletRequest);
+        voteService.createOrUpdateVote(postId, VoteOption.OPPOSE, httpServletRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseResponse<>(HttpStatus.CREATED, "반대 투표 등록이 완료되었습니다.", null));
