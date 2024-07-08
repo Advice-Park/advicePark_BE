@@ -36,23 +36,6 @@ public class VoteService {
     }
 
     /**
-     * 투표 등록
-     */
-    @Transactional
-    public void createVote(Long postId, VoteOption voteOption, HttpServletRequest httpServletRequest) {
-
-        User user = authService.getCurrentUser(httpServletRequest);
-
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-
-        voteRepository.findByUserAndPost(user, post)
-                .ifPresent(vote -> { throw new CustomException(ErrorCode.ALREADY_VOTED); });
-
-        voteRepository.save(new Vote(user, voteOption, post));
-    }
-
-    /**
      * 투표 등록 또는 업데이트
      */
     @Transactional

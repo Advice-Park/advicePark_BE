@@ -6,7 +6,6 @@ import com.mini.advice_park.domain.vote.entity.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
