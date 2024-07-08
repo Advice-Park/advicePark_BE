@@ -22,13 +22,6 @@ public class VoteController {
     private final VoteService voteService;
 
     @Operation(summary = "투표 상태 조회", description = "투표 상태를 조회")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "투표 상태 조회 성공"),
-            @ApiResponse(responseCode = "400", description = "투표 상태 조회 실패"),
-            @ApiResponse(responseCode = "401", description = "로그인이 필요합니다"),
-            @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없습니다"),
-            @ApiResponse(responseCode = "500", description = "서버 오류")
-    })
     @GetMapping("")
     public ResponseEntity<BaseResponse<VoteOption>> getVoteStatus(
             @Parameter(description = "게시글 ID", required = true, example = "1")

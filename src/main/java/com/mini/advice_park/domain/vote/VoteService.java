@@ -52,6 +52,9 @@ public class VoteService {
         voteRepository.save(new Vote(user, voteOption, post));
     }
 
+    /**
+     * 투표 등록 또는 업데이트
+     */
     @Transactional
     public void createOrUpdateVote(Long postId, VoteOption voteOption, HttpServletRequest httpServletRequest) {
         User user = authService.getCurrentUser(httpServletRequest);
@@ -66,7 +69,7 @@ public class VoteService {
     }
 
     /**
-     * 투표 삭제
+     * 투표 삭제 (무투표 상태로 변경)
      */
     @Transactional
     public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
