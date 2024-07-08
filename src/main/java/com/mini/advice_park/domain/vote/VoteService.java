@@ -24,19 +24,6 @@ public class VoteService {
     /**
      * 투표 상태 반환
      */
-//    @Transactional(readOnly = true)
-//    public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
-//
-//        User user = authService.getCurrentUser(httpServletRequest);
-//
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-//
-//        return voteRepository.findByUserAndPost(user, post)
-//                .map(Vote::getVoteOption)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
-//    }
-
     @Transactional(readOnly = true)
     public VoteOption getVoteOption(Long postId, HttpServletRequest httpServletRequest) {
         User user = authService.getCurrentUser(httpServletRequest);
@@ -47,23 +34,6 @@ public class VoteService {
                 .map(Vote::getVoteOption)
                 .orElse(VoteOption.NONE);
     }
-
-//    /**
-//     * 사용자의 투표 상태 반환
-//     */
-//    @Transactional(readOnly = true)
-//    public String getUserVoteStatus(Long postId, HttpServletRequest httpServletRequest) {
-//
-//        User user = authService.getCurrentUser(httpServletRequest);
-//
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-//
-//        Vote vote = voteRepository.findByUserAndPost(user, post)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
-//
-//        return vote.getVoteOption().name();
-//    }
 
     /**
      * 투표 등록
@@ -98,32 +68,6 @@ public class VoteService {
     /**
      * 투표 삭제
      */
-//    @Transactional
-//    public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
-//
-//        User user = authService.getCurrentUser(httpServletRequest);
-//
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-//
-//        Vote vote = voteRepository.findByUserAndPost(user, post)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
-//
-//        voteRepository.delete(vote);
-//    }
-
-//    @Transactional
-//    public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
-//        User user = authService.getCurrentUser(httpServletRequest);
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
-//
-//        Vote vote = voteRepository.findByUserAndPost(user, post)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
-//
-//        voteRepository.delete(vote);
-//    }
-
     @Transactional
     public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
         User user = authService.getCurrentUser(httpServletRequest);
