@@ -35,6 +35,22 @@ public class VoteService {
                 .orElse(VoteOption.NONE);
     }
 
+//    /**
+//     * 투표 등록 또는 업데이트
+//     */
+//    @Transactional
+//    public void createOrUpdateVote(Long postId, VoteOption voteOption, HttpServletRequest httpServletRequest) {
+//        User user = authService.getCurrentUser(httpServletRequest);
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+//
+//        Vote vote = voteRepository.findByUserAndPost(user, post)
+//                .orElse(new Vote(user, VoteOption.NONE, post));
+//
+//        vote.setVoteOption(voteOption);
+//        voteRepository.save(vote);
+//    }
+
     /**
      * 투표 등록 또는 업데이트
      */
@@ -44,12 +60,50 @@ public class VoteService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
+        Vote existingVote = voteRepository.findByUserAndPost(user, post).orElse(null);
+
+        if (existingVote != null) {
+            if (existingVote.getVoteOption() == voteOption) {
+                return; // 동일한 옵션으로 투표 시 아무 작업도 하지 않음
+            }
+
+            if (existingVote.getVoteOption() == VoteOption.SUPPORT) {
+                post.decrementSupportCount();
+            } else if (existingVote.getVoteOption() == VoteOption.OPPOSE) {
+                post.decrementOpposeCount();
+            }
+        }
+
+        if (voteOption == VoteOption.SUPPORT) {
+            post.incrementSupportCount();
+        } else if (voteOption == VoteOption.OPPOSE) {
+            post.incrementOpposeCount();
+        }
+
         Vote vote = voteRepository.findByUserAndPost(user, post)
                 .orElse(new Vote(user, VoteOption.NONE, post));
 
         vote.setVoteOption(voteOption);
         voteRepository.save(vote);
+        postRepository.save(post);
     }
+
+
+//    /**
+//     * 투표 삭제 (무투표 상태로 변경)
+//     */
+//    @Transactional
+//    public void deleteVote(Long postId, HttpServletRequest httpServletRequest) {
+//        User user = authService.getCurrentUser(httpServletRequest);
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+//
+//        Vote vote = voteRepository.findByUserAndPost(user, post)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
+//
+//        vote.setVoteOption(VoteOption.NONE);
+//        voteRepository.save(vote);
+//    }
 
     /**
      * 투표 삭제 (무투표 상태로 변경)
@@ -63,8 +117,15 @@ public class VoteService {
         Vote vote = voteRepository.findByUserAndPost(user, post)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOTE));
 
+        if (vote.getVoteOption() == VoteOption.SUPPORT) {
+            post.decrementSupportCount();
+        } else if (vote.getVoteOption() == VoteOption.OPPOSE) {
+            post.decrementOpposeCount();
+        }
+
         vote.setVoteOption(VoteOption.NONE);
         voteRepository.save(vote);
+        postRepository.save(post);
     }
 
 }
