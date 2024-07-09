@@ -35,7 +35,7 @@ public class VoteController {
     }
 
     @Operation(summary = "투표 카운트 조회", description = "투표 카운트를 조회")
-    @GetMapping("/counts")
+    @GetMapping("/count")
     public ResponseEntity<BaseResponse<VoteCountResponse>> getVoteCounts(
             @Parameter(description = "게시글 ID", required = true, example = "1")
             @PathVariable("postId") Long postId) {
