@@ -1,5 +1,6 @@
 package com.mini.advice_park.domain.vote;
 
+import com.mini.advice_park.domain.vote.dto.VoteCountResponse;
 import com.mini.advice_park.domain.vote.entity.VoteOption;
 import com.mini.advice_park.global.common.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,17 @@ public class VoteController {
         VoteOption voteOption = voteService.getVoteOption(postId, httpServletRequest);
 
         return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "투표 상태 조회가 완료되었습니다.", voteOption));
+    }
+
+    @Operation(summary = "투표 카운트 조회", description = "투표 카운트를 조회")
+    @GetMapping("/counts")
+    public ResponseEntity<BaseResponse<VoteCountResponse>> getVoteCounts(
+            @Parameter(description = "게시글 ID", required = true, example = "1")
+            @PathVariable("postId") Long postId) {
+
+        VoteCountResponse voteCountResponse = voteService.getVoteCounts(postId);
+
+        return ResponseEntity.ok().body(new BaseResponse<>(HttpStatus.OK, "투표 카운트 조회가 완료되었습니다.", voteCountResponse));
     }
 
     @Operation(summary = "찬성 투표 등록", description = "찬성 투표를 등록")

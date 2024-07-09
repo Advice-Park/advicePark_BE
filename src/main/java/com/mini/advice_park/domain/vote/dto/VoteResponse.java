@@ -11,29 +11,20 @@ public class VoteResponse {
     private Long postId;
     private String voteOption;
 
-    private int supportCount;
-    private int opposeCount;
-
     @Builder
-    public VoteResponse(Long voteId, Long userId, Long postId,
-                        String voteOption, int supportCount, int opposeCount) {
+    public VoteResponse(Long voteId, Long userId, Long postId, String voteOption) {
         this.voteId = voteId;
         this.userId = userId;
         this.postId = postId;
         this.voteOption = voteOption;
-        this.supportCount = supportCount;
-        this.opposeCount = opposeCount;
     }
 
-    public static VoteResponse from(Long voteId, Long userId, Long postId,
-                                    String voteOption, int supportCount, int opposeCount) {
+    public static VoteResponse from(Long voteId, Long userId, Long postId, String voteOption) {
         return VoteResponse.builder()
                 .voteId(voteId)
                 .userId(userId)
                 .postId(postId)
                 .voteOption(voteOption)
-                .opposeCount(opposeCount)
-                .supportCount(supportCount)
                 .build();
     }
 

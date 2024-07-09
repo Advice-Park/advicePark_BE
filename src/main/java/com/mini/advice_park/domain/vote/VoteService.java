@@ -4,6 +4,8 @@ import com.mini.advice_park.domain.post.PostRepository;
 import com.mini.advice_park.domain.post.entity.Post;
 import com.mini.advice_park.domain.user.entity.User;
 import com.mini.advice_park.domain.user.service.AuthService;
+import com.mini.advice_park.domain.vote.dto.VoteCountResponse;
+import com.mini.advice_park.domain.vote.dto.VoteResponse;
 import com.mini.advice_park.domain.vote.entity.Vote;
 import com.mini.advice_park.domain.vote.entity.VoteOption;
 import com.mini.advice_park.global.exception.CustomException;
@@ -33,6 +35,20 @@ public class VoteService {
         return voteRepository.findByUserAndPost(user, post)
                 .map(Vote::getVoteOption)
                 .orElse(VoteOption.NONE);
+    }
+
+    /**
+     * 투표 카운트 반환
+     */
+    @Transactional(readOnly = true)
+    public VoteCountResponse getVoteCounts(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
+
+        return VoteCountResponse.builder()
+                .supportCount(post.getSupportCount())
+                .opposeCount(post.getOpposeCount())
+                .build();
     }
 
 //    /**
