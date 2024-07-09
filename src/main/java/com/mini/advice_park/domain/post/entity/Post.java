@@ -50,6 +50,9 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     private Long favoriteCount;
 
+    private int supportCount = 0;
+    private int opposeCount = 0;
+
     @Builder
     public Post(String title,
                 String contents,
@@ -65,7 +68,7 @@ public class Post extends BaseTimeEntity {
         this.user = user;
         this.viewCount = viewCount;
         this.favoriteCount = favoriteCount;
-        this.commentCount = 0; // 댓글 수 초기화
+        this.commentCount = 0;
     }
 
     public static Post of(PostRequest postRequest) {
@@ -113,6 +116,25 @@ public class Post extends BaseTimeEntity {
         if (this.favoriteCount > 0) {
             this.favoriteCount--;
         }
+    }
+
+    /**
+     * 찬성,반대 수를 증가,감소 시키는 메서드
+     */
+    public void incrementSupportCount() {
+        this.supportCount++;
+    }
+
+    public void decrementSupportCount() {
+        this.supportCount--;
+    }
+
+    public void incrementOpposeCount() {
+        this.opposeCount++;
+    }
+
+    public void decrementOpposeCount() {
+        this.opposeCount--;
     }
 
 }
